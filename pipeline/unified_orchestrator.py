@@ -18,8 +18,19 @@ RNA Stages:
     10. Perturb-seq / CROP-seq Analysis
     11. Non-coding RNA Analysis (lncRNA/miRNA)
 
-Unified:
-    12. DNA + RNA Combined Report
+Causality Integration (28 modules × 7 phases):
+    12. Phase 1: Screening → DAG Foundation (4 modules)
+    13. Phase 2: Network Scoring & Ranking (4 modules)
+    14. Phase 3: Quality Assurance & Validation (4 modules)
+    15. Phase 4: Mechanism & Resistance Analysis (4 modules)
+    16. Phase 5: Pharmaceutical Integration (4 modules)
+    17. Phase 6: Patient Stratification (4 modules)
+    18. Phase 7: Clinical Reporting & Gap Analysis (4 modules)
+
+Scale:
+    DNA: 210,859 knockout configs × 22.2B combinations
+    RNA: 210,859 knockdown configs × 22.2B RNA combinations
+    Combined: 421,718 configs × 88.9B total combinations
 """
 
 import json
@@ -53,6 +64,7 @@ class UnifiedOrchestrator:
         self._noncoding = None
         self._corrector = None
         self._debugger = None
+        self._causality = None
         self._dag = None
         self._results = {}
 
@@ -70,6 +82,7 @@ class UnifiedOrchestrator:
         from ..rna.noncoding_engine import NonCodingEngine
         from ..autonomous.self_corrector import SelfCorrector
         from ..autonomous.pipeline_debugger import PipelineDebugger
+        from ..causality.full_causality_integrator import FullCausalityIntegrator
 
         self._editing = EditingEngine(self._config.get('editing', {}))
         self._screening = ScreeningEngine(self._config.get('screening', {}))
@@ -82,6 +95,7 @@ class UnifiedOrchestrator:
         self._noncoding = NonCodingEngine(self._config.get('noncoding', {}))
         self._corrector = SelfCorrector(self._config.get('corrector', {}))
         self._debugger = PipelineDebugger(self._config.get('debugger', {}))
+        self._causality = FullCausalityIntegrator(self._config.get('causality', {}))
         self._initialized = True
         logger.info("All DNA + RNA engines initialized")
 
@@ -276,6 +290,69 @@ class UnifiedOrchestrator:
             _p("ncrna", 100, f"{len(ncrna_results)} ncRNAs analyzed")
 
         # ══════════════════════════════════════════════════════════════════════
+        # CAUSALITY INTEGRATION (28 MODULES × 7 PHASES)
+        # ══════════════════════════════════════════════════════════════════════
+        if self._dag and self._dag.number_of_nodes() > 1:
+            _p("causality", 0, "Running 28-module causality framework (7 phases)...")
+
+            # Gather RNA evidence
+            rna_kd_data = {}
+            if run_rna and rna_strategies:
+                for s in rna_strategies:
+                    rna_kd_data[s['gene']] = {'knockdown_efficiency': s['knockdown_eff'] * 100}
+
+            rna_be_data = {}
+            if 'base_editing' in report.get('rna_stages', {}):
+                for be in report['rna_stages']['base_editing'].get('results', []):
+                    rna_be_data[be['gene']] = {'efficiency': be['efficiency']}
+
+            causality_report = self._debugger.run_stage(
+                "causality_integration",
+                self._causality.run_all_phases,
+                self._dag,
+                screening_data=self._screening.get_all_genes() if self._screening.is_loaded() else None,
+                knockout_results=self._results.get('knockouts'),
+                combination_results=None,
+                rna_knockdown_results=rna_kd_data if rna_kd_data else None,
+                rna_base_edit_results=rna_be_data if rna_be_data else None,
+                verbose=self._verbose,
+            )
+
+            if causality_report:
+                report['causality'] = causality_report
+                _p("causality", 100,
+                    f"{causality_report.get('modules_run', 0)} modules, "
+                    f"{causality_report.get('modules_failed', 0)} failed, "
+                    f"{causality_report.get('duration_seconds', 0)}s")
+            else:
+                report['errors'].append("Causality integration failed")
+
+        # ══════════════════════════════════════════════════════════════════════
+        # SCALE COMPUTATION
+        # ══════════════════════════════════════════════════════════════════════
+        n_reg = sum(1 for n in self._dag.nodes()
+                    if self._dag.nodes[n].get('layer') == 'regulatory') if self._dag else 0
+        dna_configs = n_reg * 11
+        rna_configs = n_reg * 11 if run_rna else 0
+        total_configs = dna_configs + rna_configs
+        dna_combos = dna_configs * (dna_configs - 1) // 2
+        rna_combos = rna_configs * (rna_configs - 1) // 2 if run_rna else 0
+        cross_combos = dna_configs * rna_configs if run_rna else 0
+        total_combos = dna_combos + rna_combos + cross_combos
+
+        report['scale'] = {
+            'genes': n_reg,
+            'dna_configs': dna_configs,
+            'rna_configs': rna_configs,
+            'total_configs': total_configs,
+            'dna_combinations': dna_combos,
+            'rna_combinations': rna_combos,
+            'cross_dna_rna_combinations': cross_combos,
+            'total_combinations': total_combos,
+            'total_billions': round(total_combos / 1e9, 2),
+        }
+
+        # ══════════════════════════════════════════════════════════════════════
         # FINALIZE
         # ══════════════════════════════════════════════════════════════════════
         duration = time.time() - start
@@ -328,6 +405,36 @@ class UnifiedOrchestrator:
                 'transcriptome': self._transcriptome.get_capabilities(),
                 'noncoding': self._noncoding.get_capabilities(),
             },
-            'autonomous': True,
-            'self_correcting': True,
+            'causality': {
+                'phases': 7,
+                'modules': 28,
+                'integration_type': 'Full 7-phase BiRAGAS causality framework',
+                'phase_modules': {
+                    'phase1': ['QualityGate', 'ScreeningConverter', 'CRISPREnricher', 'MRCorroborator'],
+                    'phase2': ['TargetScorer(7D)', 'CentralityEnhancer', 'TierPromoter', 'KnockoutBridge'],
+                    'phase3': ['DirectionValidator', 'ConfoundingDetector', 'HallucinationShield', 'KOIntegrator'],
+                    'phase4': ['AttributeHarmonizer', 'ResistanceEnhancer', 'CompensationBridge', 'EngineAdapter'],
+                    'phase5': ['DrugTargetRanker(9D)', 'SafetyEnhancer', 'EfficacyInjector', 'SynergyUpgrader'],
+                    'phase6': ['WeightedStratifier', 'DriverComparator', 'MotifValidator', 'SubtypeMapper'],
+                    'phase7': ['ReportGenerator', 'QualityBooster', 'ArbitrationEnhancer', 'GapPrioritizer'],
+                },
+            },
+            'scale': {
+                'dna_configs': 210859,
+                'rna_configs': 210859,
+                'total_configs': 421718,
+                'dna_combinations': '22.2 Billion',
+                'rna_combinations': '22.2 Billion',
+                'cross_combinations': '44.5 Billion',
+                'total_combinations': '88.9 Billion',
+            },
+            'agentic_features': {
+                'autonomous': True,
+                'self_correcting': True,
+                'self_debugging': True,
+                'auto_engine_selection': True,
+                'error_retry_with_backoff': True,
+                'fallback_methods': True,
+                'checkpoint_rollback': True,
+            },
         }
