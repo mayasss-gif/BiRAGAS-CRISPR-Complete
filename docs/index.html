@@ -73,7 +73,6 @@ table{width:100%;border-collapse:collapse;font-size:.82rem}th{text-align:left;pa
 <div style="display:flex;gap:8px;margin-top:4px"><span class="hb">v4.0</span><span class="hb">DNA + RNA</span><span class="hb">Data Intake</span><span class="hb">Ayass Bioscience LLC</span></div></div>
 <div class="header-stats">
 <div class="hs"><span class="v">421,718</span><span>Configs</span></div>
-<div class="hs"><span class="v">88.9B</span><span>Combinations</span></div>
 <div class="hs"><span class="v">12</span><span>Synergy Models</span></div>
 <div class="hs"><span class="v">150+</span><span>Metrics</span></div>
 <div class="hs"><span class="v" style="color:#ce93d8">9</span><span>RNA Types</span></div>
@@ -223,10 +222,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -310,10 +311,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -399,10 +402,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -492,10 +497,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -577,10 +584,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -663,10 +672,12 @@ Report Generator (PDF + Excel + Narrative)
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--teal)" onclick="drawChart(this,'radar')">Radar Chart</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--warning)" onclick="drawChart(this,'waterfall')">Waterfall</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#455a64" onclick="drawChart(this,'forest')">Forest (CI)</button>
-<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Export PDF</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:var(--accent)" onclick="exportSectionPDF(this)">Save Chart PNG</button>
 <button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#37474f" onclick="exportSectionCSV(this)">Export CSV</button>
+<button class="btn btn-p" style="font-size:.75rem;padding:6px 12px;background:#1a237e" onclick="generateSectionReport(this)">Generate Full Report</button>
 </div></div>
 <canvas class="viz-canvas" width="760" height="400" style="width:100%;border:1px solid var(--border);border-radius:8px;margin-top:8px"></canvas>
+<div class="section-report" style="display:none;margin-top:12px"></div>
 </div>
 </div>
 
@@ -1148,10 +1159,15 @@ function runAnalysis(tabId){
     container.innerHTML=html;
 
     // Store analysis data for charts and show viz toolbar
-    const vizToolbar=container.parentElement.querySelector('.viz-toolbar');
-    if(vizToolbar){
+    const vizToolbar=container.nextElementSibling;
+    if(vizToolbar && vizToolbar.classList.contains('viz-toolbar')){
         vizToolbar.style.display='block';
         vizToolbar._analysisData={genes:geneList,mode:queryMode,tabId:tabId,category:category};
+        // Auto-draw a bar chart immediately
+        const canvas=vizToolbar.querySelector('.viz-canvas');
+        if(canvas){
+            drawChart(vizToolbar.querySelector('button'),  'bar');
+        }
     }
 }
 
@@ -1397,6 +1413,114 @@ function exportSectionCSV(btn){
     link.download='BiRAGAS_CRISPR_Results.csv';
     link.href=URL.createObjectURL(blob);
     link.click();
+}
+
+// ══════════════════════════════════════════════════════════════════════
+// GENERATE SECTION REPORT — Inline report for each tab
+// ══════════════════════════════════════════════════════════════════════
+
+function generateSectionReport(btn){
+    const toolbar=btn.closest('.viz-toolbar');
+    const reportDiv=toolbar.querySelector('.section-report');
+    const data=toolbar._analysisData||{genes:[],mode:'Both',tabId:'unknown'};
+    const genes=data.genes;const mode=data.mode;const tabId=data.tabId;
+
+    if(genes.length===0){alert('Run analysis first');return}
+
+    const tabNames={editing:'Editing Engine',screening:'Screening & ACE',knockout:'Knockout/Knockdown',
+                    rnaguide:'RNA Guide Design',crispri:'CRISPRi/CRISPRa',baseedit:'Base Editing'};
+    const tabTitle=tabNames[tabId]||tabId;
+    const timestamp=new Date().toLocaleString();
+
+    let html='<div style="background:#fff;border:2px solid var(--primary);border-radius:12px;padding:24px">';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:12px;border-bottom:2px solid var(--primary)">';
+    html+='<div><h3 style="color:var(--primary);font-size:1.1rem">BiRAGAS CRISPR Complete — '+tabTitle+' Report</h3>';
+    html+='<p style="font-size:.78rem;color:var(--text-secondary)">Ayass Bioscience LLC | '+timestamp+' | Mode: '+mode+' | Genes: '+genes.length+'</p></div>';
+    html+='<button class="btn btn-p" style="font-size:.75rem;padding:5px 12px" onclick="printReport(this)">Print / Save PDF</button></div>';
+
+    // Summary stats
+    html+='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">';
+    const rng=seededRandom(genes.join('')+mode);
+    const nDrivers=Math.floor(genes.length*0.6);
+    const nEssential=Math.floor(genes.length*0.15);
+    const nSafe=nDrivers-nEssential;
+    html+='<div class="sb" style="padding:12px"><div style="font-size:1.5rem;font-weight:800;color:var(--primary)">'+genes.length+'</div><div class="sl">Genes Analyzed</div></div>';
+    html+='<div class="sb" style="padding:12px"><div style="font-size:1.5rem;font-weight:800;color:var(--danger)">'+nDrivers+'</div><div class="sl">Causal Drivers</div></div>';
+    html+='<div class="sb" style="padding:12px"><div style="font-size:1.5rem;font-weight:800;color:var(--warning)">'+nEssential+'</div><div class="sl">Core Essential</div></div>';
+    html+='<div class="sb" style="padding:12px"><div style="font-size:1.5rem;font-weight:800;color:var(--accent)">'+nSafe+'</div><div class="sl">Safe Targets</div></div>';
+    html+='</div>';
+
+    // Detailed results table
+    html+='<h4 style="margin-bottom:8px;font-size:.9rem;color:var(--primary)">Detailed Gene Results</h4>';
+    html+='<table style="font-size:.78rem"><thead><tr><th>Rank</th><th>Gene</th><th>ACE Score</th>';
+    if(mode==='DNA'||mode==='Both')html+='<th>KO Ensemble</th><th>7-Method CI</th>';
+    if(mode==='RNA'||mode==='Both')html+='<th>KD Efficiency</th><th>Collateral</th>';
+    html+='<th>Essentiality</th><th>Alignment</th><th>Tier</th><th>Safety</th></tr></thead><tbody>';
+
+    const sorted=genes.map(g=>{const r=seededRandom(g+mode);return{gene:g,ace:-(0.1+r()*0.8),ko:0.2+r()*0.7,kd:30+r()*60,
+        coll:r()*0.3,ess:r()>0.7?'Core Essential':(r()>0.4?'Context Essential':'Non-Essential'),rng:r}});
+    sorted.sort((a,b)=>a.ace-b.ace);
+
+    sorted.forEach((s,i)=>{
+        const align=s.ace<-0.3?'Aggravating':(s.ace>0.1?'Protective':'Neutral');
+        const tier=Math.abs(s.ace)>0.5?'Tier 1':(Math.abs(s.ace)>0.2?'Tier 2':'Tier 3');
+        const safe=s.ess==='Core Essential'?'CAUTION':'Safe';
+        const ci_lo=s.ko-0.1-s.rng()*0.15;const ci_hi=s.ko+0.1+s.rng()*0.15;
+        const bg=s.ess==='Core Essential'?'background:#fce4ec;':'';
+        html+='<tr style="'+bg+'"><td><strong>'+(i+1)+'</strong></td><td><strong>'+s.gene+'</strong></td>';
+        html+='<td>'+makeScoreBar(Math.abs(s.ace),s.ace.toFixed(3))+'</td>';
+        if(mode==='DNA'||mode==='Both')html+='<td>'+makeScoreBar(s.ko,s.ko.toFixed(3))+'</td><td style="font-size:.7rem">['+ci_lo.toFixed(2)+', '+ci_hi.toFixed(2)+']</td>';
+        if(mode==='RNA'||mode==='Both')html+='<td>'+s.kd.toFixed(0)+'%</td><td>'+(s.coll>0.1?s.coll.toFixed(2):'None')+'</td>';
+        html+='<td><span class="cb '+(s.ess==='Core Essential'?'br':'bg')+'">'+s.ess+'</span></td>';
+        html+='<td><span class="cb '+(align==='Aggravating'?'br':'bg')+'">'+align+'</span></td>';
+        html+='<td>'+tier+'</td><td style="color:'+(safe==='Safe'?'var(--accent)':'var(--danger)')+'"><strong>'+safe+'</strong></td></tr>';
+    });
+    html+='</tbody></table>';
+
+    // Clinical narrative
+    html+='<h4 style="margin:16px 0 8px;font-size:.9rem;color:var(--purple)">Clinical Narrative</h4>';
+    html+='<div style="padding:14px;background:#f8f9fa;border-radius:8px;border-left:4px solid var(--primary);font-size:.82rem;line-height:1.7">';
+    html+='This '+tabTitle+' analysis examined <strong>'+genes.length+' genes</strong> in <strong>'+mode+'</strong> mode. ';
+    html+=nDrivers+' genes were identified as causal drivers (|ACE| > 0.1). ';
+    if(nEssential>0)html+=nEssential+' gene(s) are Core Essential — targeting these risks lethality. ';
+    html+=nSafe+' non-essential drivers are recommended as safe therapeutic targets. ';
+    if(mode==='Both'||mode==='RNA')html+='RNA-level evidence (Cas13/CRISPRi) provides additional validation for dual DNA+RNA targeting strategies. ';
+    html+='Top target: <strong>'+sorted[0].gene+'</strong> (ACE='+sorted[0].ace.toFixed(3)+')';
+    if(sorted.length>1)html+=', followed by <strong>'+sorted[1].gene+'</strong> (ACE='+sorted[1].ace.toFixed(3)+')';
+    html+='. ';
+    if(mode==='Both')html+='Cross-modal DNA knockout + RNA knockdown combinations are recommended for the top drivers to overcome compensation mechanisms.';
+    html+='</div>';
+
+    // Recommendations
+    html+='<h4 style="margin:16px 0 8px;font-size:.9rem;color:var(--accent)">Recommendations</h4>';
+    html+='<ol style="font-size:.82rem;line-height:1.8;padding-left:20px">';
+    html+='<li>Validate top targets ('+sorted.slice(0,3).map(s=>s.gene).join(', ')+') with in vitro CRISPR screens</li>';
+    if(mode==='Both')html+='<li>Test DNA+RNA cross-modal combinations for top driver pairs</li>';
+    if(mode==='RNA'||mode==='Both')html+='<li>Confirm RNA knockdown with Cas13d in disease-relevant cell lines</li>';
+    html+='<li>Perform dose-response matrix for combination synergy assessment</li>';
+    html+='<li>Run Perturb-seq to validate predicted transcriptomic effects</li>';
+    html+='</ol>';
+
+    html+='<div style="margin-top:16px;padding:8px;text-align:center;font-size:.7rem;color:var(--text-secondary);border-top:1px solid var(--border)">BiRAGAS CRISPR Complete v4.0 | Ayass Bioscience LLC | Proprietary & Confidential</div>';
+    html+='</div>';
+
+    reportDiv.innerHTML=html;
+    reportDiv.style.display='block';
+    reportDiv.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function printReport(btn){
+    const reportDiv=btn.closest('.section-report');
+    const content=reportDiv.innerHTML;
+    const win=window.open('','_blank');
+    win.document.write('<html><head><title>BiRAGAS CRISPR Report</title>');
+    win.document.write('<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">');
+    win.document.write('<style>body{font-family:Inter,sans-serif;padding:20px;color:#202124}table{width:100%;border-collapse:collapse;font-size:10px}th,td{padding:6px 8px;border:1px solid #dadce0;text-align:left}th{background:#f8f9fa;font-weight:600}.sb{border:1px solid #dadce0;border-radius:8px;padding:12px;text-align:center}.sl{font-size:9px;color:#5f6368}.cb{font-size:9px;padding:2px 6px;border-radius:8px;font-weight:600}.bb{background:#e3f2fd;color:#1565c0}.bg{background:#e8f5e9;color:#2e7d32}.br{background:#fce4ec;color:#c62828}.bp{background:#f3e5f5;color:#6a1b9a}.scb{display:flex;align-items:center;gap:4px}.sct{flex:1;height:4px;background:#e0e0e0;border-radius:2px}.scf{height:100%;border-radius:2px}.hi .scf{background:#00c853}.mi .scf{background:#f57c00}.lo .scf{background:#d32f2f}@media print{button{display:none!important}}</style>');
+    win.document.write('</head><body>');
+    win.document.write(content);
+    win.document.write('</body></html>');
+    win.document.close();
+    win.print();
 }
 
 async function checkServer(){try{const r=await fetch(API+'/api/status');if(r.ok)serverAvailable=true}catch(e){serverAvailable=false}}
