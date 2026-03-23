@@ -1,0 +1,2557 @@
+{
+  "pipeline": "BiRAGAS CRISPR Complete v3.0 \u2014 PDAC Analysis",
+  "disease": "Pancreatic Ductal Adenocarcinoma (PDAC)",
+  "bottleneck": "KRAS G12D compensation network \u2014 single-target therapies fail due to MAPK\u2194PI3K crosstalk",
+  "dag": {
+    "nodes": 37,
+    "edges": 55,
+    "corrections": 2
+  },
+  "knockout": {
+    "total_predicted": 36,
+    "total_configs": 396,
+    "top_15": [
+      {
+        "gene": "KRAS",
+        "config_id": "KRAS_ensemble",
+        "ensemble": 1.4791,
+        "direction": "suppressive",
+        "confidence": 0.3,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.7524,
+          "bayesian": 0.9997,
+          "monte_carlo": 0.6092,
+          "pathway": 4.4555,
+          "feedback": 1.5724,
+          "ode": 0.2565,
+          "mutual_info": 0.011
+        },
+        "compensation_risk": 0.7,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MAPK1",
+        "config_id": "MAPK1_ensemble",
+        "ensemble": 1.2809,
+        "direction": "suppressive",
+        "confidence": 0.445,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.8362,
+          "bayesian": 0.9857,
+          "monte_carlo": 0.7463,
+          "pathway": 2.8625,
+          "feedback": 1.5137,
+          "ode": 0.1905,
+          "mutual_info": 0.006
+        },
+        "compensation_risk": 0.8,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MAP2K1",
+        "config_id": "MAP2K1_ensemble",
+        "ensemble": 1.2527,
+        "direction": "suppressive",
+        "confidence": 0.45,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.7081,
+          "bayesian": 0.9909,
+          "monte_carlo": 0.7072,
+          "pathway": 2.8,
+          "feedback": 1.6106,
+          "ode": 0.1933,
+          "mutual_info": 0.0101
+        },
+        "compensation_risk": 0.65,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MYC",
+        "config_id": "MYC_ensemble",
+        "ensemble": 1.1058,
+        "direction": "suppressive",
+        "confidence": 0.305,
+        "ci": [
+          0.0,
+          0.8
+        ],
+        "methods": {
+          "topological": 1.1836,
+          "bayesian": 0.9154,
+          "monte_carlo": 0.6368,
+          "pathway": 3.2975,
+          "feedback": 0.9361,
+          "ode": 0.1562,
+          "mutual_info": 0.0017
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Core Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "PIK3CA",
+        "config_id": "PIK3CA_ensemble",
+        "ensemble": 1.0009,
+        "direction": "suppressive",
+        "confidence": 0.38,
+        "ci": [
+          0.0,
+          0.75
+        ],
+        "methods": {
+          "topological": 1.0564,
+          "bayesian": 0.9249,
+          "monte_carlo": 0.5251,
+          "pathway": 2.7125,
+          "feedback": 1.0564,
+          "ode": 0.2184,
+          "mutual_info": 0.0038
+        },
+        "compensation_risk": 0.0,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "BRAF",
+        "config_id": "BRAF_ensemble",
+        "ensemble": 0.9005,
+        "direction": "suppressive",
+        "confidence": 0.508,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.3067,
+          "bayesian": 0.982,
+          "monte_carlo": 0.606,
+          "pathway": 1.4062,
+          "feedback": 1.2092,
+          "ode": 0.1089,
+          "mutual_info": 0.0052
+        },
+        "compensation_risk": 0.65,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "AKT1",
+        "config_id": "AKT1_ensemble",
+        "ensemble": 0.8814,
+        "direction": "suppressive",
+        "confidence": 0.386,
+        "ci": [
+          0.0,
+          0.75
+        ],
+        "methods": {
+          "topological": 1.0421,
+          "bayesian": 0.89,
+          "monte_carlo": 0.5625,
+          "pathway": 2.15,
+          "feedback": 0.8171,
+          "ode": 0.1244,
+          "mutual_info": 0.0
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Context Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "CRAF",
+        "config_id": "CRAF_ensemble",
+        "ensemble": 0.8529,
+        "direction": "suppressive",
+        "confidence": 0.413,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 0.9437,
+          "bayesian": 0.9781,
+          "monte_carlo": 0.5765,
+          "pathway": 1.9531,
+          "feedback": 0.8087,
+          "ode": 0.1336,
+          "mutual_info": 0.0054
+        },
+        "compensation_risk": 0.9,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "SOS1",
+        "config_id": "SOS1_ensemble",
+        "ensemble": 0.8135,
+        "direction": "suppressive",
+        "confidence": 0.493,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.1916,
+          "bayesian": 0.9899,
+          "monte_carlo": 0.5129,
+          "pathway": 1.1375,
+          "feedback": 1.1016,
+          "ode": 0.1321,
+          "mutual_info": 0.0
+        },
+        "compensation_risk": 0.6,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MAPK3",
+        "config_id": "MAPK3_ensemble",
+        "ensemble": 0.7835,
+        "direction": "suppressive",
+        "confidence": 0.415,
+        "ci": [
+          0.0,
+          0.8
+        ],
+        "methods": {
+          "topological": 1.0633,
+          "bayesian": 0.8537,
+          "monte_carlo": 0.4472,
+          "pathway": 1.6175,
+          "feedback": 0.8233,
+          "ode": 0.1118,
+          "mutual_info": 0.0025
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MIR21",
+        "config_id": "MIR21_ensemble",
+        "ensemble": 0.7402,
+        "direction": "suppressive",
+        "confidence": 0.356,
+        "ci": [
+          0.0,
+          0.6
+        ],
+        "methods": {
+          "topological": 0.884,
+          "bayesian": 0.8586,
+          "monte_carlo": 0.3564,
+          "pathway": 1.7299,
+          "feedback": 0.7565,
+          "ode": 0.1173,
+          "mutual_info": 0.0
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MAP2K2",
+        "config_id": "MAP2K2_ensemble",
+        "ensemble": 0.7165,
+        "direction": "suppressive",
+        "confidence": 0.443,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.0145,
+          "bayesian": 0.8877,
+          "monte_carlo": 0.459,
+          "pathway": 1.1375,
+          "feedback": 0.8795,
+          "ode": 0.063,
+          "mutual_info": 0.0015
+        },
+        "compensation_risk": 0.9,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "AKT2",
+        "config_id": "AKT2_ensemble",
+        "ensemble": 0.7046,
+        "direction": "suppressive",
+        "confidence": 0.319,
+        "ci": [
+          0.0,
+          0.7
+        ],
+        "methods": {
+          "topological": 0.8387,
+          "bayesian": 0.782,
+          "monte_carlo": 0.399,
+          "pathway": 1.7375,
+          "feedback": 0.5912,
+          "ode": 0.1001,
+          "mutual_info": 0.0008
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "MALAT1",
+        "config_id": "MALAT1_ensemble",
+        "ensemble": 0.6719,
+        "direction": "suppressive",
+        "confidence": 0.396,
+        "ci": [
+          0.0,
+          0.85
+        ],
+        "methods": {
+          "topological": 1.0068,
+          "bayesian": 0.8376,
+          "monte_carlo": 0.3058,
+          "pathway": 1.19,
+          "feedback": 0.7443,
+          "ode": 0.0881,
+          "mutual_info": 0.0
+        },
+        "compensation_risk": 0.9,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      },
+      {
+        "gene": "HOTAIR",
+        "config_id": "HOTAIR_ensemble",
+        "ensemble": 0.5438,
+        "direction": "suppressive",
+        "confidence": 0.235,
+        "ci": [
+          0.0,
+          0.55
+        ],
+        "methods": {
+          "topological": 0.6026,
+          "bayesian": 0.649,
+          "monte_carlo": 0.3113,
+          "pathway": 1.4112,
+          "feedback": 0.3851,
+          "ode": 0.0669,
+          "mutual_info": 0.0
+        },
+        "compensation_risk": 0.85,
+        "essentiality": "Non-Essential",
+        "alignment": "Aggravating"
+      }
+    ]
+  },
+  "mega_scale": {
+    "nodes": 37,
+    "edges": 55,
+    "regulatory": 36,
+    "trait": 1,
+    "knockout_configs": 396,
+    "pairwise_combinations": 630,
+    "billions": 0.0,
+    "init_seconds": 0.0,
+    "matrix_type": "sparse"
+  },
+  "combinations": {
+    "dna_x_dna": {
+      "count": 45,
+      "synergistic": 0,
+      "top_5": [
+        {
+          "genes": [
+            "SOS1",
+            "MAPK3"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "DNA_KO"
+          ],
+          "combination_class": "DNA\u00d7DNA",
+          "individual": {
+            "a": 0.8135,
+            "b": 0.7835
+          },
+          "models": {
+            "bliss": 0.9596,
+            "hsa": 0.8135,
+            "loewe": 0.7985,
+            "zip": 0.6693,
+            "epistasis": 1.8412,
+            "compensation": 4.612,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 1.271,
+          "synergy": -0.3259,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.2,
+          "confidence": 0.1,
+          "models_used": 8,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "CRAF",
+            "MAPK3"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "DNA_KO"
+          ],
+          "combination_class": "DNA\u00d7DNA",
+          "individual": {
+            "a": 0.8529,
+            "b": 0.7835
+          },
+          "models": {
+            "bliss": 0.9681,
+            "hsa": 0.8529,
+            "loewe": 0.8182,
+            "zip": 0.7227,
+            "epistasis": 1.8545,
+            "compensation": 4.3763,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 1.2675,
+          "synergy": -0.3689,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.3,
+          "confidence": 0.1,
+          "models_used": 8,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "AKT1",
+            "SOS1"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "DNA_KO"
+          ],
+          "combination_class": "DNA\u00d7DNA",
+          "individual": {
+            "a": 0.8814,
+            "b": 0.8135
+          },
+          "models": {
+            "bliss": 0.9779,
+            "hsa": 0.8814,
+            "loewe": 0.8474,
+            "zip": 0.7594,
+            "epistasis": 1.9939,
+            "compensation": 4.5849,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 1.3254,
+          "synergy": -0.3695,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.2,
+          "confidence": 0.1,
+          "models_used": 8,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "MAPK1",
+            "MAPK3"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "DNA_KO"
+          ],
+          "combination_class": "DNA\u00d7DNA",
+          "individual": {
+            "a": 1.2809,
+            "b": 0.7835
+          },
+          "models": {
+            "bliss": 1.0608,
+            "hsa": 1.2809,
+            "loewe": 1.0322,
+            "zip": 1.0724,
+            "epistasis": 2.2708,
+            "compensation": 6.2944,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 1.6826,
+          "synergy": -0.3818,
+          "type": "antagonistic",
+          "pathway_comp": 0.5,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.45,
+          "confidence": 0.1,
+          "models_used": 8,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "BRAF",
+            "MAPK3"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "DNA_KO"
+          ],
+          "combination_class": "DNA\u00d7DNA",
+          "individual": {
+            "a": 0.9005,
+            "b": 0.7835
+          },
+          "models": {
+            "bliss": 0.9784,
+            "hsa": 0.9005,
+            "loewe": 0.842,
+            "zip": 0.7616,
+            "epistasis": 1.8983,
+            "compensation": 4.4239,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 1.2967,
+          "synergy": -0.3873,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.35,
+          "confidence": 0.1,
+          "models_used": 8,
+          "agentic_validation": "validated_low_confidence"
+        }
+      ]
+    },
+    "rna_x_rna": {
+      "count": 21,
+      "synergistic": 0,
+      "top_5": [
+        {
+          "genes": [
+            "MIR155",
+            "MALAT1"
+          ],
+          "modalities": [
+            "Cas13d_KD",
+            "Cas13d_KD"
+          ],
+          "combination_class": "RNA\u00d7RNA",
+          "individual": {
+            "a": 0.4,
+            "b": 0.35
+          },
+          "models": {
+            "bliss": 0.61,
+            "hsa": 0.4,
+            "loewe": 0.375,
+            "zip": 0.165,
+            "epistasis": 0.885,
+            "compensation": 3.84,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.1875
+          },
+          "combined": 0.6486,
+          "synergy": -0.1014,
+          "type": "antagonistic",
+          "pathway_comp": 0.5,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.2,
+          "confidence": 0.1,
+          "models_used": 11,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "MIR21",
+            "MALAT1"
+          ],
+          "modalities": [
+            "Cas13d_KD",
+            "Cas13d_KD"
+          ],
+          "combination_class": "RNA\u00d7RNA",
+          "individual": {
+            "a": 0.55,
+            "b": 0.35
+          },
+          "models": {
+            "bliss": 0.7075,
+            "hsa": 0.55,
+            "loewe": 0.45,
+            "zip": 0.2225,
+            "epistasis": 0.99,
+            "compensation": 4.815,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.225
+          },
+          "combined": 0.7918,
+          "synergy": -0.1082,
+          "type": "antagonistic",
+          "pathway_comp": 0.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.2,
+          "confidence": 0.1,
+          "models_used": 11,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "HOTAIR",
+            "MALAT1"
+          ],
+          "modalities": [
+            "Cas13d_KD",
+            "Cas13d_KD"
+          ],
+          "combination_class": "RNA\u00d7RNA",
+          "individual": {
+            "a": 0.45,
+            "b": 0.35
+          },
+          "models": {
+            "bliss": 0.6425,
+            "hsa": 0.45,
+            "loewe": 0.4,
+            "zip": 0.1842,
+            "epistasis": 0.928,
+            "compensation": 3.94,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.2
+          },
+          "combined": 0.6793,
+          "synergy": -0.1207,
+          "type": "antagonistic",
+          "pathway_comp": 0.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.2,
+          "confidence": 0.1,
+          "models_used": 11,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "MALAT1",
+            "MYC"
+          ],
+          "modalities": [
+            "Cas13d_KD",
+            "Cas13d_KD"
+          ],
+          "combination_class": "RNA\u00d7RNA",
+          "individual": {
+            "a": 0.35,
+            "b": 0.75
+          },
+          "models": {
+            "bliss": 0.8375,
+            "hsa": 0.75,
+            "loewe": 0.55,
+            "zip": 0.2992,
+            "epistasis": 1.2467,
+            "compensation": 4.205,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.44
+          },
+          "combined": 0.8522,
+          "synergy": -0.2479,
+          "type": "antagonistic",
+          "pathway_comp": 0.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.4,
+          "confidence": 0.1,
+          "models_used": 11,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "MALAT1",
+            "BRAF"
+          ],
+          "modalities": [
+            "Cas13d_KD",
+            "Cas13d_KD"
+          ],
+          "combination_class": "RNA\u00d7RNA",
+          "individual": {
+            "a": 0.35,
+            "b": 0.7
+          },
+          "models": {
+            "bliss": 0.805,
+            "hsa": 0.7,
+            "loewe": 0.525,
+            "zip": 0.2712,
+            "epistasis": 0.7573,
+            "compensation": 4.165,
+            "transcriptional_cascade": 0.0,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.42
+          },
+          "combined": 0.7713,
+          "synergy": -0.2787,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.4,
+          "temporal_cascade": 0.0,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.3,
+          "confidence": 0.1,
+          "models_used": 11,
+          "agentic_validation": "validated_low_confidence"
+        }
+      ]
+    },
+    "dna_x_rna": {
+      "count": 35,
+      "synergistic": 0,
+      "top_5": [
+        {
+          "genes": [
+            "BRAF",
+            "MALAT1"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "Cas13d_KD"
+          ],
+          "combination_class": "DNA\u00d7RNA",
+          "individual": {
+            "a": 0.9005,
+            "b": 0.35
+          },
+          "models": {
+            "bliss": 0.9353,
+            "hsa": 0.9005,
+            "loewe": 0.6252,
+            "zip": 0.3464,
+            "epistasis": 0.9742,
+            "compensation": 4.3655,
+            "transcriptional_cascade": 0.0946,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.5002
+          },
+          "combined": 0.7645,
+          "synergy": -0.486,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.2,
+          "temporal_cascade": 0.368,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.39,
+          "confidence": 0.15,
+          "models_used": 12,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "MYC",
+            "MALAT1"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "Cas13d_KD"
+          ],
+          "combination_class": "DNA\u00d7RNA",
+          "individual": {
+            "a": 1.1058,
+            "b": 0.35
+          },
+          "models": {
+            "bliss": 1.0688,
+            "hsa": 1.1058,
+            "loewe": 0.7279,
+            "zip": 0.4356,
+            "epistasis": 1.65,
+            "compensation": 4.5608,
+            "transcriptional_cascade": 0.3588,
+            "isoform_escape": 0.2426,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.5823
+          },
+          "combined": 0.9545,
+          "synergy": -0.5013,
+          "type": "antagonistic",
+          "pathway_comp": 0.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.109,
+          "isoform_escape": 0.2,
+          "temporal_cascade": 0.44,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.52,
+          "confidence": 0.15,
+          "models_used": 12,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "BRAF",
+            "MIR155"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "Cas13d_KD"
+          ],
+          "combination_class": "DNA\u00d7RNA",
+          "individual": {
+            "a": 0.9005,
+            "b": 0.4
+          },
+          "models": {
+            "bliss": 0.9403,
+            "hsa": 0.9005,
+            "loewe": 0.6502,
+            "zip": 0.3862,
+            "epistasis": 1.5389,
+            "compensation": 3.9655,
+            "transcriptional_cascade": 0.1081,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.5202
+          },
+          "combined": 0.7986,
+          "synergy": -0.5019,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.2,
+          "temporal_cascade": 0.375,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.39,
+          "confidence": 0.15,
+          "models_used": 12,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "BRAF",
+            "HOTAIR"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "Cas13d_KD"
+          ],
+          "combination_class": "DNA\u00d7RNA",
+          "individual": {
+            "a": 0.9005,
+            "b": 0.45
+          },
+          "models": {
+            "bliss": 0.9453,
+            "hsa": 0.9005,
+            "loewe": 0.6752,
+            "zip": 0.4322,
+            "epistasis": 1.5756,
+            "compensation": 4.0155,
+            "transcriptional_cascade": 0.1216,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.5402
+          },
+          "combined": 0.8166,
+          "synergy": -0.5339,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.2,
+          "temporal_cascade": 0.383,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.39,
+          "confidence": 0.15,
+          "models_used": 12,
+          "agentic_validation": "validated_low_confidence"
+        },
+        {
+          "genes": [
+            "BRAF",
+            "AKT1"
+          ],
+          "modalities": [
+            "DNA_KO",
+            "Cas13d_KD"
+          ],
+          "combination_class": "DNA\u00d7RNA",
+          "individual": {
+            "a": 0.9005,
+            "b": 0.55
+          },
+          "models": {
+            "bliss": 0.9552,
+            "hsa": 0.9005,
+            "loewe": 0.7252,
+            "zip": 0.5315,
+            "epistasis": 1.6878,
+            "compensation": 4.0655,
+            "transcriptional_cascade": 0.3807,
+            "isoform_escape": 0.0,
+            "feedback_disruptor": 0.0,
+            "collateral": 0.0,
+            "epigenetic_transcriptomic": 0.0,
+            "ncrna_coding": 0.0
+          },
+          "combined": 0.852,
+          "synergy": -0.5984,
+          "type": "antagonistic",
+          "pathway_comp": 1.0,
+          "resistance_block": 0.0,
+          "synthetic_lethality": 0.0,
+          "cross_modal_bonus": 0.0,
+          "isoform_escape": 0.2,
+          "temporal_cascade": 0.597,
+          "collateral": 0.0,
+          "regulatory_disruption": 0.455,
+          "confidence": 0.15,
+          "models_used": 12,
+          "agentic_validation": "validated_low_confidence"
+        }
+      ]
+    },
+    "triple_kras_pi3k_mir21": {
+      "genes": [
+        "KRAS",
+        "PIK3CA",
+        "MIR21"
+      ],
+      "modalities": [
+        "DNA_KO",
+        "DNA_KO",
+        "Cas13d_KD"
+      ],
+      "combination_class": "3-way DNA\u00d7RNA",
+      "individual": {
+        "a": 1.4791,
+        "b": 1.0009,
+        "c": 0.55
+      },
+      "models": {
+        "bliss_3way": 0.9998,
+        "epistasis_3way": 1.3997,
+        "cross_modal_3way": 0.15,
+        "temporal_3way": 0.202
+      },
+      "combined": 2.1724,
+      "synergy": -0.8576,
+      "type": "antagonistic",
+      "pathway_comp": 1.0,
+      "resistance_block": 0.0,
+      "synthetic_lethality": 0.0,
+      "cross_modal_bonus": 0.15,
+      "isoform_escape": 0.0,
+      "temporal_cascade": 0.202,
+      "collateral": 0.0,
+      "regulatory_disruption": 0.0,
+      "confidence": 0.75,
+      "models_used": 4,
+      "agentic_validation": "3-way validated"
+    }
+  },
+  "guides": {
+    "KRAS": {
+      "dna": {
+        "configs": 11,
+        "max_ko": 0.97185032,
+        "top_guide": {
+          "gene": "KRAS",
+          "sequence": "GGAAAGGGAGACGGCAGGGG",
+          "target_type": "DNA",
+          "nuclease": "SpCas9",
+          "pam_or_pfs": "NGG",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.72,
+          "gc": 0.7,
+          "composite": 0.888,
+          "warnings": [
+            "G-quadruplex"
+          ]
+        }
+      },
+      "rna": {
+        "configs": 11,
+        "max_kd": 0.9648095443343,
+        "top_guide": {
+          "gene": "KRAS",
+          "sequence": "UUCAGUCAACGAGGGUCGGGAA",
+          "target_type": "RNA",
+          "nuclease": "Cas13d (CasRx/RfxCas13d)",
+          "pam_or_pfs": "none",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.78,
+          "gc": 0.545,
+          "composite": 0.6983,
+          "warnings": [
+            "Low target accessibility"
+          ],
+          "rna_accessibility": 0.0,
+          "collateral_risk": 0.0,
+          "knockdown_efficiency": 66.3
+        }
+      }
+    },
+    "BRAF": {
+      "dna": {
+        "configs": 11,
+        "max_ko": 0.9665489119999999,
+        "top_guide": {
+          "gene": "BRAF",
+          "sequence": "AGGAAAGCCAGGAGGAGCGG",
+          "target_type": "DNA",
+          "nuclease": "SpCas9",
+          "pam_or_pfs": "NGG",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.76,
+          "gc": 0.65,
+          "composite": 0.884,
+          "warnings": []
+        }
+      },
+      "rna": {
+        "configs": 11,
+        "max_kd": 0.96417192026932,
+        "top_guide": {
+          "gene": "BRAF",
+          "sequence": "UAACUGCUCAGACGCCCGGUCA",
+          "target_type": "RNA",
+          "nuclease": "Cas13d (CasRx/RfxCas13d)",
+          "pam_or_pfs": "none",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.78,
+          "gc": 0.591,
+          "composite": 0.7105,
+          "warnings": [
+            "Low target accessibility"
+          ],
+          "rna_accessibility": 0.0,
+          "collateral_risk": 0.0,
+          "knockdown_efficiency": 66.3
+        }
+      }
+    },
+    "MAP2K1": {
+      "dna": {
+        "configs": 0,
+        "max_ko": 0.0,
+        "top_guide": null
+      },
+      "rna": {
+        "configs": 0,
+        "max_kd": 0.0,
+        "top_guide": null
+      }
+    },
+    "PIK3CA": {
+      "dna": {
+        "configs": 0,
+        "max_ko": 0.0,
+        "top_guide": null
+      },
+      "rna": {
+        "configs": 0,
+        "max_kd": 0.0,
+        "top_guide": null
+      }
+    },
+    "MYC": {
+      "dna": {
+        "configs": 11,
+        "max_ko": 0.9767601199999999,
+        "top_guide": {
+          "gene": "MYC",
+          "sequence": "GGACGAAAGACCGGGCGGAG",
+          "target_type": "DNA",
+          "nuclease": "SpCas9",
+          "pam_or_pfs": "NGG",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.8,
+          "gc": 0.7,
+          "composite": 0.86,
+          "warnings": []
+        }
+      },
+      "rna": {
+        "configs": 11,
+        "max_kd": 0.9648095443343,
+        "top_guide": {
+          "gene": "MYC",
+          "sequence": "CUGAGGCGAUUUCGUGCCGGUA",
+          "target_type": "RNA",
+          "nuclease": "Cas13d (CasRx/RfxCas13d)",
+          "pam_or_pfs": "none",
+          "strand": "+",
+          "position": 0,
+          "on_target": 0.7,
+          "gc": 0.591,
+          "composite": 0.6865,
+          "warnings": [
+            "Low target accessibility"
+          ],
+          "rna_accessibility": 0.0,
+          "collateral_risk": 0.0,
+          "knockdown_efficiency": 59.5
+        }
+      }
+    }
+  },
+  "ncrna_strategies": {
+    "MIR21": {
+      "rna": "MIR21",
+      "type": "miRNA",
+      "recommended_strategy": "Cas13_KD",
+      "alternatives": [
+        "Cas9_premiRNA_KO"
+      ],
+      "rationale": "Direct mature miRNA knockdown; Cas9 for permanent KO of pre-miRNA locus"
+    },
+    "MIR155": {
+      "rna": "MIR155",
+      "type": "miRNA",
+      "recommended_strategy": "Cas13_KD",
+      "alternatives": [
+        "Cas9_premiRNA_KO"
+      ],
+      "rationale": "Direct mature miRNA knockdown; Cas9 for permanent KO of pre-miRNA locus"
+    },
+    "HOTAIR": {
+      "rna": "HOTAIR",
+      "type": "lncRNA",
+      "recommended_strategy": "CRISPRi",
+      "alternatives": [
+        "CRISPRa",
+        "paired_deletion",
+        "Cas13_KD"
+      ],
+      "rationale": "Indels often non-disruptive for lncRNAs; promoter silencing preferred"
+    },
+    "MALAT1": {
+      "rna": "MALAT1",
+      "type": "lncRNA",
+      "recommended_strategy": "CRISPRi",
+      "alternatives": [
+        "CRISPRa",
+        "paired_deletion",
+        "Cas13_KD"
+      ],
+      "rationale": "Indels often non-disruptive for lncRNAs; promoter silencing preferred"
+    }
+  },
+  "base_editing": {
+    "target": "KRAS G12D (GGU\u2192GAU codon 12)",
+    "a_to_i_sites": [
+      {
+        "gene": "KRAS_G12D",
+        "guide": "CCGUUCUCACGGAACUGCUAUG",
+        "edit_type": "A-to-I",
+        "primary_edit": {
+          "position": 62,
+          "edit": "A\u2192G",
+          "type": "A-to-I",
+          "efficiency": 55.47,
+          "bystander_risk": 0.0,
+          "codon": "AUA\u2192AUG",
+          "amino_acid": "I\u2192M",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 6,
+        "bystander_sites": 0,
+        "efficiency": 55.47,
+        "specificity": 0.644,
+        "all_sites": [
+          {
+            "position": 45,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 3.34,
+            "bystander_risk": 1.67,
+            "codon": "AAG\u2192GAG",
+            "amino_acid": "K\u2192E",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 46,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 5.45,
+            "bystander_risk": 2.73,
+            "codon": "AAG\u2192AGG",
+            "amino_acid": "K\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 48,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 3.41,
+            "bystander_risk": 1.7,
+            "codon": "AGU\u2192GGU",
+            "amino_acid": "S\u2192G",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 57,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 6.48,
+            "bystander_risk": 3.24,
+            "codon": "ACG\u2192GCG",
+            "amino_acid": "T\u2192A",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 60,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 12.0,
+            "bystander_risk": 0.0,
+            "codon": "AUA\u2192GUA",
+            "amino_acid": "I\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 62,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 55.47,
+            "bystander_risk": 0.0,
+            "codon": "AUA\u2192AUG",
+            "amino_acid": "I\u2192M",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "CAUCCGUUCUCACGGAACUGCU",
+        "edit_type": "A-to-I",
+        "primary_edit": {
+          "position": 60,
+          "edit": "A\u2192G",
+          "type": "A-to-I",
+          "efficiency": 52.0,
+          "bystander_risk": 0.0,
+          "codon": "AUA\u2192GUA",
+          "amino_acid": "I\u2192V",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 6,
+        "bystander_sites": 0,
+        "efficiency": 52.0,
+        "specificity": 0.604,
+        "all_sites": [
+          {
+            "position": 41,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 5.32,
+            "bystander_risk": 2.66,
+            "codon": "GUA\u2192GUG",
+            "amino_acid": "V\u2192V",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 45,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 4.77,
+            "bystander_risk": 2.39,
+            "codon": "AAG\u2192GAG",
+            "amino_acid": "K\u2192E",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 46,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 7.5,
+            "bystander_risk": 3.75,
+            "codon": "AAG\u2192AGG",
+            "amino_acid": "K\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 48,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 4.43,
+            "bystander_risk": 2.22,
+            "codon": "AGU\u2192GGU",
+            "amino_acid": "S\u2192G",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 57,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 12.0,
+            "bystander_risk": 0.0,
+            "codon": "ACG\u2192GCG",
+            "amino_acid": "T\u2192A",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 60,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 52.0,
+            "bystander_risk": 0.0,
+            "codon": "AUA\u2192GUA",
+            "amino_acid": "I\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "UCCGUUCUCACGGAACUGCUAU",
+        "edit_type": "A-to-I",
+        "primary_edit": {
+          "position": 62,
+          "edit": "A\u2192G",
+          "type": "A-to-I",
+          "efficiency": 52.0,
+          "bystander_risk": 0.0,
+          "codon": "AUA\u2192AUG",
+          "amino_acid": "I\u2192M",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 7,
+        "bystander_sites": 0,
+        "efficiency": 52.0,
+        "specificity": 0.566,
+        "all_sites": [
+          {
+            "position": 41,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 2.73,
+            "bystander_risk": 1.36,
+            "codon": "GUA\u2192GUG",
+            "amino_acid": "V\u2192V",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 45,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 3.82,
+            "bystander_risk": 1.91,
+            "codon": "AAG\u2192GAG",
+            "amino_acid": "K\u2192E",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 46,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 6.14,
+            "bystander_risk": 3.07,
+            "codon": "AAG\u2192AGG",
+            "amino_acid": "K\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 48,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 3.75,
+            "bystander_risk": 1.88,
+            "codon": "AGU\u2192GGU",
+            "amino_acid": "S\u2192G",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 57,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 6.82,
+            "bystander_risk": 3.41,
+            "codon": "ACG\u2192GCG",
+            "amino_acid": "T\u2192A",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 60,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 16.67,
+            "bystander_risk": 0.0,
+            "codon": "AUA\u2192GUA",
+            "amino_acid": "I\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 62,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 52.0,
+            "bystander_risk": 0.0,
+            "codon": "AUA\u2192AUG",
+            "amino_acid": "I\u2192M",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "AACCUCGACCACCGCAUCCGUU",
+        "edit_type": "A-to-I",
+        "primary_edit": {
+          "position": 46,
+          "edit": "A\u2192G",
+          "type": "A-to-I",
+          "efficiency": 52.0,
+          "bystander_risk": 0.0,
+          "codon": "AAG\u2192AGG",
+          "amino_acid": "K\u2192R",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "acceptor_proximal"
+        },
+        "total_editable": 4,
+        "bystander_sites": 1,
+        "efficiency": 52.0,
+        "specificity": 0.508,
+        "all_sites": [
+          {
+            "position": 29,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 2.73,
+            "bystander_risk": 1.36,
+            "codon": "GGA\u2192GGG",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 41,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 17.73,
+            "bystander_risk": 8.86,
+            "codon": "GUA\u2192GUG",
+            "amino_acid": "V\u2192V",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "donor_proximal"
+          },
+          {
+            "position": 45,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 29.87,
+            "bystander_risk": 0.0,
+            "codon": "AAG\u2192GAG",
+            "amino_acid": "K\u2192E",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 46,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 52.0,
+            "bystander_risk": 0.0,
+            "codon": "AAG\u2192AGG",
+            "amino_acid": "K\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "UCUUAGUAAAACACCUGCUUAU",
+        "edit_type": "A-to-I",
+        "primary_edit": {
+          "position": 94,
+          "edit": "A\u2192G",
+          "type": "A-to-I",
+          "efficiency": 52.0,
+          "bystander_risk": 0.0,
+          "codon": "UAU\u2192UGU",
+          "amino_acid": "Y\u2192C",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 8,
+        "bystander_sites": 0,
+        "efficiency": 52.0,
+        "specificity": 0.44,
+        "all_sites": [
+          {
+            "position": 73,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 2.73,
+            "bystander_risk": 1.36,
+            "codon": "CAG\u2192CGG",
+            "amino_acid": "Q\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 75,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 2.05,
+            "bystander_risk": 1.02,
+            "codon": "AAU\u2192GAU",
+            "amino_acid": "N\u2192D",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 76,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 4.77,
+            "bystander_risk": 2.39,
+            "codon": "AAU\u2192AGU",
+            "amino_acid": "N\u2192S",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 79,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 4.77,
+            "bystander_risk": 2.39,
+            "codon": "CAU\u2192CGU",
+            "amino_acid": "H\u2192R",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 88,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 6.48,
+            "bystander_risk": 3.24,
+            "codon": "GAC\u2192GGC",
+            "amino_acid": "D\u2192G",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 91,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 12.0,
+            "bystander_risk": 0.0,
+            "codon": "GAA\u2192GGA",
+            "amino_acid": "E\u2192G",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 92,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 33.33,
+            "bystander_risk": 0.0,
+            "codon": "GAA\u2192GAG",
+            "amino_acid": "E\u2192E",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 94,
+            "edit": "A\u2192G",
+            "type": "A-to-I",
+            "efficiency": 52.0,
+            "bystander_risk": 0.0,
+            "codon": "UAU\u2192UGU",
+            "amino_acid": "Y\u2192C",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      }
+    ],
+    "c_to_u_sites": [
+      {
+        "gene": "KRAS_G12D",
+        "guide": "UCAACCUCGACCACCGCAUCCG",
+        "edit_type": "C-to-U",
+        "primary_edit": {
+          "position": 44,
+          "edit": "C\u2192U",
+          "type": "C-to-U",
+          "efficiency": 68.8,
+          "bystander_risk": 0.0,
+          "codon": "GGC\u2192GGU",
+          "amino_acid": "G\u2192G",
+          "recoding": false,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 3,
+        "bystander_sites": 1,
+        "efficiency": 68.8,
+        "specificity": 0.668,
+        "all_sites": [
+          {
+            "position": 31,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 10.23,
+            "bystander_risk": 5.11,
+            "codon": "GCU\u2192GUU",
+            "amino_acid": "A\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "acceptor_proximal"
+          },
+          {
+            "position": 38,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 24.0,
+            "bystander_risk": 0.0,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 44,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 68.8,
+            "bystander_risk": 0.0,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "CCACCGCAUCCGUUCUCACGGA",
+        "edit_type": "C-to-U",
+        "primary_edit": {
+          "position": 53,
+          "edit": "C\u2192U",
+          "type": "C-to-U",
+          "efficiency": 80.0,
+          "bystander_risk": 0.0,
+          "codon": "GCC\u2192GCU",
+          "amino_acid": "A\u2192A",
+          "recoding": false,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 4,
+        "bystander_sites": 1,
+        "efficiency": 80.0,
+        "specificity": 0.473,
+        "all_sites": [
+          {
+            "position": 38,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 8.18,
+            "bystander_risk": 4.09,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 44,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 12.27,
+            "bystander_risk": 6.14,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 52,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 68.8,
+            "bystander_risk": 0.0,
+            "codon": "GCC\u2192GUC",
+            "amino_acid": "A\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 53,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 80.0,
+            "bystander_risk": 0.0,
+            "codon": "GCC\u2192GCU",
+            "amino_acid": "A\u2192A",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      },
+      {
+        "gene": "KRAS_G12D",
+        "guide": "ACCACCGCAUCCGUUCUCACGG",
+        "edit_type": "C-to-U",
+        "primary_edit": {
+          "position": 52,
+          "edit": "C\u2192U",
+          "type": "C-to-U",
+          "efficiency": 80.0,
+          "bystander_risk": 0.0,
+          "codon": "GCC\u2192GUC",
+          "amino_acid": "A\u2192V",
+          "recoding": true,
+          "stop_codon": false,
+          "splice_impact": "none"
+        },
+        "total_editable": 4,
+        "bystander_sites": 1,
+        "efficiency": 80.0,
+        "specificity": 0.469,
+        "all_sites": [
+          {
+            "position": 38,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 8.86,
+            "bystander_risk": 4.43,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 44,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 12.95,
+            "bystander_risk": 6.48,
+            "codon": "GGC\u2192GGU",
+            "amino_acid": "G\u2192G",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 52,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 80.0,
+            "bystander_risk": 0.0,
+            "codon": "GCC\u2192GUC",
+            "amino_acid": "A\u2192V",
+            "recoding": true,
+            "stop_codon": false,
+            "splice_impact": "none"
+          },
+          {
+            "position": 53,
+            "edit": "C\u2192U",
+            "type": "C-to-U",
+            "efficiency": 68.8,
+            "bystander_risk": 0.0,
+            "codon": "GCC\u2192GCU",
+            "amino_acid": "A\u2192A",
+            "recoding": false,
+            "stop_codon": false,
+            "splice_impact": "none"
+          }
+        ]
+      }
+    ]
+  },
+  "crispri_crispra": {
+    "KRAS": {
+      "CRISPRi": [
+        {
+          "gene": "KRAS",
+          "type": "CRISPRi",
+          "guide": "GTGGCCACGACCGTTAGGTC",
+          "score": 0.89,
+          "expected_fc": -3.12,
+          "tss_distance": 294
+        },
+        {
+          "gene": "KRAS",
+          "type": "CRISPRi",
+          "guide": "GTCTCCATTGTCGCACGCGA",
+          "score": 0.69,
+          "expected_fc": -2.42,
+          "tss_distance": 273
+        },
+        {
+          "gene": "KRAS",
+          "type": "CRISPRi",
+          "guide": "AAGATTATATAAGAGTTAGA",
+          "score": 0.54,
+          "expected_fc": -1.89,
+          "tss_distance": 116
+        }
+      ],
+      "CRISPRa": [
+        {
+          "gene": "KRAS",
+          "type": "CRISPRa",
+          "guide": "ATGAGCCGTGGATAAGGTAT",
+          "score": 0.81,
+          "expected_fc": 3.24,
+          "tss_distance": -68
+        },
+        {
+          "gene": "KRAS",
+          "type": "CRISPRa",
+          "guide": "CTTCAACAATCTTCATCGCC",
+          "score": 0.69,
+          "expected_fc": 2.76,
+          "tss_distance": -207
+        },
+        {
+          "gene": "KRAS",
+          "type": "CRISPRa",
+          "guide": "GATTATGGCTAAACCCAGAT",
+          "score": 0.54,
+          "expected_fc": 2.16,
+          "tss_distance": -113
+        }
+      ]
+    },
+    "MYC": {
+      "CRISPRi": [
+        {
+          "gene": "MYC",
+          "type": "CRISPRi",
+          "guide": "GCCGTTTCGCCCTAGATGAA",
+          "score": 0.71,
+          "expected_fc": -2.48,
+          "tss_distance": 192
+        },
+        {
+          "gene": "MYC",
+          "type": "CRISPRi",
+          "guide": "AACGGAGAGAGCAGTCTCTG",
+          "score": 0.58,
+          "expected_fc": -2.03,
+          "tss_distance": 136
+        },
+        {
+          "gene": "MYC",
+          "type": "CRISPRi",
+          "guide": "GCCACCTTGATCGGATAGAT",
+          "score": 0.51,
+          "expected_fc": -1.79,
+          "tss_distance": 78
+        }
+      ],
+      "CRISPRa": [
+        {
+          "gene": "MYC",
+          "type": "CRISPRa",
+          "guide": "CTAATTGAGCTTCGCGCTTC",
+          "score": 0.81,
+          "expected_fc": 3.24,
+          "tss_distance": -332
+        },
+        {
+          "gene": "MYC",
+          "type": "CRISPRa",
+          "guide": "GGGGGGGTCATGCGACCTAC",
+          "score": 0.76,
+          "expected_fc": 3.04,
+          "tss_distance": -72
+        },
+        {
+          "gene": "MYC",
+          "type": "CRISPRa",
+          "guide": "AGCCGATAGGAACGAATGTG",
+          "score": 0.6,
+          "expected_fc": 2.4,
+          "tss_distance": -277
+        }
+      ]
+    },
+    "HOTAIR": {
+      "CRISPRi": [
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRi",
+          "guide": "CGTCCAATCCCTGTTTTGGG",
+          "score": 0.88,
+          "expected_fc": -3.08,
+          "tss_distance": 29
+        },
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRi",
+          "guide": "CCCCCGTAGACTAGTACTGT",
+          "score": 0.87,
+          "expected_fc": -3.04,
+          "tss_distance": 93
+        },
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRi",
+          "guide": "TCGTGTCGTCAAAGGTTGTG",
+          "score": 0.59,
+          "expected_fc": -2.06,
+          "tss_distance": 185
+        }
+      ],
+      "CRISPRa": [
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRa",
+          "guide": "TAAGGGTTCTTATCTGGTAA",
+          "score": 0.86,
+          "expected_fc": 3.44,
+          "tss_distance": -178
+        },
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRa",
+          "guide": "GTAGCTCTGCCCGAAAACGC",
+          "score": 0.85,
+          "expected_fc": 3.4,
+          "tss_distance": -134
+        },
+        {
+          "gene": "HOTAIR",
+          "type": "CRISPRa",
+          "guide": "AGGGCGAGTACTGGCAATAT",
+          "score": 0.72,
+          "expected_fc": 2.88,
+          "tss_distance": -374
+        }
+      ]
+    }
+  },
+  "causality": {
+    "phases": {
+      "phase1": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "quality_gate": {
+            "nodes": 37,
+            "edges": 55,
+            "orphans": 0,
+            "has_trait": true,
+            "pass": true
+          },
+          "screening_converter": {
+            "enriched": 0
+          },
+          "crispr_enricher": {
+            "rna_enriched": 7
+          },
+          "mr_corroborator": {
+            "corroborated": 0
+          }
+        }
+      },
+      "phase2": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "target_scorer": {
+            "scored": 36
+          },
+          "centrality_enhancer": {
+            "computed": 37
+          },
+          "tier_promoter": {
+            "tier1_promoted": 21
+          },
+          "ko_bridge": {
+            "dna_ko": 36,
+            "rna_kd": 7
+          }
+        }
+      },
+      "phase3": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "direction_validator": {
+            "validated": 55,
+            "flagged": 0
+          },
+          "confounding_detector": {
+            "potential_confounders": 141
+          },
+          "hallucination_shield": {
+            "shielded": 36,
+            "flagged": 1
+          },
+          "ko_integrator": {
+            "integrated": 36
+          }
+        }
+      },
+      "phase4": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "harmonizer": {
+            "harmonized": 0
+          },
+          "resistance": {
+            "resistant_genes": 33
+          },
+          "compensation": {
+            "co_targets": 300,
+            "recommendations": [
+              {
+                "primary": "KRAS",
+                "co_target": "NRAS",
+                "compensation_blocked": 0.7
+              },
+              {
+                "primary": "KRAS",
+                "co_target": "HRAS",
+                "compensation_blocked": 0.7
+              },
+              {
+                "primary": "KRAS",
+                "co_target": "PIK3R1",
+                "compensation_blocked": 0.7
+              },
+              {
+                "primary": "KRAS",
+                "co_target": "PTEN",
+                "compensation_blocked": 0.7
+              },
+              {
+                "primary": "KRAS",
+                "co_target": "MAPK1",
+                "compensation_blocked": 0.7
+              },
+              {
+                "primary": "NRAS",
+                "co_target": "KRAS",
+                "compensation_blocked": 0.95
+              },
+              {
+                "primary": "NRAS",
+                "co_target": "HRAS",
+                "compensation_blocked": 0.95
+              },
+              {
+                "primary": "HRAS",
+                "co_target": "KRAS",
+                "compensation_blocked": 0.95
+              },
+              {
+                "primary": "HRAS",
+                "co_target": "NRAS",
+                "compensation_blocked": 0.95
+              },
+              {
+                "primary": "SOS1",
+                "co_target": "NF1",
+                "compensation_blocked": 0.6
+              },
+              {
+                "primary": "NF1",
+                "co_target": "SOS1",
+                "compensation_blocked": 0.8
+              },
+              {
+                "primary": "BRAF",
+                "co_target": "CRAF",
+                "compensation_blocked": 0.65
+              },
+              {
+                "primary": "CRAF",
+                "co_target": "BRAF",
+                "compensation_blocked": 0.9
+              },
+              {
+                "primary": "MAP2K1",
+                "co_target": "MAP2K2",
+                "compensation_blocked": 0.65
+              },
+              {
+                "primary": "MAP2K1",
+                "co_target": "MALAT1",
+                "compensation_blocked": 0.65
+              },
+              {
+                "primary": "MAP2K2",
+                "co_target": "MAP2K1",
+                "compensation_blocked": 0.9
+              },
+              {
+                "primary": "MAP2K2",
+                "co_target": "MALAT1",
+                "compensation_blocked": 0.9
+              },
+              {
+                "primary": "MAPK1",
+                "co_target": "KRAS",
+                "compensation_blocked": 0.8
+              },
+              {
+                "primary": "MAPK1",
+                "co_target": "PIK3R1",
+                "compensation_blocked": 0.8
+              },
+              {
+                "primary": "MAPK1",
+                "co_target": "PTEN",
+                "compensation_blocked": 0.8
+              }
+            ]
+          },
+          "engine_adapter": {
+            "selected_engine": "MultiKnockoutEngine (10-method classical)",
+            "dag_size": 37
+          }
+        }
+      },
+      "phase5": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "drug_ranker": {
+            "ranked": 36,
+            "top_5": [
+              {
+                "gene": "KRAS",
+                "score": 0.6528929029982362,
+                "dimensions": {
+                  "ace_magnitude": 0.85,
+                  "ko_effect": 1.479052,
+                  "essentiality_safety": 0.8,
+                  "druggability": 0.5,
+                  "network_position": 0.04698412698412699,
+                  "mr_concordance": 0.3,
+                  "rna_evidence": 0.7,
+                  "ko_validated": 0.9,
+                  "resistance_free": 0.30000000000000004
+                }
+              },
+              {
+                "gene": "BRAF",
+                "score": 0.5755733932980599,
+                "dimensions": {
+                  "ace_magnitude": 0.7,
+                  "ko_effect": 0.900478,
+                  "essentiality_safety": 0.8,
+                  "druggability": 0.5,
+                  "network_position": 0.029682539682539682,
+                  "mr_concordance": 0.3,
+                  "rna_evidence": 0.7,
+                  "ko_validated": 0.9,
+                  "resistance_free": 0.35
+                }
+              },
+              {
+                "gene": "PIK3CA",
+                "score": 0.5729782239858907,
+                "dimensions": {
+                  "ace_magnitude": 0.6,
+                  "ko_effect": 1.000931,
+                  "essentiality_safety": 0.8,
+                  "druggability": 0.5,
+                  "network_position": 0.05587301587301588,
+                  "mr_concordance": 0.3,
+                  "rna_evidence": 0.0,
+                  "ko_validated": 0.9,
+                  "resistance_free": 1.0
+                }
+              },
+              {
+                "gene": "MAP2K1",
+                "score": 0.5349160687830686,
+                "dimensions": {
+                  "ace_magnitude": 0.65,
+                  "ko_effect": 1.252697,
+                  "essentiality_safety": 0.8,
+                  "druggability": 0.5,
+                  "network_position": 0.061547619047619045,
+                  "mr_concordance": 0.3,
+                  "rna_evidence": 0.0,
+                  "ko_validated": 0.9,
+                  "resistance_free": 0.35
+                }
+              },
+              {
+                "gene": "MIR21",
+                "score": 0.515576888888889,
+                "dimensions": {
+                  "ace_magnitude": 0.55,
+                  "ko_effect": 0.740192,
+                  "essentiality_safety": 0.8,
+                  "druggability": 0.5,
+                  "network_position": 0.0,
+                  "mr_concordance": 0.3,
+                  "rna_evidence": 0.7,
+                  "ko_validated": 0.9,
+                  "resistance_free": 0.15000000000000002
+                }
+              }
+            ]
+          },
+          "safety": {
+            "safe": 10,
+            "risky": 26
+          },
+          "efficacy": {
+            "predictions": 36
+          },
+          "synergy": {
+            "synergistic_pairs": 0,
+            "total_combos": 0
+          }
+        }
+      },
+      "phase6": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "stratifier": {
+            "tier_distribution": {
+              "Tier 1": 21,
+              "Tier 2": 15,
+              "Tier 3": 1
+            }
+          },
+          "driver_comparator": {
+            "total_drivers": 34
+          },
+          "motif_validator": {
+            "feed_forward": 9,
+            "cascades": 60
+          },
+          "subtype_mapper": {
+            "subtype_mapped": 0
+          }
+        }
+      },
+      "phase7": {
+        "modules_run": 4,
+        "modules_failed": 0,
+        "details": {
+          "report": {
+            "total_genes": 36,
+            "drivers": 36,
+            "strong_drivers": 26,
+            "ko_validated": 36,
+            "rna_supported": 7,
+            "essential": 2,
+            "safe_targets": 34,
+            "narrative": "BiRAGAS CRISPR Complete analysis identified 36 regulatory genes. 36 are causal drivers (|ACE| > 0.1), 26 strong drivers (|ACE| > 0.3). 36 genes validated by knockout prediction. 7 genes have RNA-level evidence (Cas13/CRISPRi/Perturb-seq). 2 are Core Essential (targeting risks lethality). 34 non-essential drivers recommended for therapeutic targeting. DNA+RNA dual-validated targets have highest confidence."
+          },
+          "quality_boost": {
+            "edges_with_crispr": 55,
+            "total_edges": 55,
+            "crispr_coverage": 1.0
+          },
+          "arbitration": {
+            "conflicts_resolved": 0
+          },
+          "gap_analysis": {
+            "gaps": 34,
+            "top_gaps": [
+              {
+                "gene": "NRAS",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "SOS1",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "NF1",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "CRAF",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "MAP2K1",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "MAP2K2",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "MAPK1",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "MAPK3",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "PIK3CA",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              },
+              {
+                "gene": "PIK3R1",
+                "missing": [
+                  "RNA-level evidence (Cas13/CRISPRi)",
+                  "MR corroboration"
+                ],
+                "priority": "MEDIUM"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "modules_run": 28,
+    "modules_failed": 0,
+    "errors": [],
+    "duration_seconds": 0.0
+  },
+  "duration_seconds": 0.5,
+  "scale": {
+    "genes": 36,
+    "dna_configs": 396,
+    "rna_configs": 396,
+    "total_configs": 792,
+    "dna_combos": 630,
+    "rna_combos": 630,
+    "cross_combos": 1296,
+    "total_combos": 2556
+  }
+}

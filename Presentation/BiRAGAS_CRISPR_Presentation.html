@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiRAGAS CRISPR Complete v3.0 — Presentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#0a0e27;color:#fff;overflow:hidden;height:100vh;width:100vw}
+.slide{position:absolute;top:0;left:0;width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;opacity:0;transform:scale(0.95);transition:all 0.8s cubic-bezier(0.4,0,0.2,1);pointer-events:none;padding:60px}
+.slide.active{opacity:1;transform:scale(1);pointer-events:all}
+.slide.prev{opacity:0;transform:translateX(-100px) scale(0.9)}
+
+/* Controls */
+.controls{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);display:flex;gap:12px;z-index:100}
+.dot{width:12px;height:12px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:all 0.3s}
+.dot.active{background:#64b5f6;transform:scale(1.3)}
+.nav-btn{position:fixed;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:#fff;width:50px;height:50px;border-radius:50%;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.3s;z-index:100}
+.nav-btn:hover{background:rgba(255,255,255,0.2)}
+.nav-btn.left{left:20px}.nav-btn.right{right:20px}
+.slide-num{position:fixed;top:20px;right:30px;font-size:0.8rem;color:rgba(255,255,255,0.4);z-index:100}
+.logo{position:fixed;top:20px;left:30px;font-size:0.75rem;color:rgba(255,255,255,0.4);z-index:100}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(100,181,246,0.3)}50%{box-shadow:0 0 40px rgba(100,181,246,0.6)}}
+@keyframes slideRight{from{transform:translateX(-60px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes countUp{from{opacity:0;transform:scale(0.5)}to{opacity:1;transform:scale(1)}}
+@keyframes draw{from{width:0}to{width:100%}}
+
+.slide.active .anim-1{animation:fadeUp 0.8s 0.2s both}
+.slide.active .anim-2{animation:fadeUp 0.8s 0.4s both}
+.slide.active .anim-3{animation:fadeUp 0.8s 0.6s both}
+.slide.active .anim-4{animation:fadeUp 0.8s 0.8s both}
+.slide.active .anim-5{animation:fadeUp 0.8s 1.0s both}
+.slide.active .anim-6{animation:fadeUp 0.8s 1.2s both}
+.slide.active .anim-r{animation:slideRight 0.8s 0.5s both}
+.slide.active .anim-p{animation:pulse 2s 1s infinite}
+.slide.active .anim-g{animation:glow 3s 0.5s infinite}
+.slide.active .anim-c{animation:countUp 0.6s 0.8s both}
+
+/* Slide styles */
+.mega-title{font-size:4rem;font-weight:900;letter-spacing:-2px;line-height:1.1;text-align:center}
+.mega-title span{background:linear-gradient(135deg,#64b5f6,#ce93d8);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{font-size:1.3rem;color:rgba(255,255,255,0.7);text-align:center;margin-top:16px;font-weight:300}
+.badge{display:inline-block;padding:6px 16px;border-radius:20px;font-size:0.75rem;font-weight:600;margin:4px}
+.badge-blue{background:rgba(100,181,246,0.15);color:#64b5f6;border:1px solid rgba(100,181,246,0.3)}
+.badge-purple{background:rgba(206,147,216,0.15);color:#ce93d8;border:1px solid rgba(206,147,216,0.3)}
+.badge-green{background:rgba(129,199,132,0.15);color:#81c784;border:1px solid rgba(129,199,132,0.3)}
+.badge-red{background:rgba(239,154,154,0.15);color:#ef9a9a;border:1px solid rgba(239,154,154,0.3)}
+
+.stat-row{display:flex;gap:30px;justify-content:center;flex-wrap:wrap;margin:30px 0}
+.stat-item{text-align:center;min-width:120px}
+.stat-num{font-size:2.8rem;font-weight:900;line-height:1}
+.stat-num.blue{color:#64b5f6}.stat-num.purple{color:#ce93d8}.stat-num.green{color:#81c784}.stat-num.orange{color:#ffb74d}
+.stat-label{font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:6px;text-transform:uppercase;letter-spacing:1px}
+
+.card-grid{display:grid;gap:16px;max-width:1100px;width:100%}
+.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}.g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;backdrop-filter:blur(10px)}
+.card h3{font-size:1rem;margin-bottom:8px;font-weight:700}
+.card p{font-size:0.82rem;color:rgba(255,255,255,0.6);line-height:1.5}
+.card.highlight{border-color:rgba(100,181,246,0.3);background:rgba(100,181,246,0.06)}
+.card.purple-hl{border-color:rgba(206,147,216,0.3);background:rgba(206,147,216,0.06)}
+
+table{width:100%;border-collapse:collapse;font-size:0.8rem;max-width:1000px}
+th{text-align:left;padding:10px 14px;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.1);font-weight:600;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px}
+td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.05);color:rgba(255,255,255,0.8)}
+tr:hover td{background:rgba(255,255,255,0.03)}
+
+.bar{height:6px;border-radius:3px;background:rgba(255,255,255,0.08);overflow:hidden;margin-top:4px}
+.bar-fill{height:100%;border-radius:3px;transition:width 1.5s ease}
+.bar-fill.blue{background:linear-gradient(90deg,#1565c0,#64b5f6)}
+.bar-fill.purple{background:linear-gradient(90deg,#6a1b9a,#ce93d8)}
+.bar-fill.green{background:linear-gradient(90deg,#2e7d32,#81c784)}
+.bar-fill.red{background:linear-gradient(90deg,#c62828,#ef9a9a)}
+
+.network-box{display:flex;gap:20px;align-items:center;flex-wrap:wrap;justify-content:center}
+.pathway{padding:16px 24px;border-radius:12px;text-align:center;min-width:120px}
+.pathway h4{font-size:0.85rem;margin-bottom:4px}
+.pathway p{font-size:0.7rem;opacity:0.6}
+.arrow{font-size:1.5rem;color:rgba(255,255,255,0.3)}
+
+.iframe-container{width:90vw;height:65vh;border-radius:16px;overflow:hidden;border:2px solid rgba(100,181,246,0.3);box-shadow:0 0 60px rgba(100,181,246,0.15)}
+.iframe-container iframe{width:100%;height:100%;border:none}
+
+@media(max-width:768px){.mega-title{font-size:2.2rem}.stat-num{font-size:1.8rem}.card-grid.g3,.card-grid.g4{grid-template-columns:1fr 1fr}.slide{padding:30px}}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ SLIDE 1: TITLE ═══════════ -->
+<div class="slide active" id="s0">
+    <div class="anim-1" style="margin-bottom:20px">
+        <span class="badge badge-blue">Ayass Bioscience LLC</span>
+        <span class="badge badge-purple">v3.0 — DNA + RNA</span>
+    </div>
+    <h1 class="mega-title anim-2">BiRAGAS <span>CRISPR</span><br>Complete</h1>
+    <p class="subtitle anim-3">The First Platform Unifying DNA Editing &amp; RNA Targeting<br>with Causal Inference for Drug Discovery</p>
+    <div class="stat-row anim-4">
+        <div class="stat-item"><div class="stat-num blue">421,718</div><div class="stat-label">KO/KD Configs</div></div>
+        <div class="stat-item"><div class="stat-num purple">88.9B</div><div class="stat-label">Combinations</div></div>
+        <div class="stat-item"><div class="stat-num green">12</div><div class="stat-label">Synergy Models</div></div>
+        <div class="stat-item"><div class="stat-num orange">130</div><div class="stat-label">Python Files</div></div>
+    </div>
+    <div class="anim-5" style="margin-top:20px">
+        <span class="badge badge-green">23 Causality Modules</span>
+        <span class="badge badge-blue">7 BiRAGAS Phases</span>
+        <span class="badge badge-purple">9 RNA Target Types</span>
+        <span class="badge badge-red">Autonomous &amp; Self-Correcting</span>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 2: THE PROBLEM ═══════════ -->
+<div class="slide" id="s1">
+    <h1 class="mega-title anim-1" style="font-size:2.5rem">The <span>Bottleneck</span> in<br>CRISPR Drug Discovery</h1>
+    <div class="card-grid g2 anim-2" style="margin-top:30px">
+        <div class="card" style="border-color:rgba(239,154,154,0.3)">
+            <h3 style="color:#ef9a9a">Single-Target Failure</h3>
+            <p>CRISPR screens identify hundreds of cancer drivers, but single-gene knockouts fail in vivo. Why? <strong style="color:#fff">Compensatory signaling</strong> — block one pathway, another activates.</p>
+        </div>
+        <div class="card" style="border-color:rgba(239,154,154,0.3)">
+            <h3 style="color:#ef9a9a">KRAS G12D in Pancreatic Cancer</h3>
+            <p>Drives 95% of PDAC. Block MAPK cascade? PI3K/AKT compensates. Block PI3K? MAPK reactivates. <strong style="color:#fff">40 years "undruggable"</strong>.</p>
+        </div>
+    </div>
+    <div class="anim-3" style="margin-top:30px">
+        <div class="card highlight" style="max-width:700px;text-align:center">
+            <h3 style="color:#64b5f6">What's Missing?</h3>
+            <p style="font-size:0.95rem;color:rgba(255,255,255,0.8)">Cross-modal combinations: DNA knockout + RNA knockdown targeting <strong style="color:#fff">multiple molecular levels simultaneously</strong> to break compensation loops</p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 3: DNA ENGINES ═══════════ -->
+<div class="slide" id="s2">
+    <h1 class="mega-title anim-1" style="font-size:2.2rem"><span>6 DNA</span> Engines</h1>
+    <div class="card-grid g3 anim-2" style="margin-top:30px">
+        <div class="card highlight"><h3>EditingEngine</h3><p>SpCas9 (NGG), SaCas9 (NNGRRT), Cas12a (TTTV) guide design + amplicon analysis + HDR detection</p></div>
+        <div class="card highlight"><h3>ScreeningEngine</h3><p>MAGeCK RRA/MLE + BAGEL2 + DrugZ auto-discovery + essentiality classification</p></div>
+        <div class="card highlight"><h3>KnockoutEngine</h3><p>7-method ensemble: Topological, Bayesian, Monte Carlo, Pathway, Feedback, ODE, Mutual Info</p></div>
+        <div class="card highlight anim-3"><h3>MegaScaleEngine</h3><p>Sparse matrix I=(I-alphaW)^(-1) for O(1) per-prediction at genome scale</p></div>
+        <div class="card highlight anim-3"><h3>CombinationEngine</h3><p>12-model cross-modal synergy: DNA x DNA + RNA x RNA + DNA x RNA = 88.9B</p></div>
+        <div class="card highlight anim-3"><h3>ACEScoringEngine</h3><p>15-stream Superior ACE: MAGeCK + BAGEL2 + MR + GWAS + eQTL + SIGNOR + 9 more</p></div>
+    </div>
+    <div class="stat-row anim-4">
+        <div class="stat-item"><div class="stat-num blue anim-c">210,859</div><div class="stat-label">DNA Knockout Configs</div></div>
+        <div class="stat-item"><div class="stat-num blue anim-c">22.2B</div><div class="stat-label">DNA Combinations</div></div>
+        <div class="stat-item"><div class="stat-num blue anim-c">7</div><div class="stat-label">KO Methods</div></div>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 4: RNA ENGINES ═══════════ -->
+<div class="slide" id="s3">
+    <h1 class="mega-title anim-1" style="font-size:2.2rem"><span>6 RNA</span> Engines</h1>
+    <div class="card-grid g3 anim-2" style="margin-top:30px">
+        <div class="card purple-hl"><h3>Cas13 Guide Design</h3><p>Cas13a/b/d (CasRx) + dCas13 crRNA for mRNA, lncRNA, miRNA, siRNA, circRNA, piRNA</p></div>
+        <div class="card purple-hl"><h3>RNA Base Editing</h3><p>dCas13-ADAR2 (A-to-I) + dCas13-APOBEC (C-to-U). No DNA change — reversible.</p></div>
+        <div class="card purple-hl"><h3>CRISPRi/CRISPRa</h3><p>dCas9-KRAB repression / dCas9-VPR activation. Transcriptome modulation without cutting.</p></div>
+        <div class="card purple-hl anim-3"><h3>Perturb-seq/CROP-seq</h3><p>Single-cell CRISPR screens: perturbation + scRNA-seq readout per cell</p></div>
+        <div class="card purple-hl anim-3"><h3>Non-Coding RNA</h3><p>lncRNA/miRNA/siRNA/circRNA/piRNA targeting with strategy recommendation</p></div>
+        <div class="card purple-hl anim-3"><h3>Spatial Transcriptomics</h3><p>CRISPR-TO spatial RNA + scCLEAN rRNA depletion + tissue mapping</p></div>
+    </div>
+    <div class="stat-row anim-4">
+        <div class="stat-item"><div class="stat-num purple anim-c">9</div><div class="stat-label">RNA Target Types</div></div>
+        <div class="stat-item"><div class="stat-num purple anim-c">4</div><div class="stat-label">Cas13 Variants</div></div>
+        <div class="stat-item"><div class="stat-num purple anim-c">210,859</div><div class="stat-label">RNA KD Configs</div></div>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 5: 12 SYNERGY MODELS ═══════════ -->
+<div class="slide" id="s4">
+    <h1 class="mega-title anim-1" style="font-size:2rem">12-Model <span>Cross-Modal</span> Synergy</h1>
+    <p class="subtitle anim-2">88.9 Billion total: 22.2B DNA + 22.2B RNA + 44.5B Cross-Modal</p>
+    <div class="card-grid g2 anim-3" style="margin-top:20px">
+        <div class="card highlight">
+            <h3 style="color:#64b5f6">6 Classical Models</h3>
+            <table>
+                <tr><td><strong>Bliss</strong></td><td>C = A + B - AB</td><td>20-22%</td></tr>
+                <tr><td><strong>HSA</strong></td><td>max(A, B)</td><td>10-15%</td></tr>
+                <tr><td><strong>Loewe</strong></td><td>Isobole equation</td><td>15-20%</td></tr>
+                <tr><td><strong>ZIP</strong></td><td>AB + proximity</td><td>12-18%</td></tr>
+                <tr><td><strong>Epistasis</strong></td><td>DAG overlap</td><td>12-15%</td></tr>
+                <tr><td><strong>Compensation</strong></td><td>Pathway blocking</td><td>8-10%</td></tr>
+            </table>
+        </div>
+        <div class="card purple-hl">
+            <h3 style="color:#ce93d8">6 Cross-Modal Models (NEW)</h3>
+            <table>
+                <tr><td><strong>Transcriptional Cascade</strong></td><td>KO TF + KD transcript</td></tr>
+                <tr><td><strong>Isoform Escape</strong></td><td>KO + KD alt isoforms</td></tr>
+                <tr><td><strong>Feedback Disruptor</strong></td><td>KO upstream + KD RNA</td></tr>
+                <tr><td><strong>Collateral Synergy</strong></td><td>Cas13 collateral hit</td></tr>
+                <tr><td><strong>Epigenetic-Transcriptomic</strong></td><td>CRISPRi + Cas13</td></tr>
+                <tr><td><strong>ncRNA-Coding</strong></td><td>lncRNA/miRNA + gene</td></tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 6: CAUSALITY ═══════════ -->
+<div class="slide" id="s5">
+    <h1 class="mega-title anim-1" style="font-size:2rem">7-Phase <span>Causality</span> Framework</h1>
+    <p class="subtitle anim-2">28 Integration Modules + 23 Core BiRAGAS Modules</p>
+    <div class="card-grid g4 anim-3" style="margin-top:20px">
+        <div class="card" style="border-left:3px solid #64b5f6"><h3 style="font-size:0.85rem">Phase 1</h3><p>Screening to DAG<br><small>QualityGate, Converter, Enricher, MR</small></p></div>
+        <div class="card" style="border-left:3px solid #4fc3f7"><h3 style="font-size:0.85rem">Phase 2</h3><p>Network Scoring<br><small>7D Scorer, Centrality, Tiers, Bridge</small></p></div>
+        <div class="card" style="border-left:3px solid #4dd0e1"><h3 style="font-size:0.85rem">Phase 3</h3><p>Quality Assurance<br><small>Direction, Confounding, Hallucination</small></p></div>
+        <div class="card" style="border-left:3px solid #4db6ac"><h3 style="font-size:0.85rem">Phase 4</h3><p>Mechanisms<br><small>Harmonizer, Resistance, Compensation</small></p></div>
+        <div class="card anim-4" style="border-left:3px solid #81c784"><h3 style="font-size:0.85rem">Phase 5</h3><p>Pharmaceutical<br><small>9D Ranker, Safety, Efficacy, Synergy</small></p></div>
+        <div class="card anim-4" style="border-left:3px solid #aed581"><h3 style="font-size:0.85rem">Phase 6</h3><p>Stratification<br><small>Stratifier, Comparator, Motifs, Subtypes</small></p></div>
+        <div class="card anim-4" style="border-left:3px solid #ce93d8"><h3 style="font-size:0.85rem">Phase 7</h3><p>Clinical Report<br><small>Report, Quality, Arbitration, Gaps</small></p></div>
+        <div class="card anim-4 anim-g" style="border-left:3px solid #81c784;background:rgba(129,199,132,0.08)"><h3 style="font-size:0.85rem;color:#81c784">Agentic AI</h3><p>Self-correcting<br><small>9 checks, auto-fix, retry, learning</small></p></div>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 7: PDAC CASE STUDY ═══════════ -->
+<div class="slide" id="s6">
+    <h1 class="mega-title anim-1" style="font-size:2rem">Case Study: <span>Pancreatic Cancer</span></h1>
+    <p class="subtitle anim-2">KRAS G12D Compensation Network — Breaking the Undruggable</p>
+    <div class="network-box anim-3" style="margin-top:30px">
+        <div class="pathway" style="background:rgba(100,181,246,0.15);border:1px solid rgba(100,181,246,0.3)"><h4>KRAS G12D</h4><p>Master Driver</p></div>
+        <div class="arrow">&#8594;</div>
+        <div class="pathway" style="background:rgba(100,181,246,0.15);border:1px solid rgba(100,181,246,0.3)"><h4>BRAF/MEK/ERK</h4><p>MAPK Cascade</p></div>
+        <div class="arrow" style="color:#ef9a9a">&#8596;</div>
+        <div class="pathway" style="background:rgba(206,147,216,0.15);border:1px solid rgba(206,147,216,0.3)"><h4>PI3K/AKT/mTOR</h4><p>Compensation #1</p></div>
+    </div>
+    <div class="card anim-4" style="max-width:800px;margin-top:20px;border-color:rgba(129,199,132,0.3);background:rgba(129,199,132,0.06)">
+        <h3 style="color:#81c784">BiRAGAS Solution: Cross-Modal Triple Combination</h3>
+        <p style="font-size:0.95rem;color:rgba(255,255,255,0.85)">
+            <strong>KRAS DNA-KO</strong> (eliminate master driver) +
+            <strong>PIK3CA DNA-KO</strong> (block compensation) +
+            <strong>miR-21 Cas13d-KD</strong> (remove oncomiR suppressing PTEN brake)
+        </p>
+        <p style="margin-top:8px;font-size:0.82rem">28/28 causality modules validated | 12-model synergy analysis | Agentic AI confirmed</p>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 8: LIVE APP ═══════════ -->
+<div class="slide" id="s7">
+    <h1 class="mega-title anim-1" style="font-size:2rem">Live <span>Application</span></h1>
+    <p class="subtitle anim-2">Try it now — works in any browser, no installation needed</p>
+    <div class="iframe-container anim-3 anim-g">
+        <iframe src="https://mayasss-gif.github.io/BiRAGAS-CRISPR-Complete/" loading="lazy"></iframe>
+    </div>
+</div>
+
+<!-- ═══════════ SLIDE 9: COMPARISON ═══════════ -->
+<div class="slide" id="s8">
+    <h1 class="mega-title anim-1" style="font-size:2rem">BiRAGAS CRISPR vs <span>CRIS.py</span></h1>
+    <table class="anim-2" style="margin-top:30px">
+        <thead><tr><th>Feature</th><th>CRIS.py</th><th>BiRAGAS CRISPR Complete v3.0</th></tr></thead>
+        <tbody>
+            <tr><td>KO/KD Configs</td><td style="color:rgba(255,255,255,0.3)">Manual</td><td><strong style="color:#81c784">421,718 (DNA + RNA)</strong></td></tr>
+            <tr><td>Combinations</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#81c784">88.9 Billion (3 modality classes)</strong></td></tr>
+            <tr><td>Synergy Models</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#81c784">12 (6 classical + 6 cross-modal)</strong></td></tr>
+            <tr><td>RNA Types</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#ce93d8">9 (mRNA, lncRNA, miRNA, siRNA, circRNA, piRNA...)</strong></td></tr>
+            <tr><td>Causality</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#81c784">7-phase BiRAGAS (23 + 28 modules)</strong></td></tr>
+            <tr><td>Base Editing</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#ce93d8">A-to-I (ADAR2) + C-to-U (APOBEC)</strong></td></tr>
+            <tr><td>Self-Correction</td><td style="color:rgba(255,255,255,0.3)">None</td><td><strong style="color:#81c784">9 autonomous checks + agentic AI</strong></td></tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- ═══════════ SLIDE 10: CLOSING ═══════════ -->
+<div class="slide" id="s9">
+    <div class="anim-1"><span class="badge badge-green">Open Access</span></div>
+    <h1 class="mega-title anim-2" style="margin-top:20px">Try It <span>Now</span></h1>
+    <p class="subtitle anim-3">https://mayasss-gif.github.io/BiRAGAS-CRISPR-Complete/</p>
+    <div class="stat-row anim-4">
+        <div class="stat-item anim-p"><div class="stat-num blue">421,718</div><div class="stat-label">KO/KD Configs</div></div>
+        <div class="stat-item anim-p"><div class="stat-num purple">88.9B</div><div class="stat-label">Combinations</div></div>
+        <div class="stat-item anim-p"><div class="stat-num green">28/28</div><div class="stat-label">Causality Modules</div></div>
+        <div class="stat-item anim-p"><div class="stat-num orange">130</div><div class="stat-label">Python Files</div></div>
+    </div>
+    <div class="anim-5" style="margin-top:40px;text-align:center">
+        <p style="font-size:1.5rem;font-weight:700;color:#64b5f6">Ayass Bioscience LLC</p>
+        <p style="font-size:0.9rem;color:rgba(255,255,255,0.5);margin-top:8px">Proprietary &amp; Confidential</p>
+    </div>
+</div>
+
+<!-- CONTROLS -->
+<div class="logo">Ayass Bioscience LLC</div>
+<div class="slide-num" id="slideNum">1 / 10</div>
+<button class="nav-btn left" onclick="prev()">&#9664;</button>
+<button class="nav-btn right" onclick="next()">&#9654;</button>
+<div class="controls" id="dots"></div>
+
+<script>
+let current = 0;
+const total = 10;
+const slides = document.querySelectorAll('.slide');
+const dotsEl = document.getElementById('dots');
+
+// Create dots
+for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsEl.appendChild(d);
+}
+
+function goTo(n) {
+    slides[current].classList.remove('active');
+    slides[current].classList.add('prev');
+    current = n;
+    slides.forEach((s, i) => { if (i !== current) { s.classList.remove('active'); s.classList.remove('prev'); }});
+    slides[current].classList.add('active');
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    document.getElementById('slideNum').textContent = (current + 1) + ' / ' + total;
+}
+
+function next() { goTo((current + 1) % total); }
+function prev() { goTo((current - 1 + total) % total); }
+
+document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); }
+    if (e.key === 'ArrowLeft') prev();
+});
+
+// Auto-advance animation bars
+setInterval(() => {
+    document.querySelectorAll('.slide.active .bar-fill').forEach(b => {
+        b.style.width = b.dataset.w;
+    });
+}, 500);
+</script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+BiRAGAS CRISPR Complete v3.0 — Presentation Narration Script
+================================================================
+Ayass Bioscience LLC
+Duration: ~5 minutes (10 slides)
+Voice: Professional feminine narrator
+
+================================================================
+SLIDE 1 — TITLE (0:00 - 0:30)
+================================================================
+
+Welcome to BiRAGAS CRISPR Complete — version three point zero.
+
+This is the first platform in the world to unify DNA editing and RNA targeting with causal inference for drug discovery.
+
+Built by Ayass Bioscience, the platform handles over four hundred twenty-one thousand knockout and knockdown configurations, eighty-eight point nine billion pairwise combinations, twelve synergy models, and one hundred thirty Python modules — all running autonomously with self-correction.
+
+================================================================
+SLIDE 2 — THE PROBLEM (0:30 - 1:15)
+================================================================
+
+Let's talk about the bottleneck that pharma is stuck on.
+
+CRISPR screens can identify hundreds of cancer driver genes. But here's the problem: when you knock out a single target, the cancer compensates. Block the M-A-P-K cascade? The PI3K pathway takes over. Block PI3K? M-A-P-K reactivates.
+
+This is exactly why K-RAS G12D — the dominant mutation in ninety-five percent of pancreatic cancer — has been called "undruggable" for forty years.
+
+What's missing? Cross-modal combinations. We need to target multiple molecular levels simultaneously — DNA knockout plus RNA knockdown — to break these compensation loops. And that's exactly what BiRAGAS CRISPR Complete does.
+
+================================================================
+SLIDE 3 — DNA ENGINES (1:15 - 2:00)
+================================================================
+
+The platform includes six DNA engines.
+
+The Editing Engine designs guides for Cas9, SaCas9, and Cas12a — with eighteen-feature on-target scoring and amplicon analysis that surpasses CRIS dot py.
+
+The Screening Engine auto-discovers MAGeCK, BAGEL2, and DrugZ data from any directory.
+
+The Knockout Engine uses a seven-method ensemble — topological propagation, Bayesian networks, Monte Carlo simulation, pathway-specific decay, feedback loop adjustment, ODE dynamics, and mutual information — fused into a weighted prediction.
+
+And the MegaScale Engine uses sparse matrix algebra for O-one prediction at genome scale — two hundred ten thousand DNA knockout configurations and twenty-two point two billion pairwise combinations.
+
+================================================================
+SLIDE 4 — RNA ENGINES (2:00 - 2:45)
+================================================================
+
+What makes version three truly unique are the six RNA engines.
+
+Cas13 Guide Design supports all four variants — Cas13a with collateral activity, Cas13b, Cas13d CasRx which is the gold standard for therapeutic knockdown with zero collateral, and catalytically dead dCas13 for base editing and imaging.
+
+The RNA Base Editing Engine predicts A-to-I editing using ADAR2 and C-to-U editing using APOBEC — all without touching the DNA.
+
+We support nine RNA target types: mRNA, long non-coding RNA, microRNA, siRNA, circular RNA, piwi-interacting RNA, single-cell RNA, bulk RNA, and spatial RNA.
+
+Each type gets its own optimized targeting strategy and analysis pipeline.
+
+================================================================
+SLIDE 5 — 12 SYNERGY MODELS (2:45 - 3:30)
+================================================================
+
+The Combination Engine is where everything comes together.
+
+Twelve synergy models operating across three combination classes: DNA times DNA, RNA times RNA, and DNA times RNA cross-modal.
+
+Six classical pharmacological models — Bliss Independence, Highest Single Agent, Loewe Additivity, Zero Interaction Potency, Graph Epistasis, and Compensation Blocking.
+
+Plus six entirely new cross-modal models: Transcriptional Cascade, Isoform Escape Blocker, Feedback Loop Disruptor, Collateral Synergy, Epigenetic-Transcriptomic, and n-c-R-N-A Coding Network.
+
+The total scale? Eighty-eight point nine billion combinations. Twenty-two billion DNA, twenty-two billion RNA, and forty-four point five billion cross-modal.
+
+================================================================
+SLIDE 6 — CAUSALITY (3:30 - 4:00)
+================================================================
+
+Underlying everything is the BiRAGAS seven-phase causality framework.
+
+Twenty-eight integration modules — four per phase — covering screening to DAG construction, network scoring, quality assurance with hallucination shielding, mechanism and resistance analysis, pharmaceutical integration with nine-dimensional drug target ranking, patient stratification, and clinical reporting with gap analysis.
+
+Plus twenty-three core causality modules implementing Pearl's do-calculus, Mendelian Randomization, Bayesian confidence aggregation, and counterfactual simulation.
+
+The entire system is agentic — self-correcting with nine autonomous validation checks, exponential backoff retry, and fallback methods.
+
+================================================================
+SLIDE 7 — PDAC CASE STUDY (4:00 - 4:30)
+================================================================
+
+In our pancreatic cancer case study, BiRAGAS identified the optimal three-way cross-modal combination:
+
+K-RAS DNA knockout to eliminate the master driver, plus PIK3CA DNA knockout to block the compensation pathway, plus micro-R-N-A twenty-one Cas13d knockdown to remove the onco-miR that suppresses the PTEN tumor suppressor.
+
+This triple combination disrupts both major compensation routes simultaneously — something no single-target therapy can achieve. All twenty-eight causality modules validated the prediction with zero failures.
+
+================================================================
+SLIDE 8 — LIVE APP (4:30 - 4:45)
+================================================================
+
+The entire platform is available as a web application. Ten interactive tabs — dashboard, editing engine, screening, knockout, RNA guide design, CRISPRi, base editing, combinations, causality framework, and installation guide.
+
+Try it right now at the link on screen. It works in any browser with no installation needed.
+
+================================================================
+SLIDE 9 — COMPARISON (4:45 - 5:00)
+================================================================
+
+Compared to CRIS dot py — the only existing open-source CRISPR analysis tool — BiRAGAS CRISPR Complete offers four hundred twenty-one thousand configurations versus manual analysis, eighty-eight point nine billion combinations versus none, nine RNA target types versus none, seven-phase causality versus none, and autonomous self-correction versus none.
+
+================================================================
+SLIDE 10 — CLOSING (5:00 - 5:15)
+================================================================
+
+BiRAGAS CRISPR Complete version three point zero. The future of CRISPR-driven drug discovery.
+
+Four hundred twenty-one thousand configurations. Eighty-eight point nine billion combinations. Twenty-eight causality modules. One hundred thirty Python files. Fully autonomous.
+
+Ayass Bioscience LLC. Try it now.
+
+================================================================
+END OF NARRATION
+================================================================
+
+INSTRUCTIONS FOR AI VOICE GENERATION:
+1. Go to ElevenLabs.io, Synthesia, D-ID, or any AI voice tool
+2. Select a professional feminine voice (e.g., "Rachel", "Sarah", "Aria")
+3. Paste each slide's narration text
+4. Set speech rate to 0.95x (slightly slower for clarity)
+5. Export as MP3 or WAV
+6. Combine with the HTML presentation for a video
