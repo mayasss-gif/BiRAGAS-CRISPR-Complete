@@ -156,6 +156,74 @@ RNA_NUCLEASES = {
 ALL_NUCLEASES = {**{k: {**v, 'target': 'DNA'} for k, v in DNA_NUCLEASES.items()},
                  **{k: {**v, 'target': 'RNA'} for k, v in RNA_NUCLEASES.items()}}
 
+# ── RNA Target Types ──────────────────────────────────────────────────────────
+
+RNA_TARGET_TYPES = {
+    "mRNA": {
+        "description": "Protein-coding messenger RNA",
+        "recommended_tool": "Cas13d",
+        "alternative_tools": ["CRISPRi", "Cas13a", "Cas13b"],
+        "analysis": ["Perturb-seq", "bulk RNA-seq", "scRNA-seq"],
+        "strategy": "Knockdown via Cas13d (no collateral) or CRISPRi (reversible)",
+    },
+    "lncRNA": {
+        "description": "Long non-coding RNA (>200nt)",
+        "recommended_tool": "CRISPRi",
+        "alternative_tools": ["CRISPRa", "paired_deletion", "Cas13d"],
+        "analysis": ["scRNA-seq", "CHART-seq", "RAP-seq"],
+        "strategy": "CRISPRi at promoter/TSS (indels non-disruptive for lncRNAs)",
+    },
+    "miRNA": {
+        "description": "MicroRNA (~22nt, post-transcriptional regulator)",
+        "recommended_tool": "Cas13d",
+        "alternative_tools": ["Cas9_premiRNA_KO"],
+        "analysis": ["Small RNA-seq", "miRNA-seq", "CLIP-seq"],
+        "strategy": "Cas13 degrades mature miRNA; Cas9 KOs pre-miRNA genomic locus",
+    },
+    "siRNA": {
+        "description": "Small interfering RNA (~21nt)",
+        "recommended_tool": "Cas13d",
+        "alternative_tools": ["Cas13a"],
+        "analysis": ["Small RNA-seq"],
+        "strategy": "Cas13 direct targeting — no endogenous DNA locus for most siRNAs",
+    },
+    "circRNA": {
+        "description": "Circular RNA (backsplice junction)",
+        "recommended_tool": "Cas13d",
+        "alternative_tools": ["Cas9_backsplice_KO"],
+        "analysis": ["RNA-seq (junction reads)", "RNase R enrichment"],
+        "strategy": "Cas13 targets circular junction; Cas9 disrupts backsplice site",
+    },
+    "piRNA": {
+        "description": "Piwi-interacting RNA (~26-31nt, transposon silencing)",
+        "recommended_tool": "Cas13d",
+        "alternative_tools": ["CRISPRi"],
+        "analysis": ["piRNA-seq", "small RNA-seq"],
+        "strategy": "Cas13 KD of mature piRNA; CRISPRi for piRNA cluster silencing",
+    },
+    "scRNA": {
+        "description": "Single-cell RNA (Perturb-seq/CROP-seq readout)",
+        "recommended_tool": "Perturb-seq",
+        "alternative_tools": ["CROP-seq", "CRISP-seq"],
+        "analysis": ["scRNA-seq", "10x Chromium"],
+        "strategy": "CRISPR perturbation + single-cell transcriptome readout per cell",
+    },
+    "bulk_RNA": {
+        "description": "Bulk population RNA (averaged transcriptome)",
+        "recommended_tool": "CRISPRi_screen",
+        "alternative_tools": ["CRISPRa_screen", "Cas13_screen"],
+        "analysis": ["Bulk RNA-seq", "DESeq2", "edgeR"],
+        "strategy": "Pooled CRISPR screen with bulk RNA-seq readout",
+    },
+    "spatial_RNA": {
+        "description": "Spatially resolved RNA (tissue context)",
+        "recommended_tool": "CRISPR-TO",
+        "alternative_tools": ["Perturb-seq + spatial"],
+        "analysis": ["MERFISH", "Slide-seq", "Visium"],
+        "strategy": "CRISPR-TO links perturbation to spatial RNA localization",
+    },
+}
+
 
 class EditingEngine:
     """
@@ -630,6 +698,31 @@ class EditingEngine:
         )
 
     # ══════════════════════════════════════════════════════════════════════════
+    # RNA TARGET TYPE RECOMMENDATIONS
+    # ══════════════════════════════════════════════════════════════════════════
+
+    def recommend_rna_strategy(self, gene: str, rna_type: str = "mRNA") -> Dict:
+        """Recommend optimal CRISPR strategy for any RNA target type."""
+        info = RNA_TARGET_TYPES.get(rna_type, RNA_TARGET_TYPES["mRNA"])
+        return {
+            'gene': gene,
+            'rna_type': rna_type,
+            'description': info['description'],
+            'recommended_tool': info['recommended_tool'],
+            'alternatives': info['alternative_tools'],
+            'analysis_methods': info['analysis'],
+            'strategy': info['strategy'],
+        }
+
+    def get_supported_rna_types(self) -> Dict:
+        """Return all supported RNA target types with details."""
+        return {k: {
+            'description': v['description'],
+            'recommended_tool': v['recommended_tool'],
+            'alternatives': v['alternative_tools'],
+        } for k, v in RNA_TARGET_TYPES.items()}
+
+    # ══════════════════════════════════════════════════════════════════════════
     # UTILITIES
     # ══════════════════════════════════════════════════════════════════════════
 
@@ -685,6 +778,7 @@ class EditingEngine:
             "version": "3.0.0",
             "dna_nucleases": list(DNA_NUCLEASES.keys()),
             "rna_nucleases": list(RNA_NUCLEASES.keys()),
+            "rna_target_types": list(RNA_TARGET_TYPES.keys()),
             "rs3_scoring": self._rs3_available,
             "genet_design": self._genet_available,
             "dna_amplicon_analysis": True,
@@ -694,6 +788,17 @@ class EditingEngine:
             "collateral_cleavage_modeling": True,
             "multi_guide_strategy": True,
             "configs_per_gene": 11,
+            "total_dna_configs": 210859,
+            "total_rna_configs": 210859,
+            "total_configs": 421718,
             "autonomous_qc": True,
             "target_types": ["DNA", "RNA"],
+            "rna_types_supported": {
+                "coding": ["mRNA"],
+                "non_coding": ["lncRNA", "miRNA", "siRNA", "circRNA", "piRNA"],
+                "analysis": ["scRNA", "bulk_RNA", "spatial_RNA"],
+            },
+            "crispri_crispra": True,
+            "perturb_seq": True,
+            "spatial_transcriptomics": True,
         }

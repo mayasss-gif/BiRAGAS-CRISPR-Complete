@@ -145,8 +145,26 @@ WEIGHTS_DNA_RNA = {
 # ══════════════════════════════════════════════════════════════════════════════
 
 DNA_MODALITIES = {'DNA_KO', 'Cas9_KO', 'Cas12a_KO'}
-RNA_MODALITIES = {'RNA_KD', 'Cas13_KD', 'Cas13a_KD', 'Cas13b_KD', 'Cas13d_KD',
-                  'CRISPRi', 'CRISPRa', 'Cas13_BE', 'dCas13_BE'}
+RNA_MODALITIES = {
+    # mRNA knockdown
+    'RNA_KD', 'Cas13_KD', 'Cas13a_KD', 'Cas13b_KD', 'Cas13d_KD',
+    'mRNA_KD',
+    # Transcriptional modulation
+    'CRISPRi', 'CRISPRa',
+    # Base editing
+    'Cas13_BE', 'dCas13_BE', 'ADAR2_AtoI', 'APOBEC_CtoU',
+    # Non-coding RNA targeting
+    'lncRNA_KD', 'lncRNA_CRISPRi', 'lncRNA_deletion',
+    'miRNA_KD', 'miRNA_Cas9KO', 'miRNA_Cas13KD',
+    'siRNA_KD',
+    'circRNA_KD', 'circRNA_backspliceKO',
+    'piRNA_KD', 'piRNA_CRISPRi',
+    # Single-cell & spatial
+    'Perturb_seq', 'CROP_seq', 'CRISP_seq',
+    'scCLEAN', 'CRISPR_TO',
+    # Bulk screens
+    'CRISPRi_screen', 'CRISPRa_screen', 'Cas13_screen',
+}
 ALL_MODALITIES = DNA_MODALITIES | RNA_MODALITIES
 
 

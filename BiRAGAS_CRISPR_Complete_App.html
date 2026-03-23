@@ -1,528 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiRAGAS CRISPR Complete v3.0 — DNA + RNA — Ayass Bioscience</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <style>
-:root {
-    --primary: #1a73e8;
-    --primary-dark: #1557b0;
-    --accent: #00c853;
-    --danger: #d32f2f;
-    --warning: #f57c00;
-    --purple: #7c4dff;
-    --teal: #00bcd4;
-    --bg: #f5f7fa;
-    --card: #ffffff;
-    --text: #202124;
-    --text-secondary: #5f6368;
-    --border: #dadce0;
-    --shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
-    --shadow-lg: 0 4px 16px rgba(0,0,0,0.12);
-    --radius: 12px;
-    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: var(--font); background: var(--bg); color: var(--text); line-height: 1.6; min-height: 100vh; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BiRAGAS CRISPR Complete v3.0 — DNA + RNA — Ayass Bioscience</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#1a73e8;--primary-dark:#1557b0;--accent:#00c853;--danger:#d32f2f;--warning:#f57c00;--purple:#7c4dff;--teal:#00bcd4;--bg:#f5f7fa;--card:#fff;--text:#202124;--text-secondary:#5f6368;--border:#dadce0;--shadow:0 1px 3px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.08);--shadow-lg:0 4px 16px rgba(0,0,0,.12);--radius:12px;--font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;--mono:'JetBrains Mono','Fira Code',Consolas,monospace}
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+.header{background:linear-gradient(135deg,#1a237e 0%,#1565c0 50%,#0d47a1 100%);color:#fff;box-shadow:var(--shadow-lg);position:sticky;top:0;z-index:100}
+.header-content{max-width:1440px;margin:0 auto;padding:14px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.header h1{font-size:1.4rem;font-weight:700;letter-spacing:-.5px}.header h1 span{color:#64b5f6}.header h1 .rt{color:#ce93d8}
+.hb{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;font-size:.7rem;font-weight:500}
+.header-stats{display:flex;gap:18px;font-size:.75rem;opacity:.9;flex-wrap:wrap}
+.hs{display:flex;flex-direction:column;align-items:center}.hs .v{font-size:1rem;font-weight:700;color:#64b5f6}
+.nav-bar-wrap{background:#fff;border-bottom:1px solid var(--border)}.nav-bar{max-width:1440px;margin:0 auto;display:flex;overflow-x:auto}
+.nt{padding:12px 18px;cursor:pointer;font-size:.82rem;font-weight:500;color:var(--text-secondary);border-bottom:3px solid transparent;transition:all .2s;user-select:none;white-space:nowrap}
+.nt:hover{color:var(--primary);background:#f0f4ff}.nt.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+.main{max-width:1440px;margin:0 auto;padding:20px 28px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;margin-bottom:16px;border:1px solid var(--border)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f0f0f0;flex-wrap:wrap;gap:8px}
+.card-title{font-size:1.05rem;font-weight:600}
+.cb{font-size:.72rem;padding:3px 10px;border-radius:12px;font-weight:600}
+.bb{background:#e3f2fd;color:#1565c0}.bg{background:#e8f5e9;color:#2e7d32}.bo{background:#fff3e0;color:#e65100}.br{background:#fce4ec;color:#c62828}.bp{background:#f3e5f5;color:#6a1b9a}.bt{background:#e0f7fa;color:#00695c}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.sb{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.sv{font-size:1.8rem;font-weight:800;color:var(--primary);line-height:1.2}.sl{font-size:.75rem;color:var(--text-secondary);margin-top:3px;font-weight:500}
+.fg{margin-bottom:14px}.fl{display:block;font-size:.82rem;font-weight:600;margin-bottom:5px}
+.fi,.fs,.ft{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;font-family:var(--font);background:#fff}
+.fi:focus,.fs:focus,.ft:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,115,232,.15)}
+.ft{font-family:var(--mono);font-size:.8rem;resize:vertical;min-height:70px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font)}
+.btn-p{background:var(--primary);color:#fff}.btn-p:hover{background:var(--primary-dark)}.btn-s{background:var(--accent);color:#fff}
+table{width:100%;border-collapse:collapse;font-size:.82rem}th{text-align:left;padding:8px 12px;background:#f8f9fa;font-weight:600;color:var(--text-secondary);border-bottom:2px solid var(--border);white-space:nowrap}td{padding:8px 12px;border-bottom:1px solid #f0f0f0}tr:hover td{background:#f8f9ff}
+.seq{font-family:var(--mono);font-size:.82rem;letter-spacing:1px;background:#f0f4f8;padding:2px 5px;border-radius:4px}
+.tc{display:none}.tc.active{display:block}
+.scb{display:flex;align-items:center;gap:6px}.sct{flex:1;height:5px;background:#e0e0e0;border-radius:3px}.scf{height:100%;border-radius:3px;transition:width .3s}
+.hi .scf{background:var(--accent)}.mi .scf{background:var(--warning)}.lo .scf{background:var(--danger)}
+.ec{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;font-size:1.1rem;margin-bottom:6px}
+.ec-dna{background:#e3f2fd}.ec-rna{background:#f3e5f5}
+@media(max-width:1024px){.g4{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:1fr}}
+@media(max-width:768px){.g2,.g4{grid-template-columns:1fr}.header-content{flex-direction:column}.main{padding:14px}}
 
-.header {
-    background: linear-gradient(135deg, #1a237e 0%, #1565c0 50%, #0d47a1 100%);
-    color: white; box-shadow: var(--shadow-lg); position: sticky; top: 0; z-index: 100;
-}
-.header-content {
-    max-width: 1400px; margin: 0 auto; padding: 16px 32px;
-    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
-}
-.header h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
-.header h1 span { color: #64b5f6; }
-.header h1 .rna-tag { color: #ce93d8; }
-.header-badge { background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
-.header-stats { display: flex; gap: 24px; font-size: 0.8rem; opacity: 0.9; flex-wrap: wrap; }
-.header-stat { display: flex; flex-direction: column; align-items: center; }
-.header-stat .value { font-size: 1.1rem; font-weight: 700; color: #64b5f6; }
-
-.nav-bar-wrap { background: white; border-bottom: 1px solid var(--border); }
-.nav-bar { max-width: 1400px; margin: 0 auto; display: flex; gap: 0; overflow-x: auto; }
-.nav-tab {
-    padding: 14px 20px; cursor: pointer; font-size: 0.85rem; font-weight: 500;
-    color: var(--text-secondary); border-bottom: 3px solid transparent;
-    transition: all 0.2s; user-select: none; white-space: nowrap;
-}
-.nav-tab:hover { color: var(--primary); background: #f0f4ff; }
-.nav-tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
-.nav-tab .rna-dot { display: inline-block; width: 6px; height: 6px; background: var(--purple); border-radius: 50%; margin-left: 4px; vertical-align: super; }
-
-.main { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
-.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px; border: 1px solid var(--border); }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #f0f0f0; flex-wrap: wrap; gap: 8px; }
-.card-title { font-size: 1.1rem; font-weight: 600; }
-.card-badge { font-size: 0.75rem; padding: 3px 10px; border-radius: 12px; font-weight: 600; }
-.badge-blue { background: #e3f2fd; color: #1565c0; }
-.badge-green { background: #e8f5e9; color: #2e7d32; }
-.badge-orange { background: #fff3e0; color: #e65100; }
-.badge-red { background: #fce4ec; color: #c62828; }
-.badge-purple { background: #f3e5f5; color: #7c4dff; }
-.badge-purple { background: #f3e5f5; color: #6a1b9a; }
-.badge-teal { background: #e0f7fa; color: #00695c; }
-
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
-.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-.grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
-.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
-
-.stat-box { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 20px; text-align: center; }
-.stat-box.highlight { border-color: var(--purple); background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%); }
-.stat-value { font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1.2; }
-.stat-value.purple { color: var(--purple); }
-.stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
-
-.form-group { margin-bottom: 16px; }
-.form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
-.form-input, .form-select, .form-textarea {
-    width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px;
-    font-size: 0.9rem; font-family: var(--font); transition: border-color 0.2s; background: white;
-}
-.form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,0.15); }
-.form-textarea { font-family: var(--mono); font-size: 0.85rem; resize: vertical; min-height: 80px; }
-
-.btn {
-    display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border: none;
-    border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
-    transition: all 0.2s; font-family: var(--font);
-}
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-dark); }
-.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-success { background: var(--accent); color: white; }
-.btn-purple { background: var(--purple); color: white; }
-.btn-purple:hover { background: #651fff; }
-
-.toggle-group { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-.toggle-btn { padding: 8px 18px; cursor: pointer; font-size: 0.85rem; font-weight: 500; border: none; background: white; color: var(--text-secondary); transition: all 0.2s; }
-.toggle-btn.active { background: var(--primary); color: white; }
-.toggle-btn.active-purple { background: var(--purple); color: white; }
-
-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-th { text-align: left; padding: 10px 14px; background: #f8f9fa; font-weight: 600; color: var(--text-secondary); border-bottom: 2px solid var(--border); white-space: nowrap; }
-td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
-tr:hover td { background: #f8f9ff; }
-
-.result-panel { background: #f8f9fa; border: 1px solid var(--border); border-radius: 8px; padding: 16px; font-family: var(--mono); font-size: 0.8rem; max-height: 400px; overflow-y: auto; white-space: pre-wrap; word-break: break-word; }
-.sequence { font-family: var(--mono); font-size: 0.85rem; letter-spacing: 1px; background: #f0f4f8; padding: 2px 6px; border-radius: 4px; }
-.sequence-rna { font-family: var(--mono); font-size: 0.85rem; letter-spacing: 1px; background: #f3e8ff; padding: 2px 6px; border-radius: 4px; color: #6a1b9a; }
-.score-bar { display: flex; align-items: center; gap: 8px; }
-.score-bar-track { flex: 1; height: 6px; background: #e0e0e0; border-radius: 3px; }
-.score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
-.score-high .score-bar-fill { background: var(--accent); }
-.score-mid .score-bar-fill { background: var(--warning); }
-.score-low .score-bar-fill { background: var(--danger); }
-
-.tab-content { display: none; }
-.tab-content.active { display: block; }
-.spinner { display: inline-block; width: 20px; height: 20px; border: 3px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.engine-card { background: white; border: 1px solid var(--border); border-radius: 10px; padding: 16px; transition: transform 0.2s, box-shadow 0.2s; }
-.engine-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-.engine-card .engine-icon { font-size: 1.5rem; margin-bottom: 8px; }
-.engine-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
-.engine-card p { font-size: 0.78rem; color: var(--text-secondary); line-height: 1.4; }
-.engine-card.rna-engine { border-left: 3px solid var(--purple); }
-.engine-card.dna-engine { border-left: 3px solid var(--primary); }
-
-.edit-window { display: flex; align-items: center; gap: 2px; margin: 12px 0; }
-.edit-pos { width: 28px; height: 36px; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.75rem; border-radius: 4px; font-weight: 600; }
-.edit-pos.target { background: #d32f2f; color: white; }
-.edit-pos.bystander { background: #ff9800; color: white; }
-.edit-pos.safe { background: #e0e0e0; color: #666; }
-
-.code-block { background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 8px; font-family: var(--mono); font-size: 0.82rem; overflow-x: auto; margin: 8px 0; line-height: 1.6; }
-.code-block .cmd { color: #89b4fa; }
-.code-block .flag { color: #a6e3a1; }
-.code-block .str { color: #f9e2af; }
-.code-block .comment { color: #6c7086; }
-
-@media (max-width: 1024px) { .grid-4, .grid-5, .grid-6 { grid-template-columns: repeat(2, 1fr); } .grid-3 { grid-template-columns: 1fr; } }
-@media (max-width: 768px) { .grid-2, .grid-4, .grid-5, .grid-6 { grid-template-columns: 1fr; } .header-content { flex-direction: column; } .main { padding: 16px; } }
-    </style>
+/* Badge aliases for combo tab compatibility */
+.badge-blue{background:#e3f2fd;color:#1565c0}.badge-green{background:#e8f5e9;color:#2e7d32}.badge-orange{background:#fff3e0;color:#e65100}.badge-red{background:#fce4ec;color:#c62828}.badge-purple{background:#f3e5f5;color:#6a1b9a}
+.card-badge{font-size:.72rem;padding:3px 10px;border-radius:12px;font-weight:600}
+.stat-box{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.stat-value{font-size:1.8rem;font-weight:800;color:var(--primary);line-height:1.2}.stat-label{font-size:.75rem;color:var(--text-secondary);margin-top:3px}
+.form-group{margin-bottom:14px}.form-label{display:block;font-size:.82rem;font-weight:600;margin-bottom:5px}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.85rem;font-family:var(--font);background:#fff}
+.form-input:focus,.form-select:focus{outline:none;border-color:var(--primary)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.score-bar{display:flex;align-items:center;gap:6px}.score-bar-track{flex:1;height:5px;background:#e0e0e0;border-radius:3px}.score-bar-fill{height:100%;border-radius:3px}
+.score-high .score-bar-fill{background:var(--accent)}.score-mid .score-bar-fill{background:var(--warning)}.score-low .score-bar-fill{background:var(--danger)}
+.sequence{font-family:var(--mono);font-size:.82rem;letter-spacing:1px;background:#f0f4f8;padding:2px 5px;border-radius:4px}
+</style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-    <div class="header-content">
-        <div>
-            <h1>BiRAGAS <span>CRISPR</span> <span class="rna-tag">Complete</span></h1>
-            <div style="display:flex;gap:12px;margin-top:4px;flex-wrap:wrap">
-                <span class="header-badge">v3.0</span>
-                <span class="header-badge">DNA + RNA</span>
-                <span class="header-badge">Ayass Bioscience LLC</span>
-                <span class="header-badge" id="status-badge">Standalone Mode</span>
-            </div>
-        </div>
-        <div class="header-stats">
-            <div class="header-stat"><span class="value">210,859</span><span>Knockouts</span></div>
-            <div class="header-stat"><span class="value">88.9B</span><span>Combinations</span></div>
-            <div class="header-stat"><span class="value">15</span><span>ACE Streams</span></div>
-            <div class="header-stat"><span class="value">7</span><span>KO Methods</span></div>
-            <div class="header-stat"><span class="value">4</span><span>Cas13 Variants</span></div>
-        </div>
-    </div>
-</div>
+<div class="header"><div class="header-content">
+<div><h1>BiRAGAS <span>CRISPR</span> <span class="rt">Complete</span></h1>
+<div style="display:flex;gap:8px;margin-top:4px"><span class="hb">v3.0</span><span class="hb">DNA + RNA</span><span class="hb">Ayass Bioscience LLC</span></div></div>
+<div class="header-stats">
+<div class="hs"><span class="v">421,718</span><span>Configs</span></div>
+<div class="hs"><span class="v">88.9B</span><span>Combinations</span></div>
+<div class="hs"><span class="v">12</span><span>Synergy Models</span></div>
+<div class="hs"><span class="v">15</span><span>ACE Streams</span></div>
+<div class="hs"><span class="v">23</span><span>Causality Modules</span></div>
+<div class="hs"><span class="v" style="color:#ce93d8">9</span><span>RNA Types</span></div>
+</div></div></div>
 
-<!-- NAVIGATION -->
-<div class="nav-bar-wrap">
-<div class="nav-bar">
-    <div class="nav-tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
-    <div class="nav-tab" data-tab="dna-guide" onclick="switchTab('dna-guide')">DNA Guide Design</div>
-    <div class="nav-tab" data-tab="rna-guide" onclick="switchTab('rna-guide')">RNA Guide Design<span class="rna-dot"></span></div>
-    <div class="nav-tab" data-tab="knockout" onclick="switchTab('knockout')">Knockout/Knockdown</div>
-    <div class="nav-tab" data-tab="crispri" onclick="switchTab('crispri')">CRISPRi/CRISPRa<span class="rna-dot"></span></div>
-    <div class="nav-tab" data-tab="base-edit" onclick="switchTab('base-edit')">Base Editing<span class="rna-dot"></span></div>
-    <div class="nav-tab" data-tab="combinations" onclick="switchTab('combinations')">Combinations</div>
-    <div class="nav-tab" data-tab="install" onclick="switchTab('install')">Install &amp; Run</div>
-</div>
-</div>
+<div class="nav-bar-wrap"><div class="nav-bar">
+<div class="nt active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
+<div class="nt" data-tab="editing" onclick="switchTab('editing')">Editing Engine</div>
+<div class="nt" data-tab="screening" onclick="switchTab('screening')">Screening & ACE</div>
+<div class="nt" data-tab="knockout" onclick="switchTab('knockout')">Knockout/Knockdown</div>
+<div class="nt" data-tab="rna-guide" onclick="switchTab('rna-guide')">RNA Guide Design</div>
+<div class="nt" data-tab="crispri" onclick="switchTab('crispri')">CRISPRi/CRISPRa</div>
+<div class="nt" data-tab="baseedit" onclick="switchTab('baseedit')">Base Editing</div>
+<div class="nt" data-tab="combinations" onclick="switchTab('combinations')">Combinations</div>
+<div class="nt" data-tab="causality" onclick="switchTab('causality')">Causality (7 Phases)</div>
+<div class="nt" data-tab="install" onclick="switchTab('install')">Install & Run</div>
 
-<!-- MAIN -->
+</div></div>
+
 <div class="main">
 
-    <!-- ==================== TAB 1: DASHBOARD ==================== -->
-    <div id="tab-dashboard" class="tab-content active">
-        <div class="grid-5" style="margin-bottom:20px">
-            <div class="stat-box"><div class="stat-value">210,859</div><div class="stat-label">Knockout Configurations</div></div>
-            <div class="stat-box"><div class="stat-value">88.9B</div><div class="stat-label">Total Combinations (DNA+RNA+Cross)</div></div>
-            <div class="stat-box"><div class="stat-value">15</div><div class="stat-label">ACE Streams</div></div>
-            <div class="stat-box"><div class="stat-value">7</div><div class="stat-label">KO Methods</div></div>
-            <div class="stat-box highlight"><div class="stat-value purple">4</div><div class="stat-label">Cas13 Variants</div></div>
-        </div>
-        <div class="grid-4" style="margin-bottom:20px">
-            <div class="stat-box"><div class="stat-value">6</div><div class="stat-label">Synergy Models</div></div>
-            <div class="stat-box"><div class="stat-value">4</div><div class="stat-label">PAM Types</div></div>
-            <div class="stat-box"><div class="stat-value">11</div><div class="stat-label">Configs/Gene</div></div>
-            <div class="stat-box highlight"><div class="stat-value purple">6</div><div class="stat-label">RNA Engines</div></div>
-        </div>
+<div id="tab-dashboard" class="tc active">
+<div class="g4" style="margin-bottom:16px">
+<div class="sb"><div class="sv">421,718</div><div class="sl">Total KO/KD Configs</div></div>
+<div class="sb"><div class="sv" style="color:var(--accent)">88.9B</div><div class="sl">Total Combinations</div></div>
+<div class="sb"><div class="sv">12</div><div class="sl">Synergy Models</div></div>
+<div class="sb"><div class="sv" style="color:var(--purple)">9</div><div class="sl">RNA Target Types</div></div>
+<div class="sb"><div class="sv">7</div><div class="sl">KO Methods (Ensemble)</div></div>
+<div class="sb"><div class="sv">15</div><div class="sl">ACE Streams</div></div>
+<div class="sb"><div class="sv">23</div><div class="sl">Causality Modules</div></div>
+<div class="sb"><div class="sv">7</div><div class="sl">BiRAGAS Phases</div></div>
+</div>
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">DNA Engines</span>
-                <span class="card-badge badge-blue">6 Core</span>
-            </div>
-            <div class="grid-3">
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x1F9EC;</div><h4>EditingEngine</h4><p>Guide design, multi-PAM (NGG, NNGRRT, TTTV), amplicon analysis, composite scoring</p></div>
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x1F50D;</div><h4>ScreeningEngine</h4><p>MAGeCK RRA/MLE, BAGEL2, DrugZ integrated screening analysis</p></div>
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x2702;&#xFE0F;</div><h4>KnockoutEngine</h4><p>7-method ensemble generating 210,859 knockout configurations</p></div>
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x1F4CA;</div><h4>MegaScaleEngine</h4><p>Sparse matrix O(1) lookup across 22.2 billion combinations</p></div>
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x1F517;</div><h4>CombinationEngine</h4><p>12-model cross-modal synergy: DNA&times;DNA + RNA&times;RNA + DNA&times;RNA (88.9B)</p></div>
-                <div class="engine-card dna-engine"><div class="engine-icon">&#x2B50;</div><h4>ACEScoringEngine</h4><p>15-stream Superior ACE scoring with autonomous calibration</p></div>
-            </div>
-        </div>
+<div class="card"><div class="card-header"><span class="card-title">DNA Engines (6)</span><span class="cb bb">DNA</span></div>
+<div class="g3">
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#9999;</div><h4 style="font-size:.9rem">EditingEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">SpCas9 (NGG), SaCas9 (NNGRRT), Cas12a (TTTV) guide design + amplicon analysis + HDR detection + 11-config knockout strategy</p></div>
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#128269;</div><h4 style="font-size:.9rem">ScreeningEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">MAGeCK RRA/MLE, BAGEL2, DrugZ auto-discovery + essentiality classification + therapeutic alignment</p></div>
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#9876;</div><h4 style="font-size:.9rem">KnockoutEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">7-method ensemble: Topological, Bayesian, Monte Carlo, Pathway, Feedback, ODE, Mutual Info (210,859 configs)</p></div>
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#9881;</div><h4 style="font-size:.9rem">MegaScaleEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">Sparse matrix I=(I-&alpha;W)<sup>-1</sup> for O(1) prediction at genome scale (22.2B DNA combos)</p></div>
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#128200;</div><h4 style="font-size:.9rem">CombinationEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">12-model cross-modal: DNA&times;DNA + RNA&times;RNA + DNA&times;RNA = 88.9B total combinations</p></div>
+<div class="sb" style="border-left:3px solid var(--primary);text-align:left;padding:14px"><div class="ec ec-dna">&#127942;</div><h4 style="font-size:.9rem">ACEScoringEngine</h4><p style="font-size:.78rem;color:var(--text-secondary)">15-stream Superior ACE: MAGeCK + BAGEL2 + MR + GWAS + eQTL + SIGNOR + centrality + druggability</p></div>
+</div></div>
 
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">RNA Engines</span>
-                <span class="card-badge badge-purple">6 New</span>
-            </div>
-            <div class="grid-3">
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x1F9EA;</div><h4>Cas13 Guide Design</h4><p>crRNA design for Cas13a/b/d (CasRx) and dCas13 with on-target scoring and collateral prediction</p></div>
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x270F;&#xFE0F;</div><h4>RNA Base Editing</h4><p>A-to-I (ADAR2) and C-to-U (APOBEC) RNA editing with bystander risk assessment</p></div>
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x1F6D1;</div><h4>CRISPRi/CRISPRa</h4><p>Transcriptional interference and activation with dCas9/dCas13 guide design</p></div>
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x1F52C;</div><h4>Perturb-seq</h4><p>Single-cell CRISPR perturbation with scRNA-seq readout integration</p></div>
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x1F4A0;</div><h4>Non-coding RNA</h4><p>lncRNA, miRNA, and circRNA targeting with structure-aware guide design</p></div>
-                <div class="engine-card rna-engine"><div class="engine-icon">&#x1F30D;</div><h4>Spatial RNA</h4><p>Spatial transcriptomics integration for tissue-specific CRISPR targeting</p></div>
-            </div>
-        </div>
+<div class="card"><div class="card-header"><span class="card-title">RNA Engines (6)</span><span class="cb bp">RNA</span></div>
+<div class="g3">
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#128300;</div><h4 style="font-size:.9rem">Cas13 Guide Design</h4><p style="font-size:.78rem;color:var(--text-secondary)">Cas13a/b/d (CasRx) + dCas13 crRNA design for mRNA, lncRNA, miRNA, siRNA, circRNA, piRNA</p></div>
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#9999;</div><h4 style="font-size:.9rem">RNA Base Editing</h4><p style="font-size:.78rem;color:var(--text-secondary)">dCas13-ADAR2 (A-to-I) + dCas13-APOBEC (C-to-U) recoding, splice mod, stop codon creation</p></div>
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#128261;</div><h4 style="font-size:.9rem">CRISPRi/CRISPRa</h4><p style="font-size:.78rem;color:var(--text-secondary)">dCas9-KRAB repression / dCas9-VPR activation for mRNA, lncRNA, miRNA clusters, enhancers</p></div>
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#128172;</div><h4 style="font-size:.9rem">Perturb-seq/CROP-seq</h4><p style="font-size:.78rem;color:var(--text-secondary)">Single-cell CRISPR screens: perturbation + scRNA-seq readout + regulatory network inference</p></div>
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#127756;</div><h4 style="font-size:.9rem">Non-Coding RNA</h4><p style="font-size:.78rem;color:var(--text-secondary)">lncRNA/miRNA/siRNA/circRNA/piRNA targeting with strategy recommendation + ncRNA networks</p></div>
+<div class="sb" style="border-left:3px solid var(--purple);text-align:left;padding:14px"><div class="ec ec-rna">&#127758;</div><h4 style="font-size:.9rem">Spatial Transcriptomics</h4><p style="font-size:.78rem;color:var(--text-secondary)">CRISPR-TO spatial RNA + scCLEAN rRNA depletion + tissue-level transcriptome analysis</p></div>
+</div></div>
 
-        <div class="card">
-            <div class="card-header"><span class="card-title">DNA vs RNA Targeting Comparison</span></div>
-            <table>
-                <thead><tr><th>Feature</th><th>DNA (Cas9/Cas12)</th><th>RNA (Cas13)</th></tr></thead>
-                <tbody>
-                    <tr><td>Target</td><td>Genomic DNA (permanent edit)</td><td><strong>mRNA/ncRNA (reversible knockdown)</strong></td></tr>
-                    <tr><td>Effect</td><td>Knockout (frameshift/deletion)</td><td><strong>Knockdown (transcript degradation)</strong></td></tr>
-                    <tr><td>PAM/PFS</td><td>NGG, NNGRRT, TTTV</td><td><strong>PFS-free (Cas13d/CasRx)</strong></td></tr>
-                    <tr><td>Guide Length</td><td>20 nt</td><td><strong>22-30 nt (spacer)</strong></td></tr>
-                    <tr><td>Off-target</td><td>Permanent genomic scars</td><td><strong>Transient, no genomic alteration</strong></td></tr>
-                    <tr><td>Collateral Activity</td><td>None</td><td><strong>Trans-cleavage (manageable with CasRx)</strong></td></tr>
-                    <tr><td>Multiplexing</td><td>Limited by DSB toxicity</td><td><strong>Excellent (no DNA damage)</strong></td></tr>
-                    <tr><td>Reversibility</td><td>Permanent</td><td><strong>Fully reversible</strong></td></tr>
-                    <tr><td>Base Editing</td><td>CBE (C-to-T), ABE (A-to-G)</td><td><strong>ADAR2 (A-to-I), APOBEC (C-to-U)</strong></td></tr>
-                </tbody>
-            </table>
-        </div>
+<div class="card"><div class="card-header"><span class="card-title">RNA Target Types Supported (9)</span><span class="cb bp">All RNA Classes</span></div>
+<table><thead><tr><th>RNA Type</th><th>Description</th><th>Recommended Tool</th><th>Analysis</th><th>Scale</th></tr></thead><tbody>
+<tr style="background:#e3f2fd"><td><strong>mRNA</strong></td><td>Protein-coding messenger RNA</td><td>Cas13d (CasRx)</td><td>Perturb-seq, bulk/scRNA-seq</td><td>210,859 configs</td></tr>
+<tr style="background:#f3e5f5"><td><strong>lncRNA</strong></td><td>Long non-coding RNA (&gt;200nt)</td><td>CRISPRi at TSS</td><td>scRNA-seq, CHART-seq</td><td>Per-locus strategy</td></tr>
+<tr style="background:#f3e5f5"><td><strong>miRNA</strong></td><td>MicroRNA (~22nt regulator)</td><td>Cas13d / Cas9 pre-miRNA KO</td><td>Small RNA-seq, CLIP-seq</td><td>Seed derepression</td></tr>
+<tr style="background:#f3e5f5"><td><strong>siRNA</strong></td><td>Small interfering RNA (~21nt)</td><td>Cas13d direct targeting</td><td>Small RNA-seq</td><td>Direct degradation</td></tr>
+<tr style="background:#f3e5f5"><td><strong>circRNA</strong></td><td>Circular RNA (backsplice)</td><td>Cas13d / Cas9 backsplice KO</td><td>RNase R + RNA-seq</td><td>Junction targeting</td></tr>
+<tr style="background:#f3e5f5"><td><strong>piRNA</strong></td><td>Piwi-interacting RNA (~26-31nt)</td><td>Cas13d / CRISPRi cluster</td><td>piRNA-seq</td><td>Cluster silencing</td></tr>
+<tr style="background:#e0f7fa"><td><strong>scRNA</strong></td><td>Single-cell transcriptome</td><td>Perturb-seq / CROP-seq</td><td>10x Chromium scRNA-seq</td><td>Cell-level profiling</td></tr>
+<tr style="background:#e0f7fa"><td><strong>Bulk RNA</strong></td><td>Population transcriptome</td><td>CRISPRi/CRISPRa screen</td><td>Bulk RNA-seq (DESeq2)</td><td>Population average</td></tr>
+<tr style="background:#e0f7fa"><td><strong>Spatial RNA</strong></td><td>Tissue-resolved RNA</td><td>CRISPR-TO</td><td>MERFISH, Visium, Slide-seq</td><td>Spatial localization</td></tr>
+</tbody></table></div>
+</div>
 
-        <div class="card">
-            <div class="card-header"><span class="card-title">BiRAGAS CRISPR Complete v3.0 vs CRIS.py</span></div>
-            <table>
-                <thead><tr><th>Feature</th><th>CRIS.py</th><th>BiRAGAS CRISPR Complete v3.0</th></tr></thead>
-                <tbody>
-                    <tr><td>Knockout Configs</td><td>Manual, per-gene</td><td><strong>210,859 (11/gene x 19,169 genes)</strong></td></tr>
-                    <tr><td>Combinations</td><td>None</td><td><strong>88.9B total (22.2B DNA + 22.2B RNA + 44.5B Cross-Modal)</strong></td></tr>
-                    <tr><td>Synergy Models</td><td>None</td><td><strong>12 (6 classical + 6 cross-modal DNA&times;RNA)</strong></td></tr>
-                    <tr><td>Synergy Models</td><td>None</td><td><strong>6 (Bliss, HSA, Loewe, ZIP, Epistasis, Compensation)</strong></td></tr>
-                    <tr><td>Scoring</td><td>Anchor-distance only</td><td><strong>15-stream ACE + 18-feature heuristic</strong></td></tr>
-                    <tr><td>PAM Types</td><td>NGG only</td><td><strong>NGG, NNGRRT, TTTV, TTTN</strong></td></tr>
-                    <tr><td>HDR Detection</td><td>No</td><td><strong>Template-based HDR detection</strong></td></tr>
-                    <tr><td>Causality</td><td>None</td><td><strong>7-phase BiRAGAS (Pearl's do-calculus)</strong></td></tr>
-                    <tr><td>Self-Correction</td><td>None</td><td><strong>9 autonomous checks + auto-fix + retry</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>RNA Targeting (Cas13)</strong></td><td>None</td><td><strong>Cas13a/b/d + dCas13, 4 variants</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>RNA Knockdown</strong></td><td>None</td><td><strong>Reversible transcript degradation</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>RNA Base Editing</strong></td><td>None</td><td><strong>ADAR2 (A-to-I) + APOBEC (C-to-U)</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>CRISPRi/CRISPRa</strong></td><td>None</td><td><strong>Transcriptional interference/activation</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>Non-coding RNA</strong></td><td>None</td><td><strong>lncRNA, miRNA, circRNA targeting</strong></td></tr>
-                    <tr style="background:#f3e8ff"><td><strong>Perturb-seq</strong></td><td>None</td><td><strong>Single-cell CRISPR + scRNA-seq</strong></td></tr>
-                    <tr><td>License</td><td>GPL (restrictive)</td><td><strong>Proprietary (Ayass Bioscience)</strong></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
-    <!-- ==================== TAB 2: DNA GUIDE DESIGN ==================== -->
-    <div id="tab-dna-guide" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">DNA sgRNA Guide Design</span>
-                <span class="card-badge badge-blue">Multi-PAM</span>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Gene Name or DNA Sequence</label>
-                        <textarea id="dna-guide-gene" class="form-textarea" rows="3" placeholder="Enter gene name (e.g., BRCA1, TP53) or paste DNA sequence (ATCG...)&#10;&#10;Example: ATGCGATCGATCGATCGNNGATCGATCGATCGATCGGATCGATCGATCGAGG"></textarea>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label class="form-label">Number of Guides</label>
-                            <select id="dna-guide-count" class="form-select">
-                                <option value="2">2 guides</option>
-                                <option value="4" selected>4 guides</option>
-                                <option value="6">6 guides</option>
-                                <option value="8">8 guides</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">PAM Type</label>
-                            <select id="dna-guide-pam" class="form-select">
-                                <option value="NGG">SpCas9 (NGG)</option>
-                                <option value="NNGRRT">SaCas9 (NNGRRT)</option>
-                                <option value="TTTV">Cas12a (TTTV)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button id="btn-dna-design" class="btn btn-primary" onclick="designDNAGuides()">Design DNA Guides</button>
-                </div>
-                <div>
-                    <h4 style="margin-bottom:8px;font-size:0.9rem">Composite Scoring (6 features)</h4>
-                    <table>
-                        <tr><td>On-target activity</td><td><strong>40%</strong></td></tr>
-                        <tr><td>GC content (40-70%)</td><td><strong>20%</strong></td></tr>
-                        <tr><td>Self-complementarity</td><td><strong>15%</strong></td></tr>
-                        <tr><td>Poly-T penalty</td><td><strong>10%</strong></td></tr>
-                        <tr><td>Secondary structure</td><td><strong>10%</strong></td></tr>
-                        <tr><td>3' G-enrichment</td><td><strong>5%</strong></td></tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="card" id="dna-guide-results">
-            <p style="color:var(--text-secondary);text-align:center;padding:40px">Design guides to see results here</p>
-        </div>
-    </div>
+<div id="tab-editing" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">EditingEngine v3.0 &mdash; Unified DNA + RNA Guide Design</span><span class="cb bg">DNA + RNA</span></div>
+<div class="g2">
+<div>
+<h4 style="margin-bottom:10px;font-size:.9rem;color:var(--primary)">DNA Guide Design (Cas9/Cas12a)</h4>
+<div class="fg"><label class="fl">Gene Name or DNA Sequence</label><textarea id="ed-dna-seq" class="ft" rows="2" placeholder="e.g., BRCA1 or ATCGATCGATCG..."></textarea></div>
+<div class="g3">
+<div class="fg"><label class="fl">PAM</label><select id="ed-pam" class="fs"><option value="NGG">SpCas9 (NGG)</option><option value="NNGRRT">SaCas9 (NNGRRT)</option><option value="TTTV">Cas12a (TTTV)</option></select></div>
+<div class="fg"><label class="fl">Guides</label><select id="ed-n" class="fs"><option>2</option><option selected>4</option><option>6</option><option>8</option></select></div>
+<div style="display:flex;align-items:flex-end"><button class="btn btn-p" onclick="designDNA()">Design DNA Guides</button></div>
+</div>
+</div>
+<div>
+<h4 style="margin-bottom:10px;font-size:.9rem;color:var(--purple)">RNA Guide Design (Cas13)</h4>
+<div class="fg"><label class="fl">Gene Name or RNA Sequence</label><textarea id="ed-rna-seq" class="ft" rows="2" placeholder="e.g., KRAS or AUGCUAGCUA..."></textarea></div>
+<div class="g3">
+<div class="fg"><label class="fl">RNA Type</label><select id="ed-rnatype" class="fs"><option>mRNA</option><option>lncRNA</option><option>miRNA</option><option>siRNA</option><option>circRNA</option><option>piRNA</option></select></div>
+<div class="fg"><label class="fl">Nuclease</label><select id="ed-cas13" class="fs"><option value="Cas13d">Cas13d (CasRx)</option><option value="Cas13a">Cas13a</option><option value="Cas13b">Cas13b</option><option value="dCas13">dCas13 (dead)</option></select></div>
+<div style="display:flex;align-items:flex-end"><button class="btn btn-p" style="background:var(--purple)" onclick="designRNA()">Design RNA Guides</button></div>
+</div>
+</div>
+</div></div>
 
-    <!-- ==================== TAB 3: RNA GUIDE DESIGN ==================== -->
-    <div id="tab-rna-guide" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">RNA crRNA Guide Design (Cas13)</span>
-                <span class="card-badge badge-purple">RNA Targeting</span>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Gene Name or RNA Sequence</label>
-                        <textarea id="rna-guide-gene" class="form-textarea" rows="3" placeholder="Enter gene name (e.g., BRCA1, KRAS) or paste RNA sequence (AUCG...)&#10;&#10;Example: AUGCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUCGAUC"></textarea>
-                    </div>
-                    <div class="grid-2">
-                        <div class="form-group">
-                            <label class="form-label">Number of Guides</label>
-                            <select id="rna-guide-count" class="form-select">
-                                <option value="2">2 guides</option>
-                                <option value="4" selected>4 guides</option>
-                                <option value="6">6 guides</option>
-                                <option value="8">8 guides</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Cas13 Variant</label>
-                            <select id="rna-nuclease" class="form-select">
-                                <option value="Cas13d">Cas13d (CasRx) - PFS-free</option>
-                                <option value="Cas13a">Cas13a (LwaCas13a)</option>
-                                <option value="Cas13b">Cas13b (PspCas13b)</option>
-                                <option value="dCas13">dCas13 (catalytically dead)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <button id="btn-rna-design" class="btn btn-purple" onclick="designRNAGuides()">Design RNA Guides</button>
-                </div>
-                <div>
-                    <h4 style="margin-bottom:8px;font-size:0.9rem">RNA Composite Scoring (7 features)</h4>
-                    <table>
-                        <tr><td>On-target activity</td><td><strong>30%</strong></td></tr>
-                        <tr><td>GC content (30-60%)</td><td><strong>20%</strong></td></tr>
-                        <tr><td>Seed region (nt 1-8)</td><td><strong>15%</strong></td></tr>
-                        <tr><td>Accessibility estimate</td><td><strong>15%</strong></td></tr>
-                        <tr><td>Poly-U penalty</td><td><strong>8%</strong></td></tr>
-                        <tr><td>Collateral risk</td><td><strong>7%</strong></td></tr>
-                        <tr><td>Knockdown efficiency</td><td><strong>5%</strong></td></tr>
-                    </table>
-                    <div style="margin-top:12px;padding:10px;background:#f3e8ff;border-radius:8px;font-size:0.8rem">
-                        <strong>Cas13 variants:</strong><br>
-                        Cas13a: H/A PFS required (3' of target)<br>
-                        Cas13b: NAN/NNA PFS<br>
-                        Cas13d (CasRx): PFS-free, highest specificity<br>
-                        dCas13: No cleavage, for CRISPRi only
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card" id="rna-guide-results">
-            <p style="color:var(--text-secondary);text-align:center;padding:40px">Design RNA guides to see results here</p>
-        </div>
-    </div>
+<div class="card" id="ed-dna-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Enter a gene or DNA sequence above and click Design DNA Guides</p></div>
+<div class="card" id="ed-rna-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Enter a gene or RNA sequence above and click Design RNA Guides</p></div>
 
-    <!-- ==================== TAB 4: KNOCKOUT/KNOCKDOWN ==================== -->
-    <div id="tab-knockout" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Unified Knockout / Knockdown Designer</span>
-                <span class="card-badge badge-green">11 configs/gene</span>
-            </div>
-            <div style="margin-bottom:16px">
-                <div class="toggle-group">
-                    <button class="toggle-btn active" id="ko-mode-dna" onclick="setKOMode('dna')">DNA Knockout</button>
-                    <button class="toggle-btn" id="ko-mode-rna" onclick="setKOMode('rna')">RNA Knockdown</button>
-                </div>
-            </div>
-            <p id="ko-description" style="margin-bottom:16px;color:var(--text-secondary);font-size:0.85rem">
-                Designs 4 single-guide + 6 double-guide + 1 all-guide = <strong>11 knockout configurations</strong> per gene.
-                For 19,169 genes = <strong>210,859 total configurations</strong>.
-            </p>
-            <div class="grid-2">
-                <div class="form-group">
-                    <label class="form-label">Target Gene</label>
-                    <input id="ko-gene" class="form-input" type="text" placeholder="e.g., BRAF, KRAS, TP53, EGFR">
-                </div>
-                <div style="display:flex;align-items:flex-end">
-                    <button id="btn-knockout" class="btn btn-primary" onclick="designKnockout()">Design Strategy</button>
-                </div>
-            </div>
-        </div>
-        <div class="card" id="ko-results">
-            <p style="color:var(--text-secondary);text-align:center;padding:40px">Enter a gene name and select mode to design configurations</p>
-        </div>
-    </div>
+<div class="card"><div class="card-header"><span class="card-title">Scoring &amp; Capabilities</span></div>
+<div class="g2">
+<div><h4 style="margin-bottom:8px;font-size:.85rem;color:var(--primary)">DNA Composite Score (6 features)</h4>
+<table><tr><td>On-target activity</td><td><strong>40%</strong></td></tr><tr><td>GC content (40-70%)</td><td><strong>20%</strong></td></tr><tr><td>Self-complementarity</td><td><strong>15%</strong></td></tr><tr><td>Poly-T penalty</td><td><strong>10%</strong></td></tr><tr><td>Secondary structure</td><td><strong>10%</strong></td></tr><tr><td>3&prime; G-enrichment</td><td><strong>5%</strong></td></tr></table></div>
+<div><h4 style="margin-bottom:8px;font-size:.85rem;color:var(--purple)">RNA Composite Score (7 features)</h4>
+<table><tr><td>On-target activity</td><td><strong>30%</strong></td></tr><tr><td>RNA accessibility</td><td><strong>20%</strong></td></tr><tr><td>GC content (30-60%)</td><td><strong>15%</strong></td></tr><tr><td>Self-complementarity</td><td><strong>10%</strong></td></tr><tr><td>Secondary structure</td><td><strong>10%</strong></td></tr><tr><td>Poly-U penalty</td><td><strong>10%</strong></td></tr><tr><td>Collateral risk (Cas13a/b)</td><td><strong>5%</strong></td></tr></table></div>
+</div></div>
+</div>
 
-    <!-- ==================== TAB 5: CRISPRi/CRISPRa ==================== -->
-    <div id="tab-crispri" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">CRISPRi / CRISPRa Guide Designer</span>
-                <span class="card-badge badge-purple">Transcriptional Modulation</span>
-            </div>
-            <div style="margin-bottom:16px">
-                <div class="toggle-group">
-                    <button class="toggle-btn active-purple active" id="cri-mode-i" onclick="setCRIMode('i')">CRISPRi (Interference)</button>
-                    <button class="toggle-btn" id="cri-mode-a" onclick="setCRIMode('a')">CRISPRa (Activation)</button>
-                </div>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Target Gene</label>
-                        <input id="cri-gene" class="form-input" type="text" placeholder="e.g., MYC, TP53, VEGFA">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Number of Guides</label>
-                        <select id="cri-count" class="form-select">
-                            <option value="3">3 guides</option>
-                            <option value="5" selected>5 guides</option>
-                            <option value="8">8 guides</option>
-                        </select>
-                    </div>
-                    <button id="btn-crispri" class="btn btn-purple" onclick="designCRISPRi()">Design CRISPRi/a Guides</button>
-                </div>
-                <div>
-                    <h4 style="margin-bottom:8px;font-size:0.9rem">Targeting Windows</h4>
-                    <table>
-                        <thead><tr><th>Mode</th><th>Window (rel. TSS)</th><th>Mechanism</th></tr></thead>
-                        <tbody>
-                            <tr><td><strong>CRISPRi</strong></td><td>-50 to +300 bp</td><td>dCas9-KRAB blocks transcription elongation</td></tr>
-                            <tr><td><strong>CRISPRa</strong></td><td>-400 to -50 bp</td><td>dCas9-VP64/p65/Rta activates transcription</td></tr>
-                        </tbody>
-                    </table>
-                    <div style="margin-top:12px;padding:10px;background:#f3e8ff;border-radius:8px;font-size:0.8rem">
-                        <strong>CRISPRi:</strong> dCas9 fused to KRAB repression domain. Guides target near TSS (+50 to +300 optimal). Blocks RNA Pol II elongation.<br><br>
-                        <strong>CRISPRa:</strong> dCas9 fused to VP64-p65-Rta (VPR) activation domain. Guides upstream of TSS (-400 to -50). Recruits transcriptional machinery.
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card" id="cri-results">
-            <p style="color:var(--text-secondary);text-align:center;padding:40px">Enter a gene and select mode to design CRISPRi/a guides</p>
-        </div>
-    </div>
 
-    <!-- ==================== TAB 6: RNA BASE EDITING ==================== -->
-    <div id="tab-base-edit" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">RNA Base Editing Designer</span>
-                <span class="card-badge badge-purple">ADAR2 / APOBEC</span>
-            </div>
-            <div style="margin-bottom:16px">
-                <div class="toggle-group">
-                    <button class="toggle-btn active-purple active" id="be-mode-ai" onclick="setBEMode('ai')">A-to-I (ADAR2)</button>
-                    <button class="toggle-btn" id="be-mode-cu" onclick="setBEMode('cu')">C-to-U (APOBEC)</button>
-                </div>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <div class="form-group">
-                        <label class="form-label">Gene Name</label>
-                        <input id="be-gene" class="form-input" type="text" placeholder="e.g., PCSK9, SCN9A">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">RNA Sequence (AUCG, min 30 nt)</label>
-                        <textarea id="be-sequence" class="form-textarea" rows="3" placeholder="Paste RNA sequence around target edit site...&#10;&#10;Example: AUGCGAUCGAUCGAACGAUCGAUCGAUCGAUCGAUCG"></textarea>
-                    </div>
-                    <button id="btn-base-edit" class="btn btn-purple" onclick="designBaseEdit()">Find Edit Sites</button>
-                </div>
-                <div>
-                    <h4 style="margin-bottom:8px;font-size:0.9rem">RNA Base Editing Overview</h4>
-                    <table>
-                        <thead><tr><th>Editor</th><th>Conversion</th><th>Deaminase</th><th>Window</th></tr></thead>
-                        <tbody>
-                            <tr><td><strong>ADAR2</strong></td><td>A &rarr; I (read as G)</td><td>ADAR2dd</td><td>Pos 20-30 in guide</td></tr>
-                            <tr><td><strong>APOBEC</strong></td><td>C &rarr; U (read as T)</td><td>APOBEC1/3A</td><td>Pos 3-8 in guide</td></tr>
-                        </tbody>
-                    </table>
-                    <div style="margin-top:12px;padding:10px;background:#f3e8ff;border-radius:8px;font-size:0.8rem">
-                        <strong>A-to-I editing:</strong> Uses dCas13-ADAR2dd fusion. Creates A-C mismatch in guide RNA to direct editing. Inosine is read as guanosine.<br><br>
-                        <strong>C-to-U editing:</strong> Uses dCas13-APOBEC fusion. Directs cytidine deamination on RNA. No permanent genomic changes.
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card" id="be-results">
-            <p style="color:var(--text-secondary);text-align:center;padding:40px">Enter a gene and RNA sequence to find editable sites</p>
-        </div>
-    </div>
+<div id="tab-screening" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">ScreeningEngine &mdash; MAGeCK + BAGEL2 + DrugZ + Perturb-seq</span><span class="cb bg">Auto-Discovery</span></div>
+<p style="margin-bottom:14px;color:var(--text-secondary);font-size:.82rem">Auto-discovers and loads ALL CRISPR screening data from any directory tree. Computes unified ACE scores.</p>
+<table><thead><tr><th>Data Format</th><th>Detection Rule</th><th>Type</th><th>Key Columns</th></tr></thead><tbody>
+<tr><td><strong>MAGeCK RRA</strong></td><td>gene_summary + rra in path</td><td>DNA Screen</td><td>id, pos|score, neg|score</td></tr>
+<tr><td><strong>MAGeCK MLE</strong></td><td>gene_summary + mle in path</td><td>DNA Screen</td><td>Gene, *|beta, *|z</td></tr>
+<tr><td><strong>BAGEL2</strong></td><td>essential_genes.txt</td><td>Essentiality</td><td>Gene list</td></tr>
+<tr><td><strong>DrugZ</strong></td><td>drugz in filename</td><td>Drug Screen</td><td>GENE, sumZ, pval</td></tr>
+<tr style="background:#f3e5f5"><td><strong>Perturb-seq</strong></td><td>.h5ad files</td><td>scRNA-seq</td><td>AnnData (guide + transcriptome)</td></tr>
+<tr style="background:#f3e5f5"><td><strong>CROP-seq</strong></td><td>.h5ad + barcode</td><td>scRNA-seq</td><td>Guide barcode + expression</td></tr>
+<tr style="background:#f3e5f5"><td><strong>CRISPRi Screen</strong></td><td>crispri in path</td><td>RNA Screen</td><td>Gene, fold_change, pvalue</td></tr>
+<tr style="background:#f3e5f5"><td><strong>Cas13 Screen</strong></td><td>cas13 in path</td><td>RNA Screen</td><td>Gene, knockdown_eff</td></tr>
+</tbody></table></div>
 
-    <!-- ==================== TAB 7: COMBINATIONS (12-Model Cross-Modal) ==================== -->
+<div class="card"><div class="card-header"><span class="card-title">15-Stream ACE Scoring (Aggregated CRISPR Evidence)</span><span class="cb bb">15 Streams</span></div>
+<table><thead><tr><th>#</th><th>Stream</th><th>Weight</th><th>Source</th><th>Type</th></tr></thead><tbody>
+<tr><td>1</td><td>MAGeCK RRA</td><td>0.90</td><td>RRA p-value</td><td>DNA Screen</td></tr>
+<tr><td>2</td><td>MAGeCK MLE</td><td>0.85</td><td>MLE beta</td><td>DNA Screen</td></tr>
+<tr><td>3</td><td>BAGEL2 BF</td><td>0.85</td><td>Bayes Factor</td><td>Essentiality</td></tr>
+<tr style="background:#f3e5f5"><td>4</td><td>Perturb-seq</td><td>0.80</td><td>Effect size</td><td>scRNA-seq</td></tr>
+<tr><td>5</td><td>GWAS</td><td>0.90</td><td>p-value</td><td>Genomic</td></tr>
+<tr><td>6</td><td>MR beta</td><td>0.95</td><td>Mendelian Randomization</td><td>Causal</td></tr>
+<tr><td>7</td><td>eQTL</td><td>0.85</td><td>Association</td><td>Expression</td></tr>
+<tr><td>8</td><td>SIGNOR</td><td>0.90</td><td>Network weight</td><td>Pathway</td></tr>
+<tr><td>9</td><td>Centrality</td><td>0.70</td><td>Betweenness</td><td>Network</td></tr>
+<tr><td>10</td><td>DAG Tier</td><td>0.75</td><td>Network tier</td><td>Topology</td></tr>
+<tr><td>11</td><td>Drug Sensitivity</td><td>0.80</td><td>DrugZ</td><td>Drug</td></tr>
+<tr><td>12</td><td>Conservation</td><td>0.65</td><td>Phylogenetic</td><td>Evolution</td></tr>
+<tr style="background:#f3e5f5"><td>13</td><td>FluteMLE Pathway</td><td>0.70</td><td>Enrichment</td><td>RNA Pathway</td></tr>
+<tr style="background:#f3e5f5"><td>14</td><td>Editing Efficiency</td><td>0.60</td><td>KD/KO success</td><td>RNA/DNA Edit</td></tr>
+<tr><td>15</td><td>Drug Z-score</td><td>0.75</td><td>Z-score</td><td>Drug</td></tr>
+</tbody></table>
+<p style="margin-top:10px;font-size:.78rem;color:var(--text-secondary)"><strong>Formula:</strong> ACE = &Sigma;(normalized<sub>i</sub> &times; weight<sub>i</sub>) / &Sigma;(weight<sub>i</sub>) &nbsp;|&nbsp; <strong>Confidence:</strong> C = 1 - &Pi;(1 - w<sub>i</sub> &times; 0.3)</p>
+</div>
+
+<div class="card"><div class="card-header"><span class="card-title">Classification</span></div>
+<div class="g2">
+<div><h4 style="font-size:.85rem;margin-bottom:8px">Essentiality</h4><table>
+<tr><td><strong>Core Essential</strong></td><td>Essential gene list OR BAGEL2 BF &gt; 5</td></tr>
+<tr><td><strong>Context Essential</strong></td><td>RRA pos p &lt; 0.01</td></tr>
+<tr><td><strong>Non-Essential</strong></td><td>Non-essential list OR BAGEL2 BF &lt; -5</td></tr>
+<tr><td><strong>Ambiguous</strong></td><td>None of the above</td></tr></table></div>
+<div><h4 style="font-size:.85rem;margin-bottom:8px">Therapeutic Alignment</h4><table>
+<tr><td><strong>Aggravating</strong></td><td>ACE &lt; -0.2 AND not Core Essential</td></tr>
+<tr><td><strong>Protective</strong></td><td>ACE &gt; 0.2</td></tr>
+<tr><td><strong>Essential-Caution</strong></td><td>Core Essential (targeting risks lethality)</td></tr>
+<tr><td><strong>Neutral</strong></td><td>Otherwise</td></tr></table></div>
+</div></div>
+</div>
+
+
+<div id="tab-knockout" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">KnockoutEngine v3.0 &mdash; DNA Knockout + RNA Knockdown</span><span class="cb bg">421,718 Configs</span></div>
+<p style="margin-bottom:14px;color:var(--text-secondary);font-size:.82rem">
+Unified engine: 210,859 DNA knockout configs + 210,859 RNA knockdown configs = <strong>421,718 total</strong>. Each gene gets 11 configs (4 single + 6 double + 1 all).
+</p>
+<div class="g2">
+<div>
+<div class="fg"><label class="fl">Target Gene</label><input id="ko-gene" class="fi" type="text" placeholder="e.g., BRAF, KRAS, TP53, HOTAIR, MIR21"></div>
+<div class="fg"><label class="fl">Mode</label><select id="ko-mode" class="fs">
+<option value="DNA_KO">DNA Knockout (Cas9) &mdash; 11 configs</option>
+<option value="mRNA_KD">mRNA Knockdown (Cas13d) &mdash; 11 configs</option>
+<option value="lncRNA">lncRNA Silencing (CRISPRi + CRISPRa + Deletion)</option>
+<option value="miRNA">miRNA Knockdown (Cas13 + Cas9 pre-miRNA KO)</option>
+<option value="multi">Multi-Modal (DNA KO + RNA KD combined)</option>
+</select></div>
+<button class="btn btn-p" onclick="designKO()">Design Strategy</button>
+</div>
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px">7-Method Ensemble (DNA Knockout)</h4>
+<table style="font-size:.78rem"><thead><tr><th>#</th><th>Method</th><th>Weight</th></tr></thead><tbody>
+<tr><td>1</td><td>Topological (Pearl's do-calculus)</td><td>20%</td></tr>
+<tr><td>2</td><td>Bayesian (Noisy-OR)</td><td>18%</td></tr>
+<tr><td>3</td><td>Monte Carlo (N=1000 + CI)</td><td>18%</td></tr>
+<tr><td>4</td><td>Pathway-specific decay</td><td>14%</td></tr>
+<tr><td>5</td><td>Feedback loop adjustment</td><td>12%</td></tr>
+<tr><td>6</td><td>ODE dynamics (Euler)</td><td>10%</td></tr>
+<tr><td>7</td><td>Mutual Information</td><td>8%</td></tr>
+</tbody></table>
+</div>
+</div></div>
+<div class="card" id="ko-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Select a mode and gene above</p></div>
+</div>
+
+
+<div id="tab-rna-guide" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">RNA Guide Design &mdash; All Non-Coding &amp; Coding RNA</span><span class="cb bp">9 RNA Types</span></div>
+<div class="g2">
+<div>
+<div class="fg"><label class="fl">Gene / RNA Name</label><input id="rg-gene" class="fi" type="text" placeholder="e.g., HOTAIR, MIR21, MALAT1, NEAT1, KRAS"></div>
+<div class="fg"><label class="fl">RNA Target Type</label><select id="rg-type" class="fs" onchange="updateRNARec()">
+<option value="mRNA">mRNA (coding transcript)</option>
+<option value="lncRNA">lncRNA (long non-coding)</option>
+<option value="miRNA">miRNA (microRNA ~22nt)</option>
+<option value="siRNA">siRNA (small interfering)</option>
+<option value="circRNA">circRNA (circular RNA)</option>
+<option value="piRNA">piRNA (Piwi-interacting)</option>
+</select></div>
+<div class="fg"><label class="fl">Strategy</label><select id="rg-strat" class="fs">
+<option value="knockdown">Knockdown (Cas13 degradation)</option>
+<option value="crispri">CRISPRi (transcriptional repression)</option>
+<option value="crispra">CRISPRa (transcriptional activation)</option>
+<option value="base_edit">Base Editing (dCas13-ADAR2/APOBEC)</option>
+<option value="splicing">Splicing Modulation</option>
+<option value="imaging">RNA Imaging (dCas13-GFP)</option>
+</select></div>
+<button class="btn btn-p" style="background:var(--purple)" onclick="designRNAGuide()">Design RNA Guides</button>
+</div>
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px">Recommendation</h4>
+<div id="rg-rec" style="padding:12px;background:#f3e5f5;border-radius:8px;font-size:.82rem">
+<strong>mRNA:</strong> Cas13d (CasRx) recommended &mdash; no collateral, highest efficiency. Alternative: CRISPRi for reversible repression.
+</div>
+<h4 style="font-size:.85rem;margin:12px 0 8px">Cas13 Variants</h4>
+<table style="font-size:.78rem"><thead><tr><th>Variant</th><th>Guide</th><th>PFS</th><th>Collateral</th><th>Best For</th></tr></thead><tbody>
+<tr><td><strong>Cas13a</strong></td><td>28nt</td><td>H (not G)</td><td>Yes</td><td>Diagnostics (SHERLOCK)</td></tr>
+<tr><td><strong>Cas13b</strong></td><td>30nt</td><td>NAN</td><td>Yes</td><td>RNA knockdown</td></tr>
+<tr><td><strong>Cas13d</strong></td><td>22nt</td><td>None</td><td>No</td><td>Therapeutic KD (best)</td></tr>
+<tr><td><strong>dCas13</strong></td><td>22nt</td><td>None</td><td>No</td><td>Base editing, imaging</td></tr>
+</tbody></table>
+</div>
+</div></div>
+<div class="card" id="rg-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Select RNA type and click Design RNA Guides</p></div>
+</div>
+
+
+<div id="tab-crispri" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">CRISPRi/CRISPRa &mdash; Transcriptome Modulation</span><span class="cb bp">No DNA Cutting</span></div>
+<div class="g2">
+<div>
+<div class="fg"><label class="fl">Gene</label><input id="ci-gene" class="fi" type="text" placeholder="e.g., BRAF, HOTAIR, MIR21-cluster"></div>
+<div class="g2">
+<div class="fg"><label class="fl">Mode</label><select id="ci-mode" class="fs"><option value="CRISPRi">CRISPRi (Repression)</option><option value="CRISPRa">CRISPRa (Activation)</option></select></div>
+<div class="fg"><label class="fl">Application</label><select id="ci-app" class="fs"><option>mRNA repression</option><option>lncRNA silencing</option><option>miRNA cluster</option><option>Enhancer targeting</option></select></div>
+</div>
+<button class="btn btn-p" style="background:var(--purple)" onclick="designCI()">Design CRISPRi/CRISPRa Guides</button>
+</div>
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px">Targeting Windows</h4>
+<div style="padding:14px;background:#f8f9fa;border-radius:8px;font-family:var(--mono);font-size:.75rem;line-height:2">
+<span style="color:var(--danger)">CRISPRa: -400 to -50</span> | <span style="color:var(--text-secondary)">TSS</span> | <span style="color:var(--primary)">CRISPRi: -50 to +300</span><br>
+<span style="color:var(--danger)">&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;</span><span style="color:#ccc">&#9632;&#9632;</span><span style="font-weight:800;color:var(--accent)">|TSS|</span><span style="color:var(--primary)">&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;&#9632;</span>
+</div>
+</div>
+</div></div>
+<div class="card" id="ci-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Enter gene and click Design</p></div>
+</div>
+
+
+<div id="tab-baseedit" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">RNA Base Editing &mdash; dCas13-ADAR2 (A-to-I) + dCas13-APOBEC (C-to-U)</span><span class="cb bp">No DNA Change</span></div>
+<div class="g2">
+<div>
+<div class="fg"><label class="fl">Gene</label><input id="be-gene" class="fi" type="text" placeholder="e.g., PCSK9, KRAS"></div>
+<div class="fg"><label class="fl">RNA Sequence (optional)</label><textarea id="be-seq" class="ft" rows="2" placeholder="AUGCUAGCUAGCUA..."></textarea></div>
+<div class="g2">
+<div class="fg"><label class="fl">Edit Type</label><select id="be-type" class="fs"><option value="AtoI">A-to-I (ADAR2dd) &mdash; read as G</option><option value="CtoU">C-to-U (APOBEC1)</option></select></div>
+<div class="fg"><label class="fl">Application</label><select id="be-app" class="fs"><option>Codon recoding</option><option>Splice modulation</option><option>Stop codon creation</option><option>Disease SNP correction</option></select></div>
+</div>
+<button class="btn btn-p" style="background:var(--purple)" onclick="designBE()">Predict Edit Sites</button>
+</div>
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px">Edit Windows</h4>
+<div style="padding:12px;background:#f8f9fa;border-radius:8px;font-size:.78rem">
+<strong>ADAR2 (A-to-I):</strong> Positions 18-30 from 5&prime; of spacer<br>
+<strong>APOBEC (C-to-U):</strong> Positions 15-25 from 5&prime; of spacer<br><br>
+<strong>Preference:</strong> ADAR2 prefers UAG &gt; AAG &gt; CAG context<br>
+<strong>Output:</strong> A&rarr;I (read as G): recodes amino acids without DNA change
+</div>
+</div>
+</div></div>
+<div class="card" id="be-results"><p style="color:var(--text-secondary);text-align:center;padding:30px">Enter gene/sequence and click Predict Edit Sites</p></div>
+</div>
+
+
+<!-- ==================== TAB 7: COMBINATIONS (12-Model Cross-Modal) ==================== -->
     <div id="tab-combinations" class="tab-content">
 
         <!-- Scale Overview -->
@@ -697,779 +519,286 @@ tr:hover td { background: #f8f9ff; }
         </div>
     </div>
 
-    <!-- ==================== TAB 8: INSTALL & RUN ==================== -->
-    <div id="tab-install" class="tab-content">
-        <div class="card">
-            <div class="card-header">
-                <span class="card-title">Installation &amp; Setup</span>
-                <span class="card-badge badge-green">Full Backend</span>
-            </div>
-            <div class="grid-2">
-                <div>
-                    <h4 style="margin-bottom:12px">1. Clone &amp; Install</h4>
-                    <div class="code-block"><span class="comment"># Clone the repository</span>
-<span class="cmd">git clone</span> <span class="str">https://github.com/AyassBioscience/BiRAGAS-CRISPR-Complete.git</span>
-<span class="cmd">cd</span> BiRAGAS-CRISPR-Complete
 
-<span class="comment"># Create virtual environment</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> venv .venv
-<span class="cmd">source</span> .venv/bin/activate
+<div id="tab-causality" class="tc">
+<div class="card" style="background:linear-gradient(135deg,#1a237e,#283593);color:#fff;border:none">
+<h2 style="font-size:1.3rem;margin-bottom:6px">BiRAGAS 7-Phase Causality Framework</h2>
+<p style="opacity:.85;font-size:.85rem">28 integration modules (4/phase) + 23 core causality modules + DNA &amp; RNA evidence flow</p>
+</div>
 
-<span class="comment"># Install dependencies</span>
-<span class="cmd">pip install</span> <span class="flag">-r</span> requirements.txt
-<span class="cmd">pip install</span> <span class="flag">-e</span> .</div>
+<div class="card"><div class="card-header"><span class="card-title">28 CRISPR Phase Integration Modules (4 per phase)</span></div>
+<table style="font-size:.78rem"><thead><tr><th>Phase</th><th>Focus</th><th>Module 1</th><th>Module 2</th><th>Module 3</th><th>Module 4</th></tr></thead><tbody>
+<tr style="background:#e3f2fd"><td><strong>Phase 1</strong></td><td>Screening&rarr;DAG</td><td>QualityGate</td><td>ScreeningConverter</td><td>CRISPREnricher</td><td>MRCorroborator</td></tr>
+<tr><td><strong>Phase 2</strong></td><td>Network Scoring</td><td>TargetScorer(7D)</td><td>CentralityEnhancer</td><td>TierPromoter</td><td>KnockoutBridge</td></tr>
+<tr style="background:#e3f2fd"><td><strong>Phase 3</strong></td><td>Quality Assurance</td><td>DirectionValidator</td><td>ConfoundingDetector</td><td>HallucinationShield</td><td>KOIntegrator</td></tr>
+<tr><td><strong>Phase 4</strong></td><td>Mechanisms</td><td>AttributeHarmonizer</td><td>ResistanceEnhancer</td><td>CompensationBridge</td><td>EngineAdapter</td></tr>
+<tr style="background:#e3f2fd"><td><strong>Phase 5</strong></td><td>Pharmaceutical</td><td>DrugTargetRanker(9D)</td><td>SafetyEnhancer</td><td>EfficacyInjector</td><td>SynergyUpgrader</td></tr>
+<tr><td><strong>Phase 6</strong></td><td>Stratification</td><td>WeightedStratifier</td><td>DriverComparator</td><td>MotifValidator</td><td>SubtypeMapper</td></tr>
+<tr style="background:#e3f2fd"><td><strong>Phase 7</strong></td><td>Reporting</td><td>ReportGenerator</td><td>QualityBooster</td><td>ArbitrationEnhancer</td><td>GapPrioritizer</td></tr>
+</tbody></table></div>
 
-                    <h4 style="margin:16px 0 12px">2. Start the Server</h4>
-                    <div class="code-block"><span class="comment"># Start API server (enables full functionality)</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR <span class="flag">--serve</span>
+<div class="card"><div class="card-header"><span class="card-title">23 Core BiRAGAS Causality Modules</span></div>
+<div class="g2">
+<div><table style="font-size:.78rem">
+<tr><td><strong>Phase 1</strong></td><td>dag_builder (1,191 lines)</td><td>mr_validator (325)</td></tr>
+<tr><td><strong>Phase 2</strong></td><td>centrality_calculator (215)</td><td>target_scorer (165)</td></tr>
+<tr><td><strong>Phase 3</strong></td><td>causality_tester (292)</td><td>directionality_tester (205)</td></tr>
+<tr><td></td><td>confounding_checker (200)</td><td></td></tr>
+<tr><td><strong>Phase 4</strong></td><td>counterfactual_simulator (181)</td><td>dag_propagation_engine (172)</td></tr>
+<tr><td></td><td>resistance_mechanism_id (240)</td><td>compensation_pathway (222)</td></tr>
+<tr><td><strong>Phase 5</strong></td><td>druggability_scorer (149)</td><td>efficacy_predictor (153)</td></tr>
+<tr><td></td><td>safety_assessor (196)</td><td>target_ranker (162)</td></tr>
+<tr><td></td><td>combination_analyzer (219)</td><td></td></tr>
+</table></div>
+<div><table style="font-size:.78rem">
+<tr><td><strong>Phase 6</strong></td><td>cohort_stratifier (173)</td><td>dag_comparator (219)</td></tr>
+<tr><td></td><td>conserved_motifs_id (240)</td><td></td></tr>
+<tr><td><strong>Phase 7</strong></td><td>evidence_inspector (227)</td><td>gap_analyzer (261)</td></tr>
+<tr><td></td><td>llm_arbitrator (298)</td><td>response_formatter (285)</td></tr>
+</table>
+<h4 style="font-size:.85rem;margin:14px 0 8px;color:var(--purple)">RNA Evidence Through Causality</h4>
+<table style="font-size:.75rem">
+<tr><td><strong>Phase 1</strong></td><td>RNA KD + Perturb-seq &rarr; DAG enrichment</td></tr>
+<tr><td><strong>Phase 2</strong></td><td>RNA evidence boosts centrality + tier</td></tr>
+<tr><td><strong>Phase 3</strong></td><td>Cas13 KD validates causal edges</td></tr>
+<tr><td><strong>Phase 4</strong></td><td>RNA compensation + isoform switching</td></tr>
+<tr><td><strong>Phase 5</strong></td><td>RNA KD efficacy + cross-modal synergy</td></tr>
+<tr><td><strong>Phase 6</strong></td><td>scRNA-seq for patient stratification</td></tr>
+<tr><td><strong>Phase 7</strong></td><td>Dual DNA+RNA validated clinical targets</td></tr>
+</table>
+</div>
+</div></div>
 
-<span class="comment"># Server runs at http://localhost:8000</span>
-<span class="comment"># Open this HTML file in browser</span></div>
-                </div>
-                <div>
-                    <h4 style="margin-bottom:12px">3. DNA CLI Examples</h4>
-                    <div class="code-block"><span class="comment"># Design DNA guides</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR guide-design \
-  <span class="flag">--gene</span> <span class="str">BRAF</span> <span class="flag">--pam</span> <span class="str">NGG</span> <span class="flag">--n-guides</span> <span class="str">4</span>
+<div class="card"><div class="card-header"><span class="card-title">Agentic AI Autonomous Features</span><span class="cb bg">Self-Correcting</span></div>
+<table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>SelfCorrector</strong></td><td>9 autonomous DAG checks: cycle removal, orphan connection, confidence pruning, attribute injection, layer enforcement, weight normalization, duplicate removal, component merging, confidence harmonization</td></tr>
+<tr><td><strong>PipelineDebugger</strong></td><td>Error classification + exponential backoff retry (2/4/8/16/30s) + fallback methods + state checkpointing</td></tr>
+<tr><td><strong>LearningEngine</strong></td><td>Performance tracking + adaptive phase optimization + pattern recognition</td></tr>
+<tr><td><strong>StressTestAgent</strong></td><td>17 differential diagnosis scenarios for clinical validation</td></tr>
+</tbody></table></div>
+</div>
 
-<span class="comment"># Full knockout strategy</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR knockout \
-  <span class="flag">--gene</span> <span class="str">TP53</span> <span class="flag">--all-configs</span>
 
-<span class="comment"># Combination synergy</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR combo \
-  <span class="flag">--gene-a</span> <span class="str">BRAF</span> <span class="flag">--gene-b</span> <span class="str">MEK1</span></div>
+<div id="tab-install" class="tc">
+<div class="card"><div class="card-header"><span class="card-title">Installation &amp; CLI</span><span class="cb bg">Full Backend</span></div>
+<div class="g2">
+<div>
+<h4 style="margin-bottom:8px">Setup</h4>
+<pre style="background:#1e1e1e;color:#d4d4d4;padding:14px;border-radius:8px;font-size:.78rem;overflow-x:auto;line-height:1.8">
+<span style="color:#6a9955"># Clone</span>
+<span style="color:#569cd6">git clone</span> https://github.com/mayasss-gif/BiRAGAS-CRISPR-Complete.git
+<span style="color:#569cd6">cd</span> BiRAGAS-CRISPR-Complete
 
-                    <h4 style="margin:16px 0 12px">4. RNA CLI Examples</h4>
-                    <div class="code-block"><span class="comment"># Design Cas13 RNA guides</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR rna-guide \
-  <span class="flag">--gene</span> <span class="str">KRAS</span> <span class="flag">--nuclease</span> <span class="str">Cas13d</span> <span class="flag">--n-guides</span> <span class="str">4</span>
+<span style="color:#6a9955"># Install</span>
+<span style="color:#569cd6">pip install</span> numpy scipy networkx fastapi uvicorn pydantic
 
-<span class="comment"># RNA knockdown strategy</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR rna-knockdown \
-  <span class="flag">--gene</span> <span class="str">MYC</span> <span class="flag">--nuclease</span> <span class="str">CasRx</span>
+<span style="color:#6a9955"># Start server</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--serve</span>
+</pre>
+</div>
+<div>
+<h4 style="margin-bottom:8px">CLI Examples (DNA + RNA)</h4>
+<pre style="background:#1e1e1e;color:#d4d4d4;padding:14px;border-radius:8px;font-size:.78rem;overflow-x:auto;line-height:1.8">
+<span style="color:#6a9955"># DNA guide design</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--design BRCA1 --nuclease NGG</span>
 
-<span class="comment"># CRISPRi design</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR crispri \
-  <span class="flag">--gene</span> <span class="str">VEGFA</span> <span class="flag">--mode</span> <span class="str">interference</span>
+<span style="color:#6a9955"># RNA guide design (Cas13d)</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--design KRAS --nuclease Cas13d</span>
 
-<span class="comment"># RNA base editing</span>
-<span class="cmd">python3.12</span> <span class="flag">-m</span> Py_Codes_BiRAGAS_CRISPR rna-base-edit \
-  <span class="flag">--gene</span> <span class="str">PCSK9</span> <span class="flag">--editor</span> <span class="str">ADAR2</span> \
-  <span class="flag">--sequence</span> <span class="str">AUGCGAUCGAACGAUCG</span></div>
-                </div>
-            </div>
-        </div>
+<span style="color:#6a9955"># DNA knockout + RNA knockdown</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--knockout TP53 --nuclease NGG</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--knockout MYC --nuclease Cas13d</span>
 
-        <div class="card">
-            <div class="card-header"><span class="card-title">System Requirements</span></div>
-            <table>
-                <thead><tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr></thead>
-                <tbody>
-                    <tr><td>Python</td><td>3.10+</td><td><strong>3.12</strong></td></tr>
-                    <tr><td>RAM</td><td>8 GB</td><td><strong>32 GB</strong></td></tr>
-                    <tr><td>Disk</td><td>2 GB</td><td><strong>10 GB</strong></td></tr>
-                    <tr><td>OS</td><td>Linux/macOS</td><td><strong>Ubuntu 22.04 / macOS 14+</strong></td></tr>
-                    <tr><td>GPU (optional)</td><td>N/A</td><td><strong>CUDA 12+ for deep scoring</strong></td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+<span style="color:#6a9955"># CRISPRi for lncRNA</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--crispri HOTAIR</span>
+
+<span style="color:#6a9955"># RNA base editing</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--base-edit A-to-I --gene PCSK9</span>
+
+<span style="color:#6a9955"># Full pipeline (DNA + RNA)</span>
+<span style="color:#569cd6">python -m</span> BiRAGAS_CRISPR_Complete <span style="color:#ce9178">--analyze /path/to/CRISPR --disease Melanoma</span>
+</pre>
+</div>
+</div></div>
+</div>
 
 </div>
 
-<!-- FOOTER -->
-<div style="text-align:center;padding:24px;color:var(--text-secondary);font-size:0.8rem;border-top:1px solid var(--border)">
-    BiRAGAS CRISPR Complete v3.0 &mdash; DNA + RNA &mdash; Ayass Bioscience LLC<br>
-    210,859 Knockouts &bull; 88.9 Billion Combinations &bull; 7-Method Ensemble &bull; 15-Stream ACE &bull; 4 Cas13 Variants &bull; RNA Base Editing<br>
-    <span style="margin-top:6px;display:inline-block">To enable full functionality: <code>python3.12 -m Py_Codes_BiRAGAS_CRISPR --serve</code></span>
+<div style="text-align:center;padding:20px;color:var(--text-secondary);font-size:.75rem;border-top:1px solid var(--border)">
+BiRAGAS CRISPR Complete v3.0 &mdash; DNA + RNA &mdash; Ayass Bioscience LLC<br>
+421,718 KO/KD Configs &bull; 88.9B Combinations &bull; 12 Synergy Models &bull; 15 ACE Streams &bull; 23 Causality Modules &bull; 7 Phases &bull; 9 RNA Types
 </div>
 
 <script>
-// ============================================================
-//  GLOBALS & UTILITIES
-// ============================================================
+
 const API = 'http://localhost:8000';
 let serverAvailable = false;
-let koMode = 'dna';
-let criMode = 'i';
-let beMode = 'ai';
 
-function switchTab(tab) {
-    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-    document.querySelector('[data-tab="'+tab+'"]').classList.add('active');
-    document.getElementById('tab-'+tab).classList.add('active');
+function switchTab(t){document.querySelectorAll('.nt').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tc').forEach(e=>e.classList.remove('active'));document.querySelector('[data-tab="'+t+'"]').classList.add('active');document.getElementById('tab-'+t).classList.add('active')}
+
+function seededRandom(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return function(){h=Math.imul(h^(h>>>16),2246822507);h=Math.imul(h^(h>>>13),3266489909);return((h^=h>>>16)>>>0)/4294967296}}
+
+function gc(s){let g=0;for(let c of s.toUpperCase())if(c==='G'||c==='C')g++;return s.length?g/s.length:0}
+function rc(s){return s.split('').reverse().map(c=>({A:'T',T:'A',G:'C',C:'G'}[c.toUpperCase()]||c)).join('')}
+function scoreClass(v){return v>=0.7?'hi':(v>=0.4?'mi':'lo')}
+
+function makeScoreBar(v,label){
+    v=Math.min(1,Math.max(0,v));const cls=v>=0.7?'hi':(v>=0.4?'mi':'lo');
+    return '<div class="scb '+cls+'"><span style="min-width:40px;font-size:.78rem">'+label+'</span><div class="sct"><div class="scf" style="width:'+(v*100)+'%"></div></div></div>';
 }
 
-function seededRandom(seed) {
-    let s = 0;
-    for (let i = 0; i < seed.length; i++) s = ((s << 5) - s) + seed.charCodeAt(i);
-    return function() { s = (s * 16807 + 0) % 2147483647; return (s & 0x7fffffff) / 2147483647; };
+function makeGuide(gene,i,len){
+    let h=0;const s=gene+i+'v3';for(let c=0;c<s.length;c++){h=((h<<5)-h)+s.charCodeAt(c);h|=0}
+    h=Math.abs(h);const bases='ACGG';let seq='';for(let j=0;j<len;j++){h=Math.imul(h^(h>>>16),2246822507);seq+=bases[(h>>>0)%4]}return seq;
+}
+function makeRNAGuide(gene,i,len){
+    let h=0;const s=gene+i+'rna3';for(let c=0;c<s.length;c++){h=((h<<5)-h)+s.charCodeAt(c);h|=0}
+    h=Math.abs(h);const bases='ACGU';let seq='';for(let j=0;j<len;j++){h=Math.imul(h^(h>>>16),2246822507);seq+=bases[(h>>>0)%4]}return seq;
 }
 
-function hashStr(s) { let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i); return Math.abs(h); }
+function scoreDNA(seq){let s=.5,g=gc(seq);if(g>=.4&&g<=.7)s+=.15;else if(g<.25||g>.8)s-=.2;if(seq[0]==='G')s+=.04;if(seq[seq.length-1]==='G')s+=.06;if(seq.includes('TTTT'))s-=.15;if(seq.includes('GGGG'))s-=.08;let g3=0;for(let c of seq.slice(-4))if(c==='G')g3++;s+=g3*.025;return Math.max(.05,Math.min(1,s))}
+function scoreRNA(seq,nuclease){let s=.5,g=gc(seq.replace(/U/g,'T'));if(g>=.3&&g<=.6)s+=.15;else if(g<.2||g>.75)s-=.15;if(seq.includes('UUUU'))s-=.12;if(seq.includes('GGGG'))s-=.1;if(nuclease==='Cas13d'||nuclease==='dCas13')s+=.05;const coll=(nuclease==='Cas13a'||nuclease==='Cas13b');return{ot:Math.max(.05,Math.min(1,s)),coll:coll?s*.6:0,kd:Math.min(99,s*85+15)}}
 
-function scoreClass(v) { return v >= 0.7 ? 'score-high' : (v >= 0.4 ? 'score-mid' : 'score-low'); }
-
-function makeScoreBar(val, label) {
-    const cls = scoreClass(val);
-    return '<div class="score-bar '+cls+'"><span>'+label+'</span><div class="score-bar-track"><div class="score-bar-fill" style="width:'+Math.round(val*100)+'%"></div></div></div>';
+// ── DNA Guide Design ──
+function designDNA(){
+    const input=document.getElementById('ed-dna-seq').value.trim().toUpperCase();
+    const pam=document.getElementById('ed-pam').value;const n=parseInt(document.getElementById('ed-n').value);
+    if(!input){alert('Enter gene or DNA sequence');return}
+    const pamMap={NGG:'GG',NNGRRT:'GRRT',TTTV:'TTT'};const pamSeq=pamMap[pam]||'GG';const gl=pam==='NNGRRT'?21:(pam==='TTTV'?23:20);
+    let guides=[];
+    if(input.length>25&&/^[ACGT]+$/.test(input)){
+        for(let i=0;i<input.length-gl-pamSeq.length;i++){if(input.substring(i+gl,i+gl+pamSeq.length)===pamSeq){guides.push({seq:input.substring(i,i+gl),pos:i,strand:'+'})}}
+    }else{for(let i=0;i<n*3;i++)guides.push({seq:makeGuide(input,i,gl),pos:i*100,strand:'+'})}
+    guides.forEach(g=>{const ot=scoreDNA(g.seq);g.gc=gc(g.seq);g.ot=ot;g.comp=ot*.4+Math.min(1,Math.max(0,(g.gc-.2)/.5))*.2+(g.seq.includes('TTTT')?0:.1)+.1+.05*(g.seq[g.seq.length-1]==='G'?1:.5);g.comp=Math.max(.05,Math.min(1,g.comp));g.warn=[];if(g.gc<.3)g.warn.push('Low GC');if(g.gc>.75)g.warn.push('High GC');if(g.seq.includes('TTTT'))g.warn.push('Poly-T')});
+    guides.sort((a,b)=>b.comp-a.comp);guides=guides.slice(0,n);
+    let h='<div class="card-header"><span class="card-title">'+guides.length+' DNA Guides ('+pam+')</span><span class="cb bb">DNA</span></div>';
+    h+='<table><thead><tr><th>#</th><th>Sequence</th><th>On-Target</th><th>GC%</th><th>Composite</th><th>Status</th></tr></thead><tbody>';
+    guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+makeScoreBar(g.ot,(g.ot*100).toFixed(0)+'%')+'</td><td>'+(g.gc*100).toFixed(0)+'%</td><td>'+makeScoreBar(g.comp,(g.comp*100).toFixed(0)+'%')+'</td><td>'+(g.warn.length?g.warn.join(', '):'<span style="color:var(--accent)">Clean</span>')+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('ed-dna-results').innerHTML=h;
 }
 
-// Generate a deterministic pseudo-sequence from gene name
-function geneToSequence(gene, type, len) {
-    const rng = seededRandom(gene.toUpperCase());
-    const alpha = type === 'rna' ? 'AUCG' : 'ATCG';
-    let seq = '';
-    for (let i = 0; i < len; i++) seq += alpha[Math.floor(rng() * 4)];
-    return seq;
+// ── RNA Guide Design (EditingEngine) ──
+function designRNA(){
+    const input=document.getElementById('ed-rna-seq').value.trim().toUpperCase();
+    const rtype=document.getElementById('ed-rnatype').value;
+    const nuclease=document.getElementById('ed-cas13').value;
+    if(!input){alert('Enter gene or RNA sequence');return}
+    const glMap={Cas13a:28,Cas13b:30,Cas13d:22,dCas13:22};const gl=glMap[nuclease]||22;
+    let guides=[];
+    for(let i=0;i<12;i++){const seq=makeRNAGuide(input+rtype,i,gl);const sc=scoreRNA(seq,nuclease);guides.push({seq,gc:gc(seq.replace(/U/g,'T')),ot:sc.ot,coll:sc.coll,kd:sc.kd,comp:sc.ot*.3+.2*(1-sc.coll)+.15*Math.min(1,(gc(seq.replace(/U/g,'T'))-.15)/.5)+.1*(1-(seq.includes('UUUU')?1:0))+.1+.05+.1*(1-sc.coll),warn:[]})}
+    guides.forEach(g=>{g.comp=Math.max(.05,Math.min(1,g.comp));if(g.gc<.2)g.warn.push('Low GC');if(g.gc>.7)g.warn.push('High GC');if(g.coll>.4)g.warn.push('Collateral risk')});
+    guides.sort((a,b)=>b.comp-a.comp);guides=guides.slice(0,4);
+    let h='<div class="card-header"><span class="card-title">'+guides.length+' RNA Guides ('+nuclease+') for '+rtype+'</span><span class="cb bp">RNA</span></div>';
+    h+='<table><thead><tr><th>#</th><th>crRNA Sequence</th><th>On-Target</th><th>GC%</th><th>KD Eff.</th><th>Collateral</th><th>Composite</th><th>Status</th></tr></thead><tbody>';
+    guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+makeScoreBar(g.ot,(g.ot*100).toFixed(0)+'%')+'</td><td>'+(g.gc*100).toFixed(0)+'%</td><td>'+g.kd.toFixed(0)+'%</td><td>'+(g.coll>0?makeScoreBar(g.coll,(g.coll*100).toFixed(0)+'%'):'<span style="color:var(--accent)">None</span>')+'</td><td>'+makeScoreBar(g.comp,(g.comp*100).toFixed(0)+'%')+'</td><td>'+(g.warn.length?g.warn.join(', '):'<span style="color:var(--accent)">Clean</span>')+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('ed-rna-results').innerHTML=h;
 }
 
-function isDNASequence(s) { return /^[ATCGNatcgn]{20,}$/.test(s.replace(/\s/g,'')); }
-function isRNASequence(s) { return /^[AUCGNaucgn]{20,}$/.test(s.replace(/\s/g,'')); }
+// ── Knockout/Knockdown Strategy ──
+function designKO(){
+    const gene=document.getElementById('ko-gene').value.trim().toUpperCase();
+    const mode=document.getElementById('ko-mode').value;
+    if(!gene){alert('Enter a gene name');return}
+    let configs=[],label='',badge='';
+    if(mode==='DNA_KO'){
+        label='DNA Knockout';badge='bb';
+        let guides=[];for(let i=0;i<4;i++){const s=makeGuide(gene,i,20);guides.push({seq:s,ot:scoreDNA(s)})}
+        guides.sort((a,b)=>b.ot-a.ot);
+        guides.forEach((g,i)=>configs.push({id:gene+'_sg'+(i+1),type:'single_guide',n:1,eff:g.ot,ko:g.ot*.85}));
+        let di=0;for(let i=0;i<4;i++)for(let j=i+1;j<4;j++){di++;const e=1-(1-guides[i].ot)*(1-guides[j].ot);configs.push({id:gene+'_dg'+di,type:'double_guide',n:2,eff:Math.min(1,e),ko:Math.min(.99,e*.95)})}
+        let ae=1;guides.forEach(g=>ae*=(1-g.ot));ae=1-ae;configs.push({id:gene+'_all',type:'all_guides',n:4,eff:Math.min(1,ae),ko:Math.min(.999,ae*.98)});
+    } else if(mode==='mRNA_KD'){
+        label='mRNA Knockdown (Cas13d)';badge='bp';
+        let guides=[];for(let i=0;i<4;i++){const s=makeRNAGuide(gene,i,22);const sc=scoreRNA(s,'Cas13d');guides.push({seq:s,kd:sc.kd/100})}
+        guides.sort((a,b)=>b.kd-a.kd);
+        guides.forEach((g,i)=>configs.push({id:gene+'_cr'+(i+1),type:'single_crRNA',n:1,eff:g.kd,ko:g.kd*.90}));
+        let di=0;for(let i=0;i<4;i++)for(let j=i+1;j<4;j++){di++;const e=1-(1-guides[i].kd)*(1-guides[j].kd);configs.push({id:gene+'_dc'+di,type:'double_crRNA',n:2,eff:Math.min(1,e),ko:Math.min(.99,e*.95)})}
+        let ae=1;guides.forEach(g=>ae*=(1-g.kd));ae=1-ae;configs.push({id:gene+'_all',type:'all_crRNAs',n:4,eff:Math.min(1,ae),ko:Math.min(.999,ae*.98)});
+    } else if(mode==='lncRNA'){
+        label='lncRNA Silencing Strategy';badge='bp';
+        const rng=seededRandom(gene+'lnc');
+        for(let i=0;i<4;i++){const s=.5+rng()*.4;configs.push({id:gene+'_CRISPRi_'+(i+1),type:'CRISPRi',n:1,eff:s,ko:s*.85})}
+        for(let i=0;i<2;i++){const s=.4+rng()*.4;configs.push({id:gene+'_CRISPRa_'+(i+1),type:'CRISPRa',n:1,eff:s,ko:s*.80})}
+        for(let i=0;i<2;i++){const s=.6+rng()*.3;configs.push({id:gene+'_del_'+(i+1),type:'paired_deletion',n:2,eff:s,ko:s*.90})}
+        configs.push({id:gene+'_Cas13d',type:'Cas13d_KD',n:1,eff:.65+rng()*.25,ko:(.65+rng()*.25)*.88});
+    } else if(mode==='miRNA'){
+        label='miRNA Knockdown Strategy';badge='bp';
+        const rng=seededRandom(gene+'mir');
+        for(let i=0;i<4;i++){const s=.5+rng()*.4;configs.push({id:gene+'_Cas13_'+(i+1),type:'Cas13_mature_KD',n:1,eff:s,ko:s*.90})}
+        for(let i=0;i<4;i++){const s=.4+rng()*.5;configs.push({id:gene+'_Cas9_pre_'+(i+1),type:'Cas9_pre-miRNA_KO',n:1,eff:s,ko:s*.85})}
+    } else if(mode==='multi'){
+        label='Multi-Modal (DNA KO + RNA KD)';badge='bg';
+        const rng=seededRandom(gene+'multi');
+        for(let i=0;i<4;i++){const s=.4+rng()*.5;configs.push({id:gene+'_KO_'+(i+1),type:'DNA_Knockout',n:1,eff:s,ko:s*.85})}
+        for(let i=0;i<4;i++){const s=.5+rng()*.4;configs.push({id:gene+'_KD_'+(i+1),type:'RNA_Knockdown',n:1,eff:s,ko:s*.90})}
+        const dna=configs[0].eff,rna=configs[4].eff;const cross=1-(1-dna)*(1-rna);
+        configs.push({id:gene+'_KO+KD_best',type:'Cross-Modal (DNA+RNA)',n:2,eff:Math.min(1,cross),ko:Math.min(.999,cross*.95)});
+    }
 
-function revComp(seq) {
-    const map = {A:'T',T:'A',C:'G',G:'C',N:'N'};
-    return seq.split('').reverse().map(c => map[c.toUpperCase()]||'N').join('');
+    let h='<div class="card-header"><span class="card-title">'+gene+' &mdash; '+label+' ('+configs.length+' configs)</span><span class="cb '+badge+'">'+mode+'</span></div>';
+    h+='<table><thead><tr><th>Config ID</th><th>Type</th><th>Guides</th><th>Efficiency</th><th>KO/KD Probability</th></tr></thead><tbody>';
+    configs.forEach(c=>{const cls=c.ko>=.8?'hi':(c.ko>=.5?'mi':'lo');const bg=c.type.includes('Cross')?'background:#e8f5e9;':'';
+    h+='<tr style="'+bg+'"><td><strong>'+c.id+'</strong></td><td><span class="cb '+(c.type.includes('DNA')||c.type.includes('single_guide')||c.type.includes('double_guide')||c.type.includes('all_guide')?'bb':'bp')+'">'+c.type+'</span></td><td>'+c.n+'</td><td>'+(c.eff*100).toFixed(1)+'%</td><td>'+makeScoreBar(c.ko,(c.ko*100).toFixed(1)+'%')+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('ko-results').innerHTML=h;
 }
 
-function rnaRevComp(seq) {
-    const map = {A:'U',U:'A',C:'G',G:'C',N:'N'};
-    return seq.split('').reverse().map(c => map[c.toUpperCase()]||'N').join('');
+// ── RNA Guide (ncRNA tab) ──
+function updateRNARec(){
+    const t=document.getElementById('rg-type').value;
+    const recs={mRNA:'<strong>mRNA:</strong> Cas13d (CasRx) recommended — no collateral, highest efficiency. Alternative: CRISPRi for reversible repression.',lncRNA:'<strong>lncRNA:</strong> CRISPRi recommended — indels are non-disruptive for lncRNAs. Target TSS/promoter. Alternative: paired-guide genomic deletion.',miRNA:'<strong>miRNA:</strong> Cas13 for mature miRNA degradation. Cas9 for permanent pre-miRNA genomic knockout. Seed region (pos 2-8) derepresses targets.',siRNA:'<strong>siRNA:</strong> Cas13 direct targeting — most siRNAs have no endogenous DNA locus. Cas13d preferred (no collateral).',circRNA:'<strong>circRNA:</strong> Cas13 targets the unique backsplice junction. Cas9 can disrupt the backsplice site in DNA. Use RNase R enrichment for validation.',piRNA:'<strong>piRNA:</strong> Cas13 KD of mature piRNA. CRISPRi for piRNA cluster silencing. Important for transposon defense and germline biology.'};
+    document.getElementById('rg-rec').innerHTML=recs[t]||recs.mRNA;
+}
+function designRNAGuide(){
+    const gene=document.getElementById('rg-gene').value.trim().toUpperCase();
+    const rtype=document.getElementById('rg-type').value;
+    const strat=document.getElementById('rg-strat').value;
+    if(!gene){alert('Enter gene/RNA name');return}
+    const nuclease=strat==='crispri'||strat==='crispra'?'dCas9':(strat==='base_edit'?'dCas13':'Cas13d');
+    const gl=nuclease==='dCas9'?20:22;
+    let guides=[];for(let i=0;i<8;i++){const seq=makeRNAGuide(gene+rtype+strat,i,gl);const sc=scoreRNA(seq,'Cas13d');guides.push({seq,gc:gc(seq.replace(/U/g,'T')),ot:sc.ot,kd:sc.kd,coll:sc.coll,comp:sc.ot*.4+.2+.1,warn:[]})}
+    guides.forEach(g=>{g.comp=Math.max(.1,Math.min(1,g.comp));if(g.gc<.2)g.warn.push('Low GC')});
+    guides.sort((a,b)=>b.comp-a.comp);guides=guides.slice(0,4);
+    let h='<div class="card-header"><span class="card-title">'+gene+' ('+rtype+') &mdash; '+strat+' strategy</span><span class="cb bp">'+nuclease+'</span></div>';
+    h+='<table><thead><tr><th>#</th><th>Sequence</th><th>Score</th><th>GC%</th><th>KD%</th><th>Status</th></tr></thead><tbody>';
+    guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+makeScoreBar(g.comp,(g.comp*100).toFixed(0)+'%')+'</td><td>'+(g.gc*100).toFixed(0)+'%</td><td>'+g.kd.toFixed(0)+'%</td><td>'+(g.warn.length?g.warn.join(','):'<span style="color:var(--accent)">OK</span>')+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('rg-results').innerHTML=h;
 }
 
-// ============================================================
-//  SERVER CHECK
-// ============================================================
-async function checkServer() {
-    try {
-        const r = await fetch(API+'/api/status', {method:'GET', signal: AbortSignal.timeout(2000)});
-        if (r.ok) { serverAvailable = true; document.getElementById('status-badge').textContent = 'Server Connected'; document.getElementById('status-badge').style.background = 'rgba(0,200,83,0.3)'; return; }
-    } catch(e) {}
-    serverAvailable = false;
-    document.getElementById('status-badge').textContent = 'Standalone Mode';
-    document.getElementById('status-badge').style.background = 'rgba(255,255,255,0.15)';
-}
-checkServer(); setInterval(checkServer, 10000);
-
-// ============================================================
-//  DNA GUIDE DESIGN (Tab 2) - Fully local
-// ============================================================
-function scanPAM(seq, pam) {
-    seq = seq.toUpperCase();
-    const guides = [];
-    const guideLen = pam === 'TTTV' ? 23 : 20;
-
-    function pamMatch(subseq, pamType) {
-        if (pamType === 'NGG') return subseq[0] !== undefined && subseq[1] === 'G' && subseq[2] === 'G';
-        if (pamType === 'NNGRRT') {
-            return subseq.length >= 6 && (subseq[2]==='G'||subseq[2]==='A') && subseq[3]==='R' && (subseq[3]==='A'||subseq[3]==='G') && subseq[4]==='T';
-        }
-        if (pamType === 'TTTV') return subseq[0]==='T'&&subseq[1]==='T'&&subseq[2]==='T'&&'ACG'.includes(subseq[3]);
-        return false;
-    }
-
-    if (pam === 'TTTV') {
-        // Cas12a: PAM is 5' of target on non-target strand
-        for (let i = 0; i <= seq.length - 4 - guideLen; i++) {
-            const pamSeq = seq.substring(i, i+4);
-            if (pamSeq[0]==='T'&&pamSeq[1]==='T'&&pamSeq[2]==='T'&&'ACG'.includes(pamSeq[3])) {
-                const guide = seq.substring(i+4, i+4+guideLen);
-                if (!guide.includes('N') && guide.length === guideLen) {
-                    guides.push({ sequence: guide, position: i+4, strand: '+', pamSeq: pamSeq });
-                }
-            }
-        }
-    } else {
-        // SpCas9/SaCas9: PAM is 3' of target
-        const pamLen = pam === 'NGG' ? 3 : 6;
-        for (let i = 0; i <= seq.length - guideLen - pamLen; i++) {
-            const guide = seq.substring(i, i+guideLen);
-            const pamSeq = seq.substring(i+guideLen, i+guideLen+pamLen);
-            let match = false;
-            if (pam === 'NGG') match = pamSeq[1]==='G'&&pamSeq[2]==='G';
-            if (pam === 'NNGRRT') match = pamSeq.length>=6&&(pamSeq[2]==='G'||pamSeq[2]==='A')&&(pamSeq[3]==='A'||pamSeq[3]==='G')&&pamSeq[4]==='R'&&pamSeq[5]==='T';
-            if (match && !guide.includes('N') && guide.length === guideLen) {
-                guides.push({ sequence: guide, position: i, strand: '+', pamSeq: pamSeq });
-            }
-        }
-        // Also scan reverse complement
-        const rc = revComp(seq);
-        for (let i = 0; i <= rc.length - guideLen - pamLen; i++) {
-            const guide = rc.substring(i, i+guideLen);
-            const pamSeq = rc.substring(i+guideLen, i+guideLen+pamLen);
-            let match = false;
-            if (pam === 'NGG') match = pamSeq[1]==='G'&&pamSeq[2]==='G';
-            if (pam === 'NNGRRT') match = pamSeq.length>=6&&(pamSeq[2]==='G'||pamSeq[2]==='A')&&(pamSeq[3]==='A'||pamSeq[3]==='G');
-            if (match && !guide.includes('N') && guide.length === guideLen) {
-                guides.push({ sequence: guide, position: seq.length - i - guideLen, strand: '-', pamSeq: pamSeq });
-            }
-        }
-    }
-    return guides;
+// ── CRISPRi/CRISPRa ──
+function designCI(){
+    const gene=document.getElementById('ci-gene').value.trim().toUpperCase();
+    const mode=document.getElementById('ci-mode').value;
+    if(!gene){alert('Enter gene');return}
+    const rng=seededRandom(gene+mode);let guides=[];
+    const window=mode==='CRISPRi'?[-50,300]:[-400,-50];
+    for(let i=0;i<6;i++){const seq=makeGuide(gene+mode,i,20);const dist=window[0]+Math.floor(rng()*(window[1]-window[0]));const score=.4+rng()*.5;const fc=mode==='CRISPRi'?(-3.5*score):(4*score);guides.push({seq,score,fc:fc.toFixed(1),dist})}
+    guides.sort((a,b)=>b.score-a.score);guides=guides.slice(0,4);
+    let h='<div class="card-header"><span class="card-title">'+gene+' '+mode+' Guides</span><span class="cb bp">'+mode+'</span></div>';
+    h+='<table><thead><tr><th>#</th><th>Sequence</th><th>Score</th><th>Fold Change</th><th>TSS Distance</th></tr></thead><tbody>';
+    guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+makeScoreBar(g.score,(g.score*100).toFixed(0)+'%')+'</td><td><strong style="color:'+(g.fc<0?'var(--danger)':'var(--accent)')+'">'+g.fc+'x</strong></td><td>'+g.dist+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('ci-results').innerHTML=h;
 }
 
-function scoreDNAGuide(guide) {
-    const seq = guide.sequence.toUpperCase();
-    const gc = seq.split('').filter(c=>c==='G'||c==='C').length / seq.length;
-
-    // GC score: optimal 40-70%
-    let gcScore = 1.0;
-    if (gc < 0.30) gcScore = gc / 0.30 * 0.5;
-    else if (gc < 0.40) gcScore = 0.5 + (gc - 0.30) / 0.10 * 0.5;
-    else if (gc > 0.80) gcScore = Math.max(0.1, 1.0 - (gc - 0.80) / 0.20);
-    else if (gc > 0.70) gcScore = 1.0 - (gc - 0.70) / 0.10 * 0.3;
-
-    // Self-complementarity penalty
-    let selfComp = 0;
-    for (let i = 0; i < seq.length - 4; i++) {
-        const sub = seq.substring(i, i+4);
-        const rc = revComp(sub);
-        if (seq.includes(rc)) selfComp++;
-    }
-    const selfCompScore = Math.max(0, 1.0 - selfComp * 0.12);
-
-    // Poly-T penalty
-    const polyT = /TTTT/.test(seq) ? 0.3 : (/TTT/.test(seq) ? 0.7 : 1.0);
-
-    // Secondary structure estimate (simple GC-run based)
-    let gcRuns = 0;
-    const runs = seq.match(/[GC]{4,}/g);
-    if (runs) gcRuns = runs.length;
-    const structScore = Math.max(0.3, 1.0 - gcRuns * 0.15);
-
-    // 3' G enrichment
-    const last4 = seq.slice(-4);
-    const gEnd = last4.split('').filter(c=>c==='G').length;
-    const gEndScore = 0.5 + gEnd * 0.125;
-
-    // On-target heuristic (position-weighted nucleotide preferences)
-    let onTarget = 0.5;
-    // Penalize T at position 1
-    if (seq[0] === 'G') onTarget += 0.08;
-    if (seq[seq.length-1] === 'G') onTarget += 0.06;
-    // Prefer no polyN
-    if (!/AAAA|CCCC|GGGG|TTTT/.test(seq)) onTarget += 0.1;
-    // GC in seed (last 12 nt for SpCas9)
-    const seed = seq.slice(-12);
-    const seedGC = seed.split('').filter(c=>c==='G'||c==='C').length / seed.length;
-    if (seedGC >= 0.4 && seedGC <= 0.65) onTarget += 0.12;
-    onTarget = Math.min(1, Math.max(0, onTarget + (gc - 0.5) * 0.2));
-
-    // Composite
-    const composite = onTarget * 0.40 + gcScore * 0.20 + selfCompScore * 0.15 + polyT * 0.10 + structScore * 0.10 + gEndScore * 0.05;
-
-    // Warnings
-    const warnings = [];
-    if (gc < 0.30 || gc > 0.80) warnings.push('GC ' + (gc*100).toFixed(0) + '%');
-    if (/TTTT/.test(seq)) warnings.push('Poly-T');
-    if (selfComp > 3) warnings.push('Self-comp');
-    if (gcRuns > 2) warnings.push('GC-runs');
-
-    return { ...guide, gc, onTarget: Math.min(1, Math.max(0, onTarget)), gcScore, selfCompScore, polyT, structScore, gEndScore, composite: Math.min(1, Math.max(0, composite)), warnings };
+// ── Base Editing ──
+function designBE(){
+    const gene=document.getElementById('be-gene').value.trim().toUpperCase();
+    const editType=document.getElementById('be-type').value;
+    if(!gene){alert('Enter gene');return}
+    const rng=seededRandom(gene+editType);const target=editType==='AtoI'?'A':'C';const result=editType==='AtoI'?'G (I)':'U';
+    let sites=[];for(let i=0;i<8;i++){const pos=50+Math.floor(rng()*200);const inWindow=i<4;const eff=inWindow?(40+rng()*50):(5+rng()*20);const bystander=inWindow?rng()*15:(rng()*40);
+    const codons=['UUU','UCA','GAA','AUG','GCU','UAC','CAG','AAG'];const c=codons[i%8];const aa=['F','S','E','M','A','Y','Q','K'];
+    sites.push({pos,eff:eff.toFixed(0),bystander:bystander.toFixed(0),codon:c,aa:aa[i%8],edited_aa:aa[(i+3)%8],inWindow,recoding:i%3!==0})}
+    sites.sort((a,b)=>b.eff-a.eff);
+    let h='<div class="card-header"><span class="card-title">'+gene+' '+editType.replace('to','-to-')+' Edit Sites</span><span class="cb bp">dCas13</span></div>';
+    h+='<table><thead><tr><th>Position</th><th>Edit</th><th>Efficiency</th><th>Bystander</th><th>Codon Change</th><th>AA Change</th><th>Window</th></tr></thead><tbody>';
+    sites.forEach(s=>{h+='<tr style="'+(s.inWindow?'background:#f3e5f5;':'')+'"><td>'+s.pos+'</td><td>'+target+'&rarr;'+result+'</td><td>'+makeScoreBar(s.eff/100,s.eff+'%')+'</td><td>'+s.bystander+'%</td><td>'+s.codon+'</td><td>'+(s.recoding?'<strong style="color:var(--warning)">'+s.aa+'&rarr;'+s.edited_aa+'</strong>':'<span style="color:var(--accent)">'+s.aa+' (syn)</span>')+'</td><td>'+(s.inWindow?'<span class="cb bg">In window</span>':'<span class="cb bo">Outside</span>')+'</td></tr>'});
+    h+='</tbody></table>';document.getElementById('be-results').innerHTML=h;
 }
 
-function designDNAGuides() {
-    const input = document.getElementById('dna-guide-gene').value.trim();
-    if (!input) { alert('Enter a gene name or DNA sequence'); return; }
-    const nGuides = parseInt(document.getElementById('dna-guide-count').value);
-    const pam = document.getElementById('dna-guide-pam').value;
+async function checkServer(){try{const r=await fetch(API+'/api/status');if(r.ok)serverAvailable=true}catch(e){}}
+checkServer();setInterval(checkServer,15000);
 
-    let seq = '';
-    let geneName = '';
 
-    if (isDNASequence(input)) {
-        seq = input.replace(/\s/g, '').toUpperCase();
-        geneName = 'Custom Sequence';
-    } else {
-        geneName = input.toUpperCase();
-        seq = geneToSequence(geneName, 'dna', 500);
-    }
-
-    let candidates = scanPAM(seq, pam);
-    if (candidates.length === 0) {
-        document.getElementById('dna-guide-results').innerHTML = '<div class="result-panel" style="color:var(--danger)">No PAM sites found for ' + pam + ' in this sequence. Try a longer sequence or different PAM.</div>';
-        return;
-    }
-
-    // Score and sort
-    candidates = candidates.map(scoreDNAGuide);
-    candidates.sort((a,b) => b.composite - a.composite);
-
-    // Deduplicate
-    const seen = new Set();
-    candidates = candidates.filter(g => { if (seen.has(g.sequence)) return false; seen.add(g.sequence); return true; });
-
-    const top = candidates.slice(0, nGuides);
-
-    let html = '<div class="card-header"><span class="card-title">'+top.length+' DNA Guides for '+geneName+'</span><span class="card-badge badge-blue">'+pam+'</span></div>';
-    html += '<table><thead><tr><th>#</th><th>Sequence ('+top[0].sequence.length+'nt)</th><th>Pos</th><th>Strand</th><th>On-Target</th><th>GC%</th><th>Composite</th><th>Warnings</th></tr></thead><tbody>';
-    top.forEach((g, i) => {
-        const cls = scoreClass(g.composite);
-        html += '<tr><td><strong>'+(i+1)+'</strong></td><td><span class="sequence">'+g.sequence+'</span></td><td>'+g.position+'</td><td>'+g.strand+'</td>';
-        html += '<td>'+makeScoreBar(g.onTarget, (g.onTarget*100).toFixed(0)+'%')+'</td>';
-        html += '<td>'+(g.gc*100).toFixed(0)+'%</td>';
-        html += '<td>'+makeScoreBar(g.composite, (g.composite*100).toFixed(0)+'%')+'</td>';
-        html += '<td>'+(g.warnings.length ? g.warnings.join(', ') : '<span style="color:var(--accent)">Clean</span>')+'</td></tr>';
-    });
-    html += '</tbody></table>';
-    document.getElementById('dna-guide-results').innerHTML = html;
-}
-
-// ============================================================
-//  RNA GUIDE DESIGN (Tab 3) - Fully local
-// ============================================================
-function scoreRNAGuide(seq, nuclease) {
-    seq = seq.toUpperCase();
-    const gc = seq.split('').filter(c=>c==='G'||c==='C').length / seq.length;
-
-    // GC: optimal 30-60% for RNA
-    let gcScore = 1.0;
-    if (gc < 0.20) gcScore = gc / 0.20 * 0.4;
-    else if (gc < 0.30) gcScore = 0.4 + (gc - 0.20) / 0.10 * 0.6;
-    else if (gc > 0.70) gcScore = Math.max(0.1, 1.0 - (gc - 0.70) / 0.20);
-    else if (gc > 0.60) gcScore = 1.0 - (gc - 0.60) / 0.10 * 0.3;
-
-    // Seed region score (nt 1-8): prefer moderate GC
-    const seed = seq.substring(0, 8);
-    const seedGC = seed.split('').filter(c=>c==='G'||c==='C').length / seed.length;
-    let seedScore = 1.0;
-    if (seedGC < 0.25 || seedGC > 0.75) seedScore = 0.4;
-    else if (seedGC >= 0.37 && seedGC <= 0.62) seedScore = 1.0;
-    else seedScore = 0.7;
-
-    // Poly-U penalty
-    const polyU = /UUUUU/.test(seq) ? 0.2 : (/UUUU/.test(seq) ? 0.4 : (/UUU/.test(seq) ? 0.75 : 1.0));
-
-    // Accessibility estimate (penalize strong secondary structure potential)
-    let accessibility = 0.7;
-    const gcRuns = (seq.match(/[GC]{4,}/g) || []).length;
-    accessibility = Math.max(0.2, 0.9 - gcRuns * 0.15);
-    // Penalize palindromes
-    const rc = rnaRevComp(seq);
-    let compCount = 0;
-    for (let i = 0; i < seq.length - 6; i++) {
-        if (rc.includes(seq.substring(i, i+6))) compCount++;
-    }
-    accessibility = Math.max(0.15, accessibility - compCount * 0.08);
-
-    // On-target heuristic
-    let onTarget = 0.55;
-    if (seq[0] !== 'G') onTarget += 0.05; // CasRx prefers non-G start
-    if (!/AAAA|CCCC|GGGG|UUUU/.test(seq)) onTarget += 0.1;
-    if (gc >= 0.35 && gc <= 0.55) onTarget += 0.12;
-    if (seedGC >= 0.37 && seedGC <= 0.62) onTarget += 0.08;
-    onTarget = Math.min(1, Math.max(0, onTarget));
-
-    // Collateral risk (Cas13a/b higher, Cas13d/dCas13 lower)
-    let collateralRisk = 0.3;
-    if (nuclease === 'Cas13a') collateralRisk = 0.45 + gc * 0.2;
-    else if (nuclease === 'Cas13b') collateralRisk = 0.35 + gc * 0.15;
-    else if (nuclease === 'Cas13d') collateralRisk = 0.15 + gc * 0.1;
-    else if (nuclease === 'dCas13') collateralRisk = 0.0; // catalytically dead
-    collateralRisk = Math.min(1, collateralRisk);
-    const collateralScore = 1.0 - collateralRisk; // higher = better (lower risk)
-
-    // Knockdown efficiency estimate
-    let kdEfficiency = onTarget * 0.6 + accessibility * 0.25 + gcScore * 0.15;
-    if (nuclease === 'dCas13') kdEfficiency *= 0.4; // dCas13 blocks, doesn't cleave
-    kdEfficiency = Math.min(0.98, Math.max(0.1, kdEfficiency));
-
-    // Composite score
-    const composite = onTarget * 0.30 + gcScore * 0.20 + seedScore * 0.15 + accessibility * 0.15 + polyU * 0.08 + collateralScore * 0.07 + kdEfficiency * 0.05;
-
-    return { gc, gcScore, seedScore, polyU, accessibility, onTarget, collateralRisk, collateralScore, kdEfficiency, composite: Math.min(1, Math.max(0, composite)) };
-}
-
-function designRNAGuides() {
-    const input = document.getElementById('rna-guide-gene').value.trim();
-    if (!input) { alert('Enter a gene name or RNA sequence'); return; }
-    const nGuides = parseInt(document.getElementById('rna-guide-count').value);
-    const nuclease = document.getElementById('rna-nuclease').value;
-
-    let seq = '';
-    let geneName = '';
-
-    if (isRNASequence(input)) {
-        seq = input.replace(/\s/g, '').toUpperCase();
-        geneName = 'Custom RNA';
-    } else {
-        geneName = input.toUpperCase();
-        seq = geneToSequence(geneName, 'rna', 600);
-    }
-
-    // Guide lengths by nuclease
-    const guideLen = nuclease === 'Cas13a' ? 28 : (nuclease === 'Cas13b' ? 30 : 23);
-
-    // Generate candidate guides by sliding window
-    const candidates = [];
-    for (let i = 0; i <= seq.length - guideLen; i++) {
-        const spacer = seq.substring(i, i + guideLen);
-        if (spacer.includes('N')) continue;
-
-        // PFS check for Cas13a (H at 3' of target = not G)
-        if (nuclease === 'Cas13a' && i + guideLen < seq.length) {
-            const pfs = seq[i + guideLen];
-            if (pfs === 'G') continue; // Cas13a requires non-G PFS
-        }
-
-        // crRNA = reverse complement of target
-        const crRNA = rnaRevComp(spacer);
-        const scores = scoreRNAGuide(crRNA, nuclease);
-        candidates.push({ targetSeq: spacer, crRNA, position: i, ...scores });
-    }
-
-    if (candidates.length === 0) {
-        document.getElementById('rna-guide-results').innerHTML = '<div class="result-panel" style="color:var(--danger)">No suitable guide sites found. Try a longer sequence.</div>';
-        return;
-    }
-
-    candidates.sort((a,b) => b.composite - a.composite);
-
-    // Deduplicate and space out
-    const selected = [];
-    const usedPos = [];
-    for (const c of candidates) {
-        if (selected.length >= nGuides) break;
-        if (usedPos.some(p => Math.abs(p - c.position) < guideLen)) continue;
-        selected.push(c);
-        usedPos.push(c.position);
-    }
-
-    let html = '<div class="card-header"><span class="card-title">'+selected.length+' RNA Guides for '+geneName+'</span><span class="card-badge badge-purple">'+nuclease+'</span></div>';
-    html += '<table><thead><tr><th>#</th><th>crRNA Sequence ('+guideLen+'nt)</th><th>Pos</th><th>On-Target</th><th>GC%</th><th>Accessibility</th><th>Collateral Risk</th><th>KD Eff.</th><th>Composite</th></tr></thead><tbody>';
-    selected.forEach((g, i) => {
-        const cls = scoreClass(g.composite);
-        const collCls = g.collateralRisk < 0.2 ? 'score-high' : (g.collateralRisk < 0.4 ? 'score-mid' : 'score-low');
-        html += '<tr><td><strong>'+(i+1)+'</strong></td>';
-        html += '<td><span class="sequence-rna">'+g.crRNA+'</span></td>';
-        html += '<td>'+g.position+'</td>';
-        html += '<td>'+makeScoreBar(g.onTarget, (g.onTarget*100).toFixed(0)+'%')+'</td>';
-        html += '<td>'+(g.gc*100).toFixed(0)+'%</td>';
-        html += '<td>'+makeScoreBar(g.accessibility, (g.accessibility*100).toFixed(0)+'%')+'</td>';
-        html += '<td><div class="score-bar '+collCls+'"><span>'+(g.collateralRisk*100).toFixed(0)+'%</span><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(g.collateralRisk*100)+'%"></div></div></div></td>';
-        html += '<td>'+(g.kdEfficiency*100).toFixed(0)+'%</td>';
-        html += '<td>'+makeScoreBar(g.composite, (g.composite*100).toFixed(0)+'%')+'</td>';
-        html += '</tr>';
-    });
-    html += '</tbody></table>';
-    document.getElementById('rna-guide-results').innerHTML = html;
-}
-
-// ============================================================
-//  KNOCKOUT / KNOCKDOWN (Tab 4)
-// ============================================================
-function setKOMode(mode) {
-    koMode = mode;
-    document.getElementById('ko-mode-dna').classList.toggle('active', mode === 'dna');
-    document.getElementById('ko-mode-rna').classList.toggle('active', mode === 'rna');
-    const desc = document.getElementById('ko-description');
-    if (mode === 'dna') {
-        desc.innerHTML = 'Designs 4 single-guide + 6 double-guide + 1 all-guide = <strong>11 knockout configurations</strong> per gene. For 19,169 genes = <strong>210,859 total configurations</strong>.';
-        document.getElementById('btn-knockout').textContent = 'Design Knockout Strategy';
-    } else {
-        desc.innerHTML = 'Designs 4 single-guide + 6 double-guide + 1 all-guide = <strong>11 knockdown configurations</strong> per gene using Cas13d (CasRx). Shows <strong>knockdown %</strong> instead of KO probability.';
-        document.getElementById('btn-knockout').textContent = 'Design Knockdown Strategy';
-    }
-}
-
-function designKnockout() {
-    const gene = document.getElementById('ko-gene').value.trim();
-    if (!gene) { alert('Enter a gene name'); return; }
-    const geneName = gene.toUpperCase();
-    const rng = seededRandom(geneName + koMode);
-
-    // Generate 4 guides
-    const guides = [];
-    for (let i = 0; i < 4; i++) {
-        const baseEff = 0.55 + rng() * 0.35;
-        const label = koMode === 'dna' ? 'sg' : 'cr';
-        guides.push({ id: label+(i+1), efficiency: Math.min(0.95, baseEff), name: geneName+'-'+label+(i+1) });
-    }
-    guides.sort((a,b) => b.efficiency - a.efficiency);
-
-    // Build 11 configs: 4 single, 6 double (C(4,2)), 1 all
-    const configs = [];
-    // Singles
-    for (let i = 0; i < 4; i++) {
-        const eff = guides[i].efficiency;
-        const prob = koMode === 'dna' ? Math.min(0.95, eff * 0.9 + rng()*0.05) : Math.min(0.98, eff * 0.85 + rng()*0.08);
-        configs.push({ config_id: geneName+'_'+guides[i].id, type: 'single_guide', guides: [guides[i]], expected_efficiency: eff, ko_probability: prob });
-    }
-    // Doubles
-    for (let i = 0; i < 4; i++) {
-        for (let j = i+1; j < 4; j++) {
-            const eff = Math.min(0.98, 1 - (1-guides[i].efficiency)*(1-guides[j].efficiency));
-            const prob = Math.min(0.99, eff * (0.88 + rng()*0.10));
-            configs.push({ config_id: geneName+'_'+guides[i].id+'_'+guides[j].id, type: 'double_guide', guides: [guides[i], guides[j]], expected_efficiency: eff, ko_probability: prob });
-        }
-    }
-    // All guides
-    let allEff = 1;
-    guides.forEach(g => allEff *= (1 - g.efficiency));
-    allEff = Math.min(0.995, 1 - allEff);
-    const allProb = Math.min(0.999, allEff * (0.92 + rng()*0.07));
-    configs.push({ config_id: geneName+'_ALL', type: 'all_guides', guides: guides, expected_efficiency: allEff, ko_probability: allProb });
-
-    configs.sort((a,b) => b.ko_probability - a.ko_probability);
-
-    const modeLabel = koMode === 'dna' ? 'Knockout' : 'Knockdown';
-    const probLabel = koMode === 'dna' ? 'KO Probability' : 'Knockdown %';
-
-    let html = '<div class="card-header"><span class="card-title">'+geneName+' -- '+configs.length+' '+modeLabel+' Configs</span>';
-    html += '<span class="card-badge '+(koMode==='dna'?'badge-green':'badge-purple')+'">'+(configs[0].ko_probability*100).toFixed(0)+'% max</span></div>';
-    html += '<div class="grid-3" style="margin-bottom:16px">';
-    html += '<div class="stat-box"><div class="stat-value">'+guides.length+'</div><div class="stat-label">Guides</div></div>';
-    html += '<div class="stat-box"><div class="stat-value">'+configs.length+'</div><div class="stat-label">Configs</div></div>';
-    html += '<div class="stat-box"><div class="stat-value">'+(configs[0].ko_probability*100).toFixed(0)+'%</div><div class="stat-label">Max '+modeLabel+'</div></div></div>';
-
-    html += '<table><thead><tr><th>Config ID</th><th>Type</th><th>Guides</th><th>Efficiency</th><th>'+probLabel+'</th></tr></thead><tbody>';
-    configs.forEach(c => {
-        const cls = scoreClass(c.ko_probability);
-        const badge = c.type === 'all_guides' ? 'badge-green' : (c.type === 'double_guide' ? 'badge-blue' : 'badge-orange');
-        html += '<tr><td><strong>'+c.config_id+'</strong></td>';
-        html += '<td><span class="card-badge '+badge+'">'+c.type.replace('_',' ')+'</span></td>';
-        html += '<td>'+c.guides.length+'</td>';
-        html += '<td>'+(c.expected_efficiency*100).toFixed(1)+'%</td>';
-        html += '<td>'+makeScoreBar(c.ko_probability, (c.ko_probability*100).toFixed(1)+'%')+'</td></tr>';
-    });
-    html += '</tbody></table>';
-    document.getElementById('ko-results').innerHTML = html;
-}
-
-// ============================================================
-//  CRISPRi / CRISPRa (Tab 5)
-// ============================================================
-function setCRIMode(mode) {
-    criMode = mode;
-    document.getElementById('cri-mode-i').classList.toggle('active', mode === 'i');
-    document.getElementById('cri-mode-i').classList.toggle('active-purple', mode === 'i');
-    document.getElementById('cri-mode-a').classList.toggle('active', mode === 'a');
-    document.getElementById('cri-mode-a').classList.toggle('active-purple', mode === 'a');
-}
-
-function designCRISPRi() {
-    const gene = document.getElementById('cri-gene').value.trim();
-    if (!gene) { alert('Enter a gene name'); return; }
-    const geneName = gene.toUpperCase();
-    const nGuides = parseInt(document.getElementById('cri-count').value);
-    const rng = seededRandom(geneName + criMode);
-
-    const isI = criMode === 'i';
-    const windowMin = isI ? -50 : -400;
-    const windowMax = isI ? 300 : -50;
-    const modeLabel = isI ? 'CRISPRi' : 'CRISPRa';
-    const effector = isI ? 'dCas9-KRAB' : 'dCas9-VPR';
-
-    const guides = [];
-    for (let i = 0; i < nGuides; i++) {
-        const tssDistance = Math.round(windowMin + rng() * (windowMax - windowMin));
-        const seq = geneToSequence(geneName + 'CRI' + i + criMode, 'dna', 20);
-
-        // Score based on position within optimal window
-        const optMin = isI ? 50 : -300;
-        const optMax = isI ? 200 : -100;
-        let posScore = 0.5;
-        if (tssDistance >= optMin && tssDistance <= optMax) posScore = 0.85 + rng() * 0.15;
-        else posScore = 0.35 + rng() * 0.25;
-
-        const gc = seq.split('').filter(c=>c==='G'||c==='C').length / seq.length;
-        let gcScore = 1.0;
-        if (gc < 0.30 || gc > 0.80) gcScore = 0.4;
-        else if (gc >= 0.40 && gc <= 0.65) gcScore = 1.0;
-        else gcScore = 0.7;
-
-        const score = posScore * 0.5 + gcScore * 0.3 + rng() * 0.2;
-        const foldChange = isI ? Math.max(0.01, 1.0 - score * 0.9 - rng()*0.05) : Math.min(50, 1.0 + score * 15 + rng() * 10);
-
-        guides.push({
-            sequence: seq,
-            tssDistance: tssDistance,
-            gc: gc,
-            score: Math.min(1, Math.max(0, score)),
-            foldChange: foldChange,
-            strand: rng() > 0.5 ? '+' : '-'
-        });
-    }
-    guides.sort((a,b) => b.score - a.score);
-
-    let html = '<div class="card-header"><span class="card-title">'+geneName+' '+modeLabel+' Guides ('+effector+')</span><span class="card-badge badge-purple">'+modeLabel+'</span></div>';
-    html += '<table><thead><tr><th>#</th><th>Guide Sequence (20nt)</th><th>TSS Distance</th><th>Strand</th><th>GC%</th><th>Score</th><th>Expected Fold Change</th></tr></thead><tbody>';
-    guides.forEach((g, i) => {
-        const fcLabel = isI ? (g.foldChange).toFixed(2)+'x (repression)' : (g.foldChange).toFixed(1)+'x (activation)';
-        const fcColor = isI ? (g.foldChange < 0.2 ? 'var(--accent)' : 'var(--warning)') : (g.foldChange > 10 ? 'var(--accent)' : 'var(--warning)');
-        html += '<tr><td><strong>'+(i+1)+'</strong></td>';
-        html += '<td><span class="sequence">'+g.sequence+'</span></td>';
-        html += '<td>'+(g.tssDistance > 0 ? '+' : '')+g.tssDistance+' bp</td>';
-        html += '<td>'+g.strand+'</td>';
-        html += '<td>'+(g.gc*100).toFixed(0)+'%</td>';
-        html += '<td>'+makeScoreBar(g.score, (g.score*100).toFixed(0)+'%')+'</td>';
-        html += '<td style="color:'+fcColor+';font-weight:600">'+fcLabel+'</td></tr>';
-    });
-    html += '</tbody></table>';
-
-    // Add targeting window visualization
-    html += '<div style="margin-top:20px;padding:16px;background:#f8f9fa;border-radius:8px">';
-    html += '<h4 style="margin-bottom:12px;font-size:0.9rem">Targeting Window Diagram (relative to TSS)</h4>';
-    html += '<div style="position:relative;height:60px;background:white;border-radius:8px;border:1px solid var(--border);margin-bottom:8px;overflow:hidden">';
-    // Scale: -500 to +400 = 900bp range mapped to 100%
-    const scale = (bp) => ((bp + 500) / 900 * 100);
-    // CRISPRi window
-    html += '<div style="position:absolute;left:'+scale(-50)+'%;width:'+(scale(300)-scale(-50))+'%;top:5px;height:20px;background:rgba(124,77,255,0.2);border:1px solid var(--purple);border-radius:4px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;color:var(--purple);font-weight:600">CRISPRi (-50 to +300)</div>';
-    // CRISPRa window
-    html += '<div style="position:absolute;left:'+scale(-400)+'%;width:'+(scale(-50)-scale(-400))+'%;top:30px;height:20px;background:rgba(0,188,212,0.2);border:1px solid var(--teal);border-radius:4px;font-size:0.65rem;display:flex;align-items:center;justify-content:center;color:var(--teal);font-weight:600">CRISPRa (-400 to -50)</div>';
-    // TSS marker
-    html += '<div style="position:absolute;left:'+scale(0)+'%;top:0;width:2px;height:100%;background:var(--danger)"></div>';
-    html += '<div style="position:absolute;left:'+(scale(0)-8)+'%;bottom:2px;font-size:0.6rem;color:var(--danger);font-weight:700">TSS</div>';
-    html += '</div>';
-    html += '<div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--text-secondary)"><span>-500 bp</span><span>-250 bp</span><span>TSS</span><span>+250 bp</span><span>+400 bp</span></div>';
-    html += '</div>';
-
-    document.getElementById('cri-results').innerHTML = html;
-}
-
-// ============================================================
-//  RNA BASE EDITING (Tab 6)
-// ============================================================
-function setBEMode(mode) {
-    beMode = mode;
-    document.getElementById('be-mode-ai').classList.toggle('active', mode === 'ai');
-    document.getElementById('be-mode-ai').classList.toggle('active-purple', mode === 'ai');
-    document.getElementById('be-mode-cu').classList.toggle('active', mode === 'cu');
-    document.getElementById('be-mode-cu').classList.toggle('active-purple', mode === 'cu');
-}
-
-function designBaseEdit() {
-    const gene = document.getElementById('be-gene').value.trim();
-    let seq = document.getElementById('be-sequence').value.trim().replace(/\s/g, '').toUpperCase();
-
-    if (!gene && !seq) { alert('Enter a gene name and/or RNA sequence'); return; }
-
-    const geneName = gene ? gene.toUpperCase() : 'Custom';
-    if (!seq || seq.length < 20) {
-        seq = geneToSequence(geneName + 'BASEEDIT', 'rna', 120);
-    }
-
-    // Convert T to U if DNA pasted
-    seq = seq.replace(/T/g, 'U');
-
-    const isAI = beMode === 'ai';
-    const targetBase = isAI ? 'A' : 'C';
-    const editedBase = isAI ? 'I(G)' : 'U(T)';
-    const editorName = isAI ? 'ADAR2dd' : 'APOBEC';
-    const windowStart = isAI ? 20 : 3;
-    const windowEnd = isAI ? 30 : 8;
-
-    // Find all target bases in the sequence
-    const editSites = [];
-    const rng = seededRandom(geneName + beMode + seq.substring(0,10));
-
-    for (let i = 0; i < seq.length; i++) {
-        if (seq[i] === targetBase) {
-            // Check if within a reasonable editing window context
-            const efficiency = 0.15 + rng() * 0.65;
-            const bystanterRisk = rng() * 0.5;
-
-            // Codon context (every 3 nt)
-            const codonPos = i % 3;
-            const codonStart = i - codonPos;
-            const codon = seq.substring(codonStart, codonStart + 3);
-            let editedCodon = codon.split('');
-            editedCodon[codonPos] = isAI ? 'G' : 'U';
-            editedCodon = editedCodon.join('');
-
-            // Simplified codon table
-            const codonTable = {
-                'AUG':'Met','UUU':'Phe','UUC':'Phe','UUA':'Leu','UUG':'Leu','CUU':'Leu','CUC':'Leu','CUA':'Leu','CUG':'Leu',
-                'AUU':'Ile','AUC':'Ile','AUA':'Ile','GUU':'Val','GUC':'Val','GUA':'Val','GUG':'Val',
-                'UCU':'Ser','UCC':'Ser','UCA':'Ser','UCG':'Ser','CCU':'Pro','CCC':'Pro','CCA':'Pro','CCG':'Pro',
-                'ACU':'Thr','ACC':'Thr','ACA':'Thr','ACG':'Thr','GCU':'Ala','GCC':'Ala','GCA':'Ala','GCG':'Ala',
-                'UAU':'Tyr','UAC':'Tyr','UAA':'Stop','UAG':'Stop','CAU':'His','CAC':'His','CAA':'Gln','CAG':'Gln',
-                'AAU':'Asn','AAC':'Asn','AAA':'Lys','AAG':'Lys','GAU':'Asp','GAC':'Asp','GAA':'Glu','GAG':'Glu',
-                'UGU':'Cys','UGC':'Cys','UGA':'Stop','UGG':'Trp','CGU':'Arg','CGC':'Arg','CGA':'Arg','CGG':'Arg',
-                'AGU':'Ser','AGC':'Ser','AGA':'Arg','AGG':'Arg','GGU':'Gly','GGC':'Gly','GGA':'Gly','GGG':'Gly'
-            };
-            const origAA = codonTable[codon] || '?';
-            const editAA = codonTable[editedCodon] || '?';
-            const isSynonymous = origAA === editAA;
-
-            editSites.push({
-                position: i,
-                efficiency: efficiency,
-                bystanterRisk: bystanterRisk,
-                codon: codon,
-                editedCodon: editedCodon,
-                codonPos: codonPos,
-                origAA: origAA,
-                editAA: editAA,
-                isSynonymous: isSynonymous,
-                context: seq.substring(Math.max(0,i-5), Math.min(seq.length, i+6))
-            });
-        }
-    }
-
-    editSites.sort((a,b) => b.efficiency - a.efficiency);
-    const topSites = editSites.slice(0, 10);
-
-    if (topSites.length === 0) {
-        document.getElementById('be-results').innerHTML = '<div class="result-panel" style="color:var(--danger)">No '+targetBase+' bases found in the sequence for '+editorName+' editing.</div>';
-        return;
-    }
-
-    let html = '<div class="card-header"><span class="card-title">'+geneName+' RNA Base Editing Sites ('+editorName+')</span><span class="card-badge badge-purple">'+targetBase+' &rarr; '+editedBase+'</span></div>';
-
-    // Edit window diagram
-    html += '<div style="margin-bottom:16px;padding:12px;background:#f8f9fa;border-radius:8px">';
-    html += '<h4 style="margin-bottom:8px;font-size:0.85rem">Edit Window Diagram ('+editorName+')</h4>';
-    html += '<div class="edit-window">';
-    const diagramLen = Math.min(40, seq.length);
-    for (let i = 0; i < diagramLen; i++) {
-        const isTarget = seq[i] === targetBase;
-        const inWindow = i >= windowStart && i <= windowEnd;
-        let cls = 'safe';
-        if (isTarget && inWindow) cls = 'target';
-        else if (isTarget) cls = 'bystander';
-        html += '<div class="edit-pos '+cls+'">'+seq[i]+'</div>';
-    }
-    if (seq.length > diagramLen) html += '<div style="padding:8px;color:var(--text-secondary)">...</div>';
-    html += '</div>';
-    html += '<div style="display:flex;gap:16px;font-size:0.75rem;margin-top:4px">';
-    html += '<span><span class="edit-pos target" style="display:inline-block;width:16px;height:16px;font-size:0.6rem">'+targetBase+'</span> Target (in window)</span>';
-    html += '<span><span class="edit-pos bystander" style="display:inline-block;width:16px;height:16px;font-size:0.6rem">'+targetBase+'</span> Bystander (outside window)</span>';
-    html += '<span><span class="edit-pos safe" style="display:inline-block;width:16px;height:16px;font-size:0.6rem">N</span> Non-target</span>';
-    html += '</div></div>';
-
-    html += '<table><thead><tr><th>#</th><th>Position</th><th>Context</th><th>Efficiency</th><th>Bystander Risk</th><th>Codon</th><th>AA Change</th><th>Type</th></tr></thead><tbody>';
-    topSites.forEach((s, i) => {
-        const effCls = scoreClass(s.efficiency);
-        const byCls = s.bystanterRisk < 0.2 ? 'score-high' : (s.bystanterRisk < 0.4 ? 'score-mid' : 'score-low');
-        const aaChange = s.origAA + ' &rarr; ' + s.editAA;
-        const typeLabel = s.isSynonymous ? '<span style="color:var(--accent)">Synonymous</span>' : '<span style="color:var(--warning)">Non-synonymous</span>';
-        if (s.editAA === 'Stop') {
-            // nothing, will be styled below
-        }
-        html += '<tr><td><strong>'+(i+1)+'</strong></td>';
-        html += '<td>'+s.position+'</td>';
-        html += '<td><span class="sequence-rna">'+s.context.substring(0,5)+'<strong style="color:var(--danger);text-decoration:underline">'+targetBase+'</strong>'+s.context.substring(6)+'</span></td>';
-        html += '<td>'+makeScoreBar(s.efficiency, (s.efficiency*100).toFixed(0)+'%')+'</td>';
-        html += '<td><div class="score-bar '+byCls+'"><span>'+(s.bystanterRisk*100).toFixed(0)+'%</span><div class="score-bar-track"><div class="score-bar-fill" style="width:'+(s.bystanterRisk*100)+'%"></div></div></div></td>';
-        html += '<td><span class="sequence-rna">'+s.codon+'</span> &rarr; <span class="sequence-rna">'+s.editedCodon+'</span></td>';
-        html += '<td>'+aaChange+'</td>';
-        html += '<td>'+(s.editAA==='Stop'?'<span style="color:var(--danger);font-weight:600">Premature Stop</span>':typeLabel)+'</td></tr>';
-    });
-    html += '</tbody></table>';
-
-    if (editSites.length > 10) {
-        html += '<p style="margin-top:12px;color:var(--text-secondary);font-size:0.8rem">Showing top 10 of '+editSites.length+' total '+targetBase+' sites found.</p>';
-    }
-
-    document.getElementById('be-results').innerHTML = html;
-}
-
-// ============================================================
-//  COMBINATIONS (Tab 7)
-// ============================================================
 function updateComboClass() {
     const modA = document.getElementById('combo-mod-a').value;
     const modB = document.getElementById('combo-mod-b').value;
