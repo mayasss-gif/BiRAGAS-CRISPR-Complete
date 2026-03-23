@@ -145,7 +145,7 @@ class UnifiedOrchestrator:
 
             # Stage 2: Build DAG
             _p("dag_build", 0, "Building causal DAG...")
-            self._dag = self._build_dag()
+            self._dag = self._build_dag(disease_name)
             if self._dag:
                 correction = self._corrector.validate_and_fix(self._dag, verbose=self._verbose)
                 report['dna_stages']['dag'] = {
@@ -161,12 +161,16 @@ class UnifiedOrchestrator:
                 ko = self._debugger.run_stage("knockout", self._knockout.predict_all,
                                                self._dag, max_genes=max_knockout_genes)
                 if ko:
-                    top = self._knockout.get_top_knockouts(ko, 10)
+                    top = self._knockout.get_top_knockouts(ko, 15)
                     report['dna_stages']['knockout'] = {
+                        'total_predicted': len(ko), 'total_configs': len(ko) * 11,
                         'predicted': len(ko), 'configs': len(ko) * 11,
+                        'top_15': [r.to_dict() for r in top],
                         'top_5': [r.to_dict() for r in top[:5]],
                     }
                     self._results['knockouts'] = ko
+                    # Also store at top level for report generator
+                    report['knockout'] = report['dna_stages']['knockout']
                     _p("knockout", 100, f"{len(ko)} genes, {len(ko)*11:,} configs")
 
             # Stage 4: Mega-scale
@@ -188,19 +192,85 @@ class UnifiedOrchestrator:
                         }
                     _p("mega", 100, f"{report['scale'].get('billions', 0)}B combinations")
 
-            # Stage 5: DNA guide design
-            if self._screening.is_loaded():
+            # Stage 5: DNA guide design (works with or without screening data)
+            if self._dag and self._dag.number_of_nodes() > 1:
                 _p("dna_guides", 0, "Designing knockout guides...")
-                drivers = self._screening.get_top_drivers(5)
+                # Get top genes by ACE score from DAG
+                reg_genes = [(n, abs(self._dag.nodes[n].get('perturbation_ace', 0)))
+                             for n in self._dag.nodes()
+                             if self._dag.nodes[n].get('layer') == 'regulatory']
+                reg_genes.sort(key=lambda x: -x[1])
+                top_genes = [g[0] for g in reg_genes[:5]]
+
                 strategies = []
-                for d in drivers:
-                    strat = self._editing.design_knockout_strategy(d.gene, n_guides=4, nuclease="NGG")
-                    strategies.append({'gene': d.gene, 'configs': strat.n_configs,
-                                       'efficiency': strat.expected_efficiency})
-                report['dna_stages']['guide_design'] = {
-                    'genes': len(strategies), 'strategies': strategies,
+                guides_data = {}
+                for gene in top_genes:
+                    dna_strat = self._editing.design_knockout_strategy(gene, n_guides=4, nuclease="NGG")
+                    rna_strat = self._editing.design_knockout_strategy(gene, n_guides=4, nuclease="Cas13d", target_type="RNA")
+                    strategies.append({'gene': gene,
+                                       'dna_configs': dna_strat.n_configs, 'dna_max_ko': dna_strat.expected_efficiency,
+                                       'rna_configs': rna_strat.n_configs, 'rna_max_kd': rna_strat.expected_efficiency})
+                    guides_data[gene] = {
+                        'dna': {'configs': dna_strat.n_configs, 'max_ko': dna_strat.expected_efficiency},
+                        'rna': {'configs': rna_strat.n_configs, 'max_kd': rna_strat.expected_efficiency},
+                    }
+                report['dna_stages']['guide_design'] = {'genes': len(strategies), 'strategies': strategies}
+                report['guides'] = guides_data
+                _p("dna_guides", 100, f"{len(strategies)} genes designed (DNA + RNA)")
+
+            # Stage 5b: 12-Model Cross-Modal Combinations
+            if self._dag and self._results.get('knockouts'):
+                _p("cross_combos", 0, "Running 12-model cross-modal combinations...")
+                ko_scores = {g: self._results['knockouts'][g].ensemble_score
+                             for g in self._results['knockouts']}
+                reg = [n for n in self._dag.nodes() if self._dag.nodes[n].get('layer') == 'regulatory']
+                top_10 = sorted(reg, key=lambda n: -abs(self._dag.nodes[n].get('perturbation_ace', 0)))[:10]
+                rna_targets_combo = [n for n in top_10 if self._dag.nodes[n].get('gene_type') in ('miRNA', 'lncRNA')] or top_10[:5]
+
+                # DNA×DNA
+                dna_dna = []
+                for i, g1 in enumerate(top_10[:8]):
+                    for g2 in top_10[i+1:8]:
+                        r = self._combination.predict_pair(self._dag, g1, g2, 'DNA_KO', 'DNA_KO', ko_scores=ko_scores)
+                        dna_dna.append(r)
+                dna_dna.sort(key=lambda r: -r.synergy_score)
+
+                # RNA×RNA
+                rna_rna = []
+                for i, g1 in enumerate(top_10[:6]):
+                    for g2 in top_10[i+1:6]:
+                        r = self._combination.predict_pair(self._dag, g1, g2, 'Cas13d_KD', 'Cas13d_KD', ko_scores=ko_scores)
+                        rna_rna.append(r)
+                rna_rna.sort(key=lambda r: -r.synergy_score)
+
+                # DNA×RNA cross-modal
+                cross = []
+                for dna_g in top_10[:6]:
+                    for rna_g in top_10[:6]:
+                        if dna_g != rna_g:
+                            r = self._combination.predict_pair(self._dag, dna_g, rna_g, 'DNA_KO', 'Cas13d_KD', ko_scores=ko_scores)
+                            cross.append(r)
+                cross.sort(key=lambda r: -r.synergy_score)
+
+                report['combinations'] = {
+                    'dna_x_dna': {
+                        'count': len(dna_dna),
+                        'synergistic': sum(1 for r in dna_dna if r.interaction_type == 'synergistic'),
+                        'top_5': [r.to_dict() for r in dna_dna[:5]],
+                    },
+                    'rna_x_rna': {
+                        'count': len(rna_rna),
+                        'synergistic': sum(1 for r in rna_rna if r.interaction_type == 'synergistic'),
+                        'top_5': [r.to_dict() for r in rna_rna[:5]],
+                    },
+                    'dna_x_rna': {
+                        'count': len(cross),
+                        'synergistic': sum(1 for r in cross if r.interaction_type == 'synergistic'),
+                        'top_5': [r.to_dict() for r in cross[:5]],
+                    },
                 }
-                _p("dna_guides", 100, f"{len(strategies)} genes designed")
+                _p("cross_combos", 100,
+                    f"DNA×DNA: {len(dna_dna)}, RNA×RNA: {len(rna_rna)}, DNA×RNA: {len(cross)} pairs")
 
         # ══════════════════════════════════════════════════════════════════════
         # RNA STAGES
@@ -368,20 +438,90 @@ class UnifiedOrchestrator:
 
         return report
 
-    def _build_dag(self):
+    def _build_dag(self, disease_name: str = "Disease"):
         import networkx as nx
-        if not self._screening.is_loaded():
-            return None
+
+        # If screening data loaded, use it
+        if self._screening.is_loaded():
+            dag = nx.DiGraph()
+            for gene, data in self._screening.get_all_genes().items():
+                dag.add_node(gene, layer='regulatory', perturbation_ace=data.ace_score,
+                             essentiality_tag=data.essentiality_class,
+                             therapeutic_alignment=data.therapeutic_alignment)
+            dag.add_node('Disease_Activity', layer='trait')
+            for gene in [n for n in dag.nodes() if dag.nodes[n].get('layer') == 'regulatory']:
+                ace = dag.nodes[gene].get('perturbation_ace', 0)
+                w = min(0.9, abs(ace) * 1.5) if isinstance(ace, (int, float)) else 0.3
+                dag.add_edge(gene, 'Disease_Activity', weight=w, confidence=w, confidence_score=w)
+            return dag
+
+        # No screening data — build demo disease network
+        logger.info("No screening data — building demo disease network")
         dag = nx.DiGraph()
-        for gene, data in self._screening.get_all_genes().items():
-            dag.add_node(gene, layer='regulatory', perturbation_ace=data.ace_score,
-                         essentiality_tag=data.essentiality_class,
-                         therapeutic_alignment=data.therapeutic_alignment)
+
+        # Core cancer signaling network (works for any disease)
+        genes = {
+            'KRAS':   {'ace': -0.85, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'BRAF':   {'ace': -0.70, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'MAP2K1': {'ace': -0.65, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'MAPK1':  {'ace': -0.60, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'PIK3CA': {'ace': -0.60, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'AKT1':   {'ace': -0.55, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'MTOR':   {'ace': -0.50, 'ess': 'Core Essential', 'align': 'Essential-Caution'},
+            'MYC':    {'ace': -0.75, 'ess': 'Core Essential', 'align': 'Essential-Caution'},
+            'TP53':   {'ace': 0.40, 'ess': 'Non-Essential', 'align': 'Protective'},
+            'CDKN2A': {'ace': 0.45, 'ess': 'Non-Essential', 'align': 'Protective'},
+            'SMAD4':  {'ace': 0.35, 'ess': 'Non-Essential', 'align': 'Protective'},
+            'PTEN':   {'ace': 0.35, 'ess': 'Non-Essential', 'align': 'Protective'},
+            'CDK4':   {'ace': -0.50, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'CCND1':  {'ace': -0.40, 'ess': 'Non-Essential', 'align': 'Aggravating'},
+            'EGFR':   {'ace': -0.55, 'ess': 'Non-Essential', 'align': 'Aggravating'},
+            'ERBB2':  {'ace': -0.45, 'ess': 'Non-Essential', 'align': 'Aggravating'},
+            'RELA':   {'ace': -0.45, 'ess': 'Context Essential', 'align': 'Aggravating'},
+            'VEGFA':  {'ace': -0.40, 'ess': 'Non-Essential', 'align': 'Aggravating'},
+            'SOS1':   {'ace': -0.40, 'ess': 'Non-Essential', 'align': 'Aggravating'},
+            'BRCA2':  {'ace': 0.20, 'ess': 'Non-Essential', 'align': 'Protective'},
+            # Non-coding RNAs
+            'MIR21':  {'ace': -0.55, 'ess': 'Non-Essential', 'align': 'Aggravating', 'gene_type': 'miRNA'},
+            'MIR155': {'ace': -0.40, 'ess': 'Non-Essential', 'align': 'Aggravating', 'gene_type': 'miRNA'},
+            'MIR34A': {'ace': 0.30, 'ess': 'Non-Essential', 'align': 'Protective', 'gene_type': 'miRNA'},
+            'HOTAIR': {'ace': -0.45, 'ess': 'Non-Essential', 'align': 'Aggravating', 'gene_type': 'lncRNA'},
+            'MALAT1': {'ace': -0.35, 'ess': 'Non-Essential', 'align': 'Aggravating', 'gene_type': 'lncRNA'},
+        }
+
+        for gene, info in genes.items():
+            dag.add_node(gene, layer='regulatory',
+                         perturbation_ace=info['ace'],
+                         essentiality_tag=info['ess'],
+                         therapeutic_alignment=info['align'],
+                         gene_type=info.get('gene_type', 'protein_coding'))
+
         dag.add_node('Disease_Activity', layer='trait')
-        for gene in [n for n in dag.nodes() if dag.nodes[n].get('layer') == 'regulatory']:
-            ace = dag.nodes[gene].get('perturbation_ace', 0)
-            w = min(0.9, abs(ace) * 1.5) if isinstance(ace, (int, float)) else 0.3
-            dag.add_edge(gene, 'Disease_Activity', weight=w, confidence=w, confidence_score=w)
+
+        edges = [
+            ('KRAS', 'BRAF', 0.95), ('KRAS', 'PIK3CA', 0.80), ('KRAS', 'RELA', 0.55),
+            ('BRAF', 'MAP2K1', 0.90), ('MAP2K1', 'MAPK1', 0.90),
+            ('PIK3CA', 'AKT1', 0.85), ('AKT1', 'MTOR', 0.80),
+            ('MAPK1', 'MYC', 0.75), ('MYC', 'CDK4', 0.70), ('MYC', 'CCND1', 0.65),
+            ('EGFR', 'KRAS', 0.70), ('EGFR', 'PIK3CA', 0.60),
+            ('ERBB2', 'PIK3CA', 0.55), ('SOS1', 'KRAS', 0.80),
+            ('PTEN', 'PIK3CA', 0.70), ('TP53', 'CDKN2A', 0.60),
+            ('CDKN2A', 'CDK4', 0.80), ('SMAD4', 'Disease_Activity', 0.50),
+            ('MAPK1', 'PIK3CA', 0.40), ('AKT1', 'BRAF', 0.35),
+            ('MIR21', 'PTEN', 0.70), ('MIR155', 'RELA', 0.50),
+            ('MIR34A', 'MYC', 0.55), ('HOTAIR', 'CDKN2A', 0.50),
+            ('MALAT1', 'MAPK1', 0.40), ('TP53', 'MIR34A', 0.65),
+            ('MAPK1', 'Disease_Activity', 0.85), ('AKT1', 'Disease_Activity', 0.75),
+            ('MTOR', 'Disease_Activity', 0.70), ('MYC', 'Disease_Activity', 0.80),
+            ('CDK4', 'Disease_Activity', 0.55), ('RELA', 'Disease_Activity', 0.55),
+            ('VEGFA', 'Disease_Activity', 0.50), ('MIR21', 'Disease_Activity', 0.60),
+            ('HOTAIR', 'Disease_Activity', 0.55), ('MALAT1', 'Disease_Activity', 0.45),
+            ('BRCA2', 'Disease_Activity', 0.30), ('EGFR', 'Disease_Activity', 0.60),
+        ]
+        for src, tgt, w in edges:
+            dag.add_edge(src, tgt, weight=w, confidence=w, confidence_score=w)
+
+        logger.info(f"Demo DAG built: {dag.number_of_nodes()} nodes, {dag.number_of_edges()} edges")
         return dag
 
     def get_capabilities(self) -> Dict:
