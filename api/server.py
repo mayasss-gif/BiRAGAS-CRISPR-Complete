@@ -1,14 +1,14 @@
 """
-BiRAGAS CRISPR Complete API Server — FastAPI (DNA + RNA)
+BiRAGAS CRISPR Complete API Server — FastAPI (DNA + RNA) + Reporting
 """
-import json, logging, os, time, uuid
+import json, logging, os, time, uuid, tempfile
 from typing import Dict, Optional
 logger = logging.getLogger("biragas_crispr.api")
 
 try:
     from fastapi import FastAPI, HTTPException, BackgroundTasks
     from fastapi.staticfiles import StaticFiles
-    from fastapi.responses import HTMLResponse, JSONResponse
+    from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
     from fastapi.middleware.cors import CORSMiddleware
     from pydantic import BaseModel
     FASTAPI_OK = True
@@ -124,6 +124,123 @@ def create_app():
     @app.get("/api/jobs")
     async def jobs():
         return {k: {'status': v['status']} for k, v in _jobs.items()}
+
+    # ══════════════════════════════════════════════════════════════════════
+    # REPORTING ENDPOINTS
+    # ══════════════════════════════════════════════════════════════════════
+
+    class ReportReq(BaseModel):
+        job_id: str = ""
+        disease_name: str = "Disease"
+        report_type: str = "pdf"  # pdf, excel, narrative, all
+
+    @app.post("/api/generate-report")
+    async def generate_report(req: ReportReq):
+        """Generate PDF report from a completed analysis job."""
+        # Get report data
+        report_data = None
+        if req.job_id and req.job_id in _jobs:
+            job = _jobs[req.job_id]
+            if job['status'] == 'completed' and job.get('result'):
+                report_data = job['result']
+
+        if not report_data:
+            # Try to use the last completed job
+            for jid, job in reversed(list(_jobs.items())):
+                if job['status'] == 'completed' and job.get('result'):
+                    report_data = job['result']
+                    break
+
+        if not report_data:
+            raise HTTPException(400, "No completed analysis found. Run /api/analyze first.")
+
+        out_dir = tempfile.mkdtemp(prefix="biragas_report_")
+
+        try:
+            from ..Reporting_Tools.report_generator import ReportGenerator
+            rg = ReportGenerator()
+            pdf_path = rg.generate_full_report(
+                report_data, os.path.join(out_dir, "report.pdf"), req.disease_name)
+            return FileResponse(pdf_path, filename=f"BiRAGAS_CRISPR_{req.disease_name}_Report.pdf",
+                                media_type="application/pdf")
+        except Exception as e:
+            raise HTTPException(500, f"Report generation failed: {e}")
+
+    @app.post("/api/export-excel")
+    async def export_excel(req: ReportReq):
+        """Export analysis results to Excel."""
+        report_data = None
+        if req.job_id and req.job_id in _jobs:
+            job = _jobs[req.job_id]
+            if job['status'] == 'completed' and job.get('result'):
+                report_data = job['result']
+        if not report_data:
+            for jid, job in reversed(list(_jobs.items())):
+                if job['status'] == 'completed' and job.get('result'):
+                    report_data = job['result']
+                    break
+        if not report_data:
+            raise HTTPException(400, "No completed analysis found.")
+
+        out_dir = tempfile.mkdtemp(prefix="biragas_excel_")
+        try:
+            from ..Reporting_Tools.excel_exporter import ExcelExporter
+            ee = ExcelExporter()
+            xlsx_path = ee.export(report_data, os.path.join(out_dir, "results.xlsx"), req.disease_name)
+            return FileResponse(xlsx_path, filename=f"BiRAGAS_CRISPR_{req.disease_name}_Results.xlsx",
+                                media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+        except Exception as e:
+            raise HTTPException(500, f"Excel export failed: {e}")
+
+    @app.post("/api/clinical-narrative")
+    async def clinical_narrative(req: ReportReq):
+        """Generate clinical narrative text."""
+        report_data = None
+        if req.job_id and req.job_id in _jobs:
+            job = _jobs[req.job_id]
+            if job['status'] == 'completed' and job.get('result'):
+                report_data = job['result']
+        if not report_data:
+            for jid, job in reversed(list(_jobs.items())):
+                if job['status'] == 'completed' and job.get('result'):
+                    report_data = job['result']
+                    break
+        if not report_data:
+            raise HTTPException(400, "No completed analysis found.")
+
+        try:
+            from ..Reporting_Tools.clinical_narrative import ClinicalNarrativeGenerator
+            ng = ClinicalNarrativeGenerator()
+            narrative = ng.generate(report_data, req.disease_name)
+            return {"disease": req.disease_name, "narrative": narrative, "length": len(narrative)}
+        except Exception as e:
+            raise HTTPException(500, f"Narrative generation failed: {e}")
+
+    @app.get("/api/reporting-status")
+    async def reporting_status():
+        """Check if reporting tools are available."""
+        tools = {}
+        try:
+            from ..Reporting_Tools.report_generator import ReportGenerator
+            tools['pdf_report'] = True
+        except Exception:
+            tools['pdf_report'] = False
+        try:
+            from ..Reporting_Tools.excel_exporter import ExcelExporter
+            tools['excel_export'] = True
+        except Exception:
+            tools['excel_export'] = False
+        try:
+            from ..Reporting_Tools.clinical_narrative import ClinicalNarrativeGenerator
+            tools['clinical_narrative'] = True
+        except Exception:
+            tools['clinical_narrative'] = False
+        try:
+            from ..Reporting_Tools.scientific_plotter import ScientificPlotter
+            tools['scientific_plots'] = True
+        except Exception:
+            tools['scientific_plots'] = False
+        return {"reporting_tools": tools, "all_available": all(tools.values())}
 
     return app
 

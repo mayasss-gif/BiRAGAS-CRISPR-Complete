@@ -80,6 +80,7 @@ table{width:100%;border-collapse:collapse;font-size:.82rem}th{text-align:left;pa
 <div class="nt" data-tab="baseedit" onclick="switchTab('baseedit')">Base Editing</div>
 <div class="nt" data-tab="combinations" onclick="switchTab('combinations')">Combinations</div>
 <div class="nt" data-tab="causality" onclick="switchTab('causality')">Causality (7 Phases)</div>
+<div class="nt" data-tab="reports" onclick="switchTab('reports')" style="color:var(--accent)">Reports</div>
 <div class="nt" data-tab="install" onclick="switchTab('install')">Install & Run</div>
 
 </div></div>
@@ -579,6 +580,126 @@ Unified engine: 210,859 DNA knockout configs + 210,859 RNA knockdown configs = <
 </div>
 
 
+<!-- ==================== TAB: REPORTS ==================== -->
+<div id="tab-reports" class="tc">
+
+<div class="card" style="background:linear-gradient(135deg,#1b5e20,#2e7d32);color:#fff;border:none">
+<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+<div>
+<h2 style="font-size:1.3rem;margin-bottom:4px">Report Generation Engine</h2>
+<p style="opacity:.85;font-size:.85rem">PDF Reports + Excel Export + Clinical Narrative — covering all 150+ metrics</p>
+</div>
+<div id="reporting-status" style="font-size:.8rem;opacity:.8">Checking server...</div>
+</div>
+</div>
+
+<div class="g3" style="margin-bottom:16px">
+<div class="sb" style="border-left:4px solid var(--accent)">
+<div class="sv" style="color:var(--accent);font-size:1.5rem">PDF</div>
+<div class="sl">Multi-page scientific report with plots</div>
+</div>
+<div class="sb" style="border-left:4px solid var(--primary)">
+<div class="sv" style="color:var(--primary);font-size:1.5rem">Excel</div>
+<div class="sl">Multi-tab spreadsheet (6 tabs)</div>
+</div>
+<div class="sb" style="border-left:4px solid var(--purple)">
+<div class="sv" style="color:var(--purple);font-size:1.5rem">Narrative</div>
+<div class="sl">AI-generated clinical text</div>
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<span class="card-title">Generate Reports from Analysis</span>
+<span id="rpt-server-badge" class="cb" style="background:#fce4ec;color:#c62828">Server Offline</span>
+</div>
+<p style="margin-bottom:14px;color:var(--text-secondary);font-size:.82rem">
+Run a full pipeline analysis first (<strong>Full Pipeline</strong> tab), then generate reports from the results.
+Reports include: knockout rankings with bar charts, 12-model synergy heatmaps, 15-stream ACE radar,
+7-phase causality progress, guide design tables, clinical narrative, and gap analysis.
+</p>
+<div class="g2">
+<div>
+<div class="fg"><label class="fl">Disease Name</label><input id="rpt-disease" class="fi" type="text" placeholder="e.g., Pancreatic Cancer" value="Disease"></div>
+<div class="fg"><label class="fl">Job ID (leave empty for latest)</label><input id="rpt-jobid" class="fi" type="text" placeholder="Auto-detect latest completed job"></div>
+</div>
+<div>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
+<button class="btn btn-p" onclick="genReport('pdf')" id="btn-rpt-pdf" disabled style="background:var(--accent)">
+Download PDF Report (Scientific Plots)
+</button>
+<button class="btn btn-p" onclick="genReport('excel')" id="btn-rpt-excel" disabled>
+Download Excel (Multi-Tab Spreadsheet)
+</button>
+<button class="btn btn-p" onclick="genReport('narrative')" id="btn-rpt-narr" disabled style="background:var(--purple)">
+Generate Clinical Narrative
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<div class="card" id="rpt-results">
+<div class="card-header"><span class="card-title">Report Contents</span></div>
+<div class="g2">
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px;color:var(--accent)">PDF Report Pages</h4>
+<table style="font-size:.78rem">
+<tr><td><strong>Page 1</strong></td><td>Executive Summary + Scale Statistics</td></tr>
+<tr><td><strong>Page 2</strong></td><td>Knockout Rankings — 7-method ensemble bar chart + waterfall</td></tr>
+<tr><td><strong>Page 3</strong></td><td>ACE Scoring — 15-stream weights + category radar chart</td></tr>
+<tr><td><strong>Page 4</strong></td><td>Combination Synergy — 12-model per-class tables (DNA/RNA/Cross)</td></tr>
+<tr><td><strong>Page 5</strong></td><td>Guide Design — DNA + RNA configs per gene</td></tr>
+<tr><td><strong>Page 6</strong></td><td>7-Phase Causality — progress bars + module validation</td></tr>
+<tr><td><strong>Page 7</strong></td><td>RNA Analysis — base editing + ncRNA + transcriptome</td></tr>
+<tr><td><strong>Page 8</strong></td><td>Clinical Narrative + Gap Analysis + Recommendations</td></tr>
+</table>
+</div>
+<div>
+<h4 style="font-size:.85rem;margin-bottom:8px;color:var(--primary)">Excel Tabs</h4>
+<table style="font-size:.78rem">
+<tr><td><strong>Summary</strong></td><td>Disease, scale, duration, module status</td></tr>
+<tr><td><strong>Knockouts</strong></td><td>Top genes, ensemble score, direction, CI</td></tr>
+<tr><td><strong>Combinations</strong></td><td>DNA×DNA, RNA×RNA, DNA×RNA top pairs</td></tr>
+<tr><td><strong>Guides</strong></td><td>DNA configs, max KO%, RNA configs, max KD%</td></tr>
+<tr><td><strong>Causality</strong></td><td>7 phases, modules run, pass/fail status</td></tr>
+<tr><td><strong>Scale</strong></td><td>Total configs, combinations, billions</td></tr>
+</table>
+<h4 style="font-size:.85rem;margin:12px 0 8px;color:var(--purple)">Clinical Narrative Sections</h4>
+<table style="font-size:.78rem">
+<tr><td>Opening</td><td>Knockout Findings</td></tr>
+<tr><td>Combination Synergy</td><td>RNA Analysis</td></tr>
+<tr><td>Causality Validation</td><td>Safety Assessment</td></tr>
+<tr><td colspan="2">Recommendations + Gap Analysis</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="card" id="rpt-narrative-output" style="display:none">
+<div class="card-header"><span class="card-title">Clinical Narrative</span><span class="cb bp">AI-Generated</span></div>
+<pre id="rpt-narrative-text" style="white-space:pre-wrap;font-size:.82rem;line-height:1.6;max-height:500px;overflow-y:auto;background:#f8f9fa;padding:16px;border-radius:8px;border:1px solid var(--border)"></pre>
+</div>
+
+<div class="card">
+<div class="card-header"><span class="card-title">Scientific Plot Types in Report</span></div>
+<table style="font-size:.78rem">
+<thead><tr><th>Plot Type</th><th>Used For</th><th>Metrics Visualized</th></tr></thead>
+<tbody>
+<tr><td><strong>Bar Chart</strong></td><td>Knockout rankings, ACE weights</td><td>ensemble_score, ace_score, 15 stream weights</td></tr>
+<tr><td><strong>Waterfall Plot</strong></td><td>7-method KO contributions</td><td>topological, bayesian, monte_carlo, pathway, feedback, ode, mutual_info</td></tr>
+<tr><td><strong>Radar Chart</strong></td><td>Multi-dimensional scoring</td><td>7D target score, 9D drug ranking, ACE categories</td></tr>
+<tr><td><strong>Heatmap</strong></td><td>Synergy matrices</td><td>12 synergy model scores per gene pair</td></tr>
+<tr><td><strong>CI Forest Plot</strong></td><td>Knockout confidence intervals</td><td>ci_lower, ci_upper, ensemble_score per gene</td></tr>
+<tr><td><strong>Stacked Bar</strong></td><td>ACE stream decomposition</td><td>15 individual stream contributions per gene</td></tr>
+<tr><td><strong>Phase Progress</strong></td><td>7-phase causality pipeline</td><td>28 modules pass/fail across 7 phases</td></tr>
+<tr><td><strong>Table</strong></td><td>All detailed results</td><td>150+ metrics in formatted tables</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- ==================== TAB: INSTALL ==================== -->
 <div id="tab-install" class="tc">
 <div class="card"><div class="card-header"><span class="card-title">Installation &amp; CLI</span><span class="cb bg">Full Backend</span></div>
 <div class="g2">
@@ -795,7 +916,105 @@ function designBE(){
     h+='</tbody></table>';document.getElementById('be-results').innerHTML=h;
 }
 
-async function checkServer(){try{const r=await fetch(API+'/api/status');if(r.ok)serverAvailable=true}catch(e){}}
+async function checkServer(){
+    try{
+        const r=await fetch(API+'/api/status');
+        if(r.ok){
+            serverAvailable=true;
+            // Also check reporting tools
+            checkReporting();
+        }
+    }catch(e){
+        serverAvailable=false;
+        updateReportingUI(false);
+    }
+}
+
+async function checkReporting(){
+    try{
+        const r=await fetch(API+'/api/reporting-status');
+        if(r.ok){
+            const data=await r.json();
+            updateReportingUI(true, data);
+        }
+    }catch(e){
+        updateReportingUI(false);
+    }
+}
+
+function updateReportingUI(serverOn, data){
+    const badge=document.getElementById('rpt-server-badge');
+    const status=document.getElementById('reporting-status');
+    const btnPdf=document.getElementById('btn-rpt-pdf');
+    const btnExcel=document.getElementById('btn-rpt-excel');
+    const btnNarr=document.getElementById('btn-rpt-narr');
+
+    if(!badge)return;
+
+    if(serverOn && data && data.all_available){
+        badge.textContent='Server Online — Reports Ready';
+        badge.style.background='#e8f5e9';badge.style.color='#2e7d32';
+        status.textContent='All 4 reporting tools available';
+        btnPdf.disabled=false;btnExcel.disabled=false;btnNarr.disabled=false;
+    }else if(serverOn){
+        badge.textContent='Server Online — Partial';
+        badge.style.background='#fff3e0';badge.style.color='#e65100';
+        status.textContent='Server running but some tools missing';
+        btnPdf.disabled=false;btnExcel.disabled=false;btnNarr.disabled=false;
+    }else{
+        badge.textContent='Server Offline';
+        badge.style.background='#fce4ec';badge.style.color='#c62828';
+        status.textContent='Start server: python -m BiRAGAS_CRISPR_Complete --serve';
+        btnPdf.disabled=true;btnExcel.disabled=true;btnNarr.disabled=true;
+    }
+}
+
+async function genReport(type){
+    if(!serverAvailable){alert('Start the server first:\npython -m BiRAGAS_CRISPR_Complete --serve');return}
+    const disease=document.getElementById('rpt-disease').value||'Disease';
+    const jobId=document.getElementById('rpt-jobid').value||'';
+    const body=JSON.stringify({disease_name:disease,job_id:jobId,report_type:type});
+
+    if(type==='pdf'){
+        const btn=document.getElementById('btn-rpt-pdf');
+        btn.disabled=true;btn.textContent='Generating PDF...';
+        try{
+            const r=await fetch(API+'/api/generate-report',{method:'POST',headers:{'Content-Type':'application/json'},body});
+            if(!r.ok){const e=await r.json();throw new Error(e.detail||'Failed')}
+            const blob=await r.blob();
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');a.href=url;a.download='BiRAGAS_CRISPR_'+disease+'_Report.pdf';a.click();
+            URL.revokeObjectURL(url);
+        }catch(e){alert('PDF generation failed: '+e.message)}
+        btn.disabled=false;btn.textContent='Download PDF Report (Scientific Plots)';
+
+    }else if(type==='excel'){
+        const btn=document.getElementById('btn-rpt-excel');
+        btn.disabled=true;btn.textContent='Generating Excel...';
+        try{
+            const r=await fetch(API+'/api/export-excel',{method:'POST',headers:{'Content-Type':'application/json'},body});
+            if(!r.ok){const e=await r.json();throw new Error(e.detail||'Failed')}
+            const blob=await r.blob();
+            const url=URL.createObjectURL(blob);
+            const a=document.createElement('a');a.href=url;a.download='BiRAGAS_CRISPR_'+disease+'_Results.xlsx';a.click();
+            URL.revokeObjectURL(url);
+        }catch(e){alert('Excel export failed: '+e.message)}
+        btn.disabled=false;btn.textContent='Download Excel (Multi-Tab Spreadsheet)';
+
+    }else if(type==='narrative'){
+        const btn=document.getElementById('btn-rpt-narr');
+        btn.disabled=true;btn.textContent='Generating Narrative...';
+        try{
+            const r=await fetch(API+'/api/clinical-narrative',{method:'POST',headers:{'Content-Type':'application/json'},body});
+            if(!r.ok){const e=await r.json();throw new Error(e.detail||'Failed')}
+            const data=await r.json();
+            document.getElementById('rpt-narrative-output').style.display='block';
+            document.getElementById('rpt-narrative-text').textContent=data.narrative;
+        }catch(e){alert('Narrative generation failed: '+e.message)}
+        btn.disabled=false;btn.textContent='Generate Clinical Narrative';
+    }
+}
+
 checkServer();setInterval(checkServer,15000);
 
 
