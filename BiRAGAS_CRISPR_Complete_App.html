@@ -682,7 +682,7 @@ Report Generator (PDF + Excel + Narrative)
 </div>
 
 <!-- ==================== TAB 7: COMBINATIONS (12-Model Cross-Modal) ==================== -->
-    <div id="tab-combinations" class="tab-content">
+    <div id="tab-combinations" class="tc">
 
         <!-- Scale Overview -->
         <div class="card" style="background:linear-gradient(135deg,#1a237e,#1565c0);color:white;border:none">
@@ -914,67 +914,6 @@ Report Generator (PDF + Excel + Narrative)
 <tr><td><strong>StressTestAgent</strong></td><td>17 differential diagnosis scenarios for clinical validation</td></tr>
 </tbody></table></div>
 </div>
-
-
-<!-- ==================== TAB: REPORTS ==================== -->
-<div id="tab-causality" class="tc">
-<div class="card" style="background:linear-gradient(135deg,#1a237e,#283593);color:#fff;border:none">
-<h2 style="font-size:1.3rem;margin-bottom:6px">BiRAGAS 7-Phase Causality Framework</h2>
-<p style="opacity:.85;font-size:.85rem">28 integration modules (4/phase) + 23 core causality modules + DNA &amp; RNA evidence flow</p>
-</div>
-
-<div class="card"><div class="card-header"><span class="card-title">28 CRISPR Phase Integration Modules (4 per phase)</span></div>
-<table style="font-size:.78rem"><thead><tr><th>Phase</th><th>Focus</th><th>Module 1</th><th>Module 2</th><th>Module 3</th><th>Module 4</th></tr></thead><tbody>
-<tr style="background:#e3f2fd"><td><strong>Phase 1</strong></td><td>Screening&rarr;DAG</td><td>QualityGate</td><td>ScreeningConverter</td><td>CRISPREnricher</td><td>MRCorroborator</td></tr>
-<tr><td><strong>Phase 2</strong></td><td>Network Scoring</td><td>TargetScorer(7D)</td><td>CentralityEnhancer</td><td>TierPromoter</td><td>KnockoutBridge</td></tr>
-<tr style="background:#e3f2fd"><td><strong>Phase 3</strong></td><td>Quality Assurance</td><td>DirectionValidator</td><td>ConfoundingDetector</td><td>HallucinationShield</td><td>KOIntegrator</td></tr>
-<tr><td><strong>Phase 4</strong></td><td>Mechanisms</td><td>AttributeHarmonizer</td><td>ResistanceEnhancer</td><td>CompensationBridge</td><td>EngineAdapter</td></tr>
-<tr style="background:#e3f2fd"><td><strong>Phase 5</strong></td><td>Pharmaceutical</td><td>DrugTargetRanker(9D)</td><td>SafetyEnhancer</td><td>EfficacyInjector</td><td>SynergyUpgrader</td></tr>
-<tr><td><strong>Phase 6</strong></td><td>Stratification</td><td>WeightedStratifier</td><td>DriverComparator</td><td>MotifValidator</td><td>SubtypeMapper</td></tr>
-<tr style="background:#e3f2fd"><td><strong>Phase 7</strong></td><td>Reporting</td><td>ReportGenerator</td><td>QualityBooster</td><td>ArbitrationEnhancer</td><td>GapPrioritizer</td></tr>
-</tbody></table></div>
-
-<div class="card"><div class="card-header"><span class="card-title">23 Core BiRAGAS Causality Modules</span></div>
-<div class="g2">
-<div><table style="font-size:.78rem">
-<tr><td><strong>Phase 1</strong></td><td>dag_builder (1,191 lines)</td><td>mr_validator (325)</td></tr>
-<tr><td><strong>Phase 2</strong></td><td>centrality_calculator (215)</td><td>target_scorer (165)</td></tr>
-<tr><td><strong>Phase 3</strong></td><td>causality_tester (292)</td><td>directionality_tester (205)</td></tr>
-<tr><td></td><td>confounding_checker (200)</td><td></td></tr>
-<tr><td><strong>Phase 4</strong></td><td>counterfactual_simulator (181)</td><td>dag_propagation_engine (172)</td></tr>
-<tr><td></td><td>resistance_mechanism_id (240)</td><td>compensation_pathway (222)</td></tr>
-<tr><td><strong>Phase 5</strong></td><td>druggability_scorer (149)</td><td>efficacy_predictor (153)</td></tr>
-<tr><td></td><td>safety_assessor (196)</td><td>target_ranker (162)</td></tr>
-<tr><td></td><td>combination_analyzer (219)</td><td></td></tr>
-</table></div>
-<div><table style="font-size:.78rem">
-<tr><td><strong>Phase 6</strong></td><td>cohort_stratifier (173)</td><td>dag_comparator (219)</td></tr>
-<tr><td></td><td>conserved_motifs_id (240)</td><td></td></tr>
-<tr><td><strong>Phase 7</strong></td><td>evidence_inspector (227)</td><td>gap_analyzer (261)</td></tr>
-<tr><td></td><td>llm_arbitrator (298)</td><td>response_formatter (285)</td></tr>
-</table>
-<h4 style="font-size:.85rem;margin:14px 0 8px;color:var(--purple)">RNA Evidence Through Causality</h4>
-<table style="font-size:.75rem">
-<tr><td><strong>Phase 1</strong></td><td>RNA KD + Perturb-seq &rarr; DAG enrichment</td></tr>
-<tr><td><strong>Phase 2</strong></td><td>RNA evidence boosts centrality + tier</td></tr>
-<tr><td><strong>Phase 3</strong></td><td>Cas13 KD validates causal edges</td></tr>
-<tr><td><strong>Phase 4</strong></td><td>RNA compensation + isoform switching</td></tr>
-<tr><td><strong>Phase 5</strong></td><td>RNA KD efficacy + cross-modal synergy</td></tr>
-<tr><td><strong>Phase 6</strong></td><td>scRNA-seq for patient stratification</td></tr>
-<tr><td><strong>Phase 7</strong></td><td>Dual DNA+RNA validated clinical targets</td></tr>
-</table>
-</div>
-</div></div>
-
-<div class="card"><div class="card-header"><span class="card-title">Agentic AI Autonomous Features</span><span class="cb bg">Self-Correcting</span></div>
-<table><thead><tr><th>Feature</th><th>Description</th></tr></thead><tbody>
-<tr><td><strong>SelfCorrector</strong></td><td>9 autonomous DAG checks: cycle removal, orphan connection, confidence pruning, attribute injection, layer enforcement, weight normalization, duplicate removal, component merging, confidence harmonization</td></tr>
-<tr><td><strong>PipelineDebugger</strong></td><td>Error classification + exponential backoff retry (2/4/8/16/30s) + fallback methods + state checkpointing</td></tr>
-<tr><td><strong>LearningEngine</strong></td><td>Performance tracking + adaptive phase optimization + pattern recognition</td></tr>
-<tr><td><strong>StressTestAgent</strong></td><td>17 differential diagnosis scenarios for clinical validation</td></tr>
-</tbody></table></div>
-</div>
-
 
 <div id="tab-install" class="tc">
 <div class="card"><div class="card-header"><span class="card-title">Installation &amp; CLI</span><span class="cb bg">Full Backend</span></div>
