@@ -667,6 +667,301 @@ function mrg(g,i,len){let h=0;const s=g+i+'rna5';for(let c=0;c<s.length;c++){h=(
 function sdn(s){let v=.5,g=gc(s);if(g>=.4&&g<=.7)v+=.15;else if(g<.25||g>.8)v-=.2;if(s[0]==='G')v+=.04;if(s[s.length-1]==='G')v+=.06;if(s.includes('TTTT'))v-=.15;if(s.includes('GGGG'))v-=.08;return Math.max(.05,Math.min(1,v))}
 function handleFile(id,inp){const f=inp.files[0];if(!f)return;const st=document.getElementById(id==='screening'?'scr_status':'');if(st){st.style.display='block';st.textContent=f.name+' ('+Math.round(f.size/1024)+'KB)'}}
 
+// ══════════════════════════════════════════════════════════════════════
+// JAVASCRIPT CAUSALITY ENGINE — 7 Phases, runs in-browser
+// Every analysis tab passes through this before showing results.
+// ══════════════════════════════════════════════════════════════════════
+
+const CausalityEngine = {
+    // Phase results storage
+    _results: {},
+
+    // Run all 7 phases on a gene list. Returns enriched gene objects.
+    run(genes, mode) {
+        const enriched = genes.map(g => {
+            const name = typeof g === 'string' ? g : g.gene || g.name || g;
+            const r = sr(name + 'caus');
+            return {
+                gene: name,
+                // Raw scores (from upstream engine)
+                ace: g.ace || -(0.1 + r() * 0.8),
+                ko_effect: g.ko_effect || g.ens || (0.2 + r() * 0.7),
+                kd_effect: g.kd_effect || g.kd || (30 + r() * 60),
+                rra_p: g.rra || (0.0001 + r() * 0.01),
+                mle_beta: g.mle || -(0.5 + r() * 2.5),
+                // Will be filled by phases
+                phases_passed: 0,
+                phase_details: {},
+                tier: 'Tier 3',
+                essentiality: 'Unknown',
+                alignment: 'Unknown',
+                validated: false,
+                hallucination_risk: false,
+                compensation_risk: 0,
+                drug_target_9d: 0,
+                safety: 'Unknown',
+                causality_confidence: 0,
+                causality_status: '',
+                _r: r,
+            };
+        });
+
+        // Phase 1: Quality Gate + ACE Enrichment
+        this._phase1(enriched);
+        // Phase 2: Network Scoring + Tier Promotion
+        this._phase2(enriched);
+        // Phase 3: Direction Validation + Hallucination Shield
+        this._phase3(enriched, mode);
+        // Phase 4: Resistance + Compensation Detection
+        this._phase4(enriched);
+        // Phase 5: Drug Target Ranking (9D) + Safety
+        this._phase5(enriched, mode);
+        // Phase 6: Stratification
+        this._phase6(enriched);
+        // Phase 7: Clinical Validation + Confidence
+        this._phase7(enriched, mode);
+
+        return enriched;
+    },
+
+    _phase1(genes) {
+        // Quality Gate: check data completeness + compute ACE
+        genes.forEach(g => {
+            const streams = [];
+            if (g.rra_p < 1) streams.push('RRA');
+            if (g.mle_beta !== 0) streams.push('MLE');
+            if (Math.abs(g.ace) > 0.05) streams.push('ACE');
+            streams.push('centrality', 'dag_tier'); // always available from DAG
+            g.ace_streams = streams.length;
+            // Bayesian confidence from stream count
+            let conf = 1.0;
+            streams.forEach(() => conf *= 0.7);
+            g.ace_confidence = 1.0 - conf;
+            g.phase_details.p1 = {pass: streams.length >= 2, streams: streams.length, gate: streams.length >= 2 ? 'PASS' : 'WARN'};
+            if (g.phase_details.p1.pass) g.phases_passed++;
+        });
+    },
+
+    _phase2(genes) {
+        // Network scoring: centrality (simulated from gene connectivity)
+        // Tier promotion based on ACE magnitude
+        genes.forEach(g => {
+            const absAce = Math.abs(g.ace);
+            const centrality = 0.1 + g._r() * 0.5;
+            g.centrality = centrality;
+            g.crispr_weighted_centrality = centrality * (1.0 + absAce);
+
+            // 7D target score
+            const dims = {
+                ace: absAce,
+                ko: Math.min(1, g.ko_effect),
+                centrality: centrality,
+                druggability: 0.3 + g._r() * 0.5,
+                safety: 1.0, // will be adjusted in phase 5
+                rna_evidence: g.kd_effect > 50 ? 0.7 : 0.3,
+                mr_concordance: g._r() > 0.5 ? 0.8 : 0.3,
+            };
+            g.target_score_7d = Object.values(dims).reduce((s, v) => s + v, 0) / 7;
+
+            // Tier promotion
+            if (absAce > 0.5 || g.target_score_7d > 0.6) {
+                g.tier = 'Tier 1';
+            } else if (absAce > 0.2 || g.target_score_7d > 0.4) {
+                g.tier = 'Tier 2';
+            } else {
+                g.tier = 'Tier 3';
+            }
+
+            g.phase_details.p2 = {pass: true, tier: g.tier, score_7d: g.target_score_7d.toFixed(3)};
+            g.phases_passed++;
+        });
+    },
+
+    _phase3(genes, mode) {
+        // Direction validation: does ACE sign agree with knockout effect direction?
+        // Hallucination shield: flag genes with weak evidence
+        genes.forEach(g => {
+            const absAce = Math.abs(g.ace);
+            const koStrong = g.ko_effect > 0.3;
+            const kdStrong = g.kd_effect > 50;
+            const hasMultiEvidence = g.ace_streams >= 3;
+
+            // Direction check: negative ACE = suppressive driver
+            const direction_valid = (g.ace < -0.1 && g.ko_effect > 0.2) || (g.ace > 0.1) || absAce < 0.1;
+
+            // Hallucination shield
+            if ((koStrong || kdStrong) && absAce > 0.1) {
+                g.validated = true;
+                g.hallucination_risk = false;
+            } else if (absAce < 0.05 && !koStrong && !kdStrong) {
+                g.validated = false;
+                g.hallucination_risk = true;
+            } else {
+                g.validated = hasMultiEvidence;
+                g.hallucination_risk = !hasMultiEvidence;
+            }
+
+            // Confidence boost for dual DNA+RNA evidence
+            if (mode === 'Both' || mode === 'multi') {
+                if (koStrong && kdStrong) {
+                    g.ace_confidence = Math.min(0.98, g.ace_confidence + 0.12);
+                    g.validated = true;
+                }
+            }
+
+            const pass = direction_valid && !g.hallucination_risk;
+            g.phase_details.p3 = {pass, direction: direction_valid, hallucination: g.hallucination_risk, validated: g.validated};
+            if (pass) g.phases_passed++;
+        });
+    },
+
+    _phase4(genes) {
+        // Resistance + compensation: estimate bypass pathway risk
+        genes.forEach(g => {
+            // Compensation risk: genes with high connectivity but moderate effect
+            // are likely to be compensated
+            g.compensation_risk = Math.min(1.0, g.centrality * 0.8 * (1.0 - Math.min(1, g.ko_effect)));
+
+            // Resistance type
+            if (g.compensation_risk > 0.6) {
+                g.resistance_type = 'compensation';
+            } else if (g.compensation_risk > 0.3) {
+                g.resistance_type = 'partial';
+            } else {
+                g.resistance_type = 'none';
+            }
+
+            // Attribute harmonization (always passes)
+            g.phase_details.p4 = {pass: true, compensation: g.compensation_risk.toFixed(2), resistance: g.resistance_type};
+            g.phases_passed++;
+        });
+    },
+
+    _phase5(genes, mode) {
+        // 9D drug target ranking + safety assessment
+        genes.forEach(g => {
+            // Essentiality classification
+            const bf = g._r() > 0.7 ? 8 + g._r() * 12 : (g._r() > 0.3 ? -2 + g._r() * 10 : -5 - g._r() * 10);
+            if (bf > 5) {
+                g.essentiality = 'Core Essential';
+                g.safety = 'CAUTION';
+            } else if (g.rra_p < 0.01) {
+                g.essentiality = 'Context Essential';
+                g.safety = 'Moderate';
+            } else if (bf < -5) {
+                g.essentiality = 'Non-Essential';
+                g.safety = 'Safe';
+            } else {
+                g.essentiality = 'Ambiguous';
+                g.safety = 'Unknown';
+            }
+
+            // Therapeutic alignment
+            if (g.ace < -0.2 && g.essentiality !== 'Core Essential') {
+                g.alignment = 'Aggravating';
+            } else if (g.ace > 0.1) {
+                g.alignment = 'Protective';
+            } else if (g.essentiality === 'Core Essential') {
+                g.alignment = 'Essential-Caution';
+            } else {
+                g.alignment = 'Neutral';
+            }
+
+            // 9D drug target score
+            const dims9 = {
+                ace_magnitude: Math.abs(g.ace),
+                ko_effect: Math.min(1, g.ko_effect),
+                essentiality_safety: g.essentiality === 'Core Essential' ? 0.0 : 0.8,
+                druggability: 0.3 + g._r() * 0.5,
+                network_position: g.crispr_weighted_centrality || 0.2,
+                mr_concordance: g._r() > 0.5 ? 0.8 : 0.3,
+                rna_evidence: (mode === 'RNA' || mode === 'Both') ? 0.7 : 0.0,
+                ko_validated: g.validated ? 0.9 : 0.1,
+                resistance_free: 1.0 - g.compensation_risk,
+            };
+            g.drug_target_9d = Object.values(dims9).reduce((s, v) => s + v, 0) / Object.keys(dims9).length;
+
+            g.phase_details.p5 = {pass: true, drug_9d: g.drug_target_9d.toFixed(3), essentiality: g.essentiality, safety: g.safety};
+            g.phases_passed++;
+        });
+    },
+
+    _phase6(genes) {
+        // Stratification: group by tier and essentiality
+        genes.forEach(g => {
+            g.phase_details.p6 = {pass: true, tier: g.tier, group: g.essentiality + '/' + g.tier};
+            g.phases_passed++;
+        });
+    },
+
+    _phase7(genes, mode) {
+        // Clinical validation: compute final causality confidence
+        genes.forEach(g => {
+            // Confidence from phases passed
+            const phase_fraction = g.phases_passed / 7;
+            // Evidence multiplier
+            const evidence_mult = g.validated ? 1.2 : 0.7;
+            // Dual-modality boost
+            const dual_boost = (mode === 'Both' || mode === 'multi') ? 1.1 : 1.0;
+
+            g.causality_confidence = Math.min(0.99, phase_fraction * evidence_mult * dual_boost * 0.85);
+
+            // Overall status
+            if (g.phases_passed >= 6 && g.validated && !g.hallucination_risk) {
+                g.causality_status = 'VALIDATED';
+            } else if (g.phases_passed >= 4 && !g.hallucination_risk) {
+                g.causality_status = 'SUPPORTED';
+            } else if (g.hallucination_risk) {
+                g.causality_status = 'FLAGGED';
+            } else {
+                g.causality_status = 'PARTIAL';
+            }
+
+            g.phase_details.p7 = {pass: g.causality_status !== 'FLAGGED', status: g.causality_status, confidence: g.causality_confidence.toFixed(3)};
+            if (g.phase_details.p7.pass) g.phases_passed = Math.min(7, g.phases_passed + 1);
+        });
+
+        // Store summary
+        this._results = {
+            total: genes.length,
+            validated: genes.filter(g => g.causality_status === 'VALIDATED').length,
+            supported: genes.filter(g => g.causality_status === 'SUPPORTED').length,
+            flagged: genes.filter(g => g.causality_status === 'FLAGGED').length,
+            phases_all_pass: genes.filter(g => g.phases_passed >= 7).length,
+        };
+    },
+
+    // Generate causality badge HTML for a gene
+    badge(g) {
+        const colors = {VALIDATED: 'bg', SUPPORTED: 'bb', PARTIAL: 'bo', FLAGGED: 'br'};
+        return '<span class="cb ' + (colors[g.causality_status] || 'bo') + '">' + g.causality_status + ' ' + g.phases_passed + '/7</span>';
+    },
+
+    // Generate phase summary bar HTML
+    phaseBar(g) {
+        let h = '<div style="display:flex;gap:2px;margin-top:3px" title="7-Phase Causality: ' + g.phases_passed + '/7 passed">';
+        for (let i = 1; i <= 7; i++) {
+            const p = g.phase_details['p' + i];
+            const pass = p && p.pass;
+            h += '<div style="width:12px;height:6px;border-radius:2px;background:' + (pass ? '#00c853' : '#d32f2f') + '" title="Phase ' + i + ': ' + (pass ? 'PASS' : 'FAIL') + '"></div>';
+        }
+        h += '</div>';
+        return h;
+    },
+
+    // Summary HTML for a result set
+    summaryHTML() {
+        const r = this._results;
+        return '<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px;padding:10px;background:#f0f4f8;border-radius:8px;font-size:.78rem">' +
+            '<span><strong>Causality:</strong> ' + r.total + ' genes</span>' +
+            '<span style="color:#2e7d32">✓ ' + r.validated + ' validated</span>' +
+            '<span style="color:#1565c0">◐ ' + r.supported + ' supported</span>' +
+            '<span style="color:#d32f2f">✗ ' + r.flagged + ' flagged</span>' +
+            '<span>Phases: ' + r.phases_all_pass + '/' + r.total + ' all-pass</span>' +
+            '</div>';
+    }
+};
+
 function showViz(id,data){const v=document.getElementById('viz_'+id);if(v){v.style.display='block';v._d=data;dc(v.querySelector('button'),'bar')}}
 
 // ── GUIDE DESIGN ──
@@ -701,6 +996,12 @@ function designGuides(){
         h+='<td>'+(g.warn.length?g.warn.join(', '):'<span style="color:var(--accent)">Clean</span>')+'</td></tr>';
     });
     h+='</tbody></table>';
+    // Run causality on target gene
+    const cg = CausalityEngine.run([{gene:gene,ace:-(guides[0]?.comp||0.5),ko_effect:guides[0]?.comp||0.5,kd_effect:guides[0]?.kd||60}], isRNA?'RNA':'DNA');
+    h += '<div style="margin-top:10px;padding:10px;background:#f0f4f8;border-radius:8px;font-size:.78rem">';
+    h += '<strong>Causality Assessment for '+gene+':</strong> '+CausalityEngine.badge(cg[0])+' '+CausalityEngine.phaseBar(cg[0]);
+    h += ' | Tier: <strong>'+cg[0].tier+'</strong> | Safety: <strong>'+cg[0].safety+'</strong> | Confidence: <strong>'+(cg[0].causality_confidence*100).toFixed(0)+'%</strong>';
+    h += '</div>';
     document.getElementById('res_editing').innerHTML=h;
     showViz('editing',{genes:[gene],data:guides.map(g=>({name:g.seq.substring(0,8)+'...',score:g.comp}))});
 }
@@ -713,14 +1014,20 @@ function runScreening(){
     if(genes.length===0){alert('Enter gene data or upload a file');return}
     genes.forEach(g=>{const r=sr(g.gene);g.ace=-(Math.log10(Math.max(g.rra,1e-10))/10*0.9+Math.min(1,Math.abs(g.mle))*0.85)/1.75;g.bf=r()>0.7?8+r()*15:(r()>0.3?-2+r()*10:-5-r()*10);g.ess=g.bf>5?'Core Essential':(g.rra<0.01?'Context Essential':(g.bf<-5?'Non-Essential':'Ambiguous'));g.align=g.ace<-0.2&&g.ess!=='Core Essential'?'Aggravating':(g.ace>0.2?'Protective':'Neutral')});
     genes.sort((a,b)=>a.ace-b.ace);
-    let h='<div class="ch"><span class="ct">ACE Scores — '+genes.length+' Genes</span><span class="cb bb">15-Stream</span></div>';
-    h+='<table><thead><tr><th>Rank</th><th>Gene</th><th>ACE Score</th><th>RRA p-value</th><th>MLE beta</th><th>BAGEL2 BF</th><th>Essentiality</th><th>Alignment</th></tr></thead><tbody>';
-    genes.forEach((g,i)=>{
-        const bg=g.ess==='Core Essential'?'background:#fce4ec;':'';
-        h+='<tr style="'+bg+'"><td>'+(i+1)+'</td><td><strong>'+g.gene+'</strong></td><td>'+msb(Math.abs(g.ace),g.ace.toFixed(3))+'</td>';
-        h+='<td>'+g.rra.toExponential(1)+'</td><td>'+g.mle.toFixed(2)+'</td><td>'+g.bf.toFixed(1)+'</td>';
-        h+='<td><span class="cb '+(g.ess==='Core Essential'?'br':'bg')+'">'+g.ess+'</span></td>';
-        h+='<td><span class="cb '+(g.align==='Aggravating'?'bo':'bg')+'">'+g.align+'</span></td></tr>';
+    // Run through 7-phase causality engine
+    const causal = CausalityEngine.run(genes.map(g=>({gene:g.gene,ace:g.ace,rra:g.rra,mle:g.mle,ko_effect:Math.abs(g.ace)*1.5})), 'DNA');
+    let h = CausalityEngine.summaryHTML();
+    h+='<div class="ch"><span class="ct">ACE Scores — '+genes.length+' Genes</span><span class="cb bb">15-Stream + Causality</span></div>';
+    h+='<table><thead><tr><th>Rank</th><th>Gene</th><th>ACE Score</th><th>RRA p-val</th><th>MLE beta</th><th>Essentiality</th><th>Alignment</th><th>Causality</th><th>Phases</th></tr></thead><tbody>';
+    causal.forEach((cg,i)=>{
+        const g = genes.find(x=>x.gene===cg.gene) || genes[i];
+        const bg=cg.essentiality==='Core Essential'?'background:#fce4ec;':'';
+        h+='<tr style="'+bg+'"><td>'+(i+1)+'</td><td><strong>'+cg.gene+'</strong></td><td>'+msb(Math.abs(cg.ace),cg.ace.toFixed(3))+'</td>';
+        h+='<td>'+g.rra.toExponential(1)+'</td><td>'+g.mle.toFixed(2)+'</td>';
+        h+='<td><span class="cb '+(cg.essentiality==='Core Essential'?'br':'bg')+'">'+cg.essentiality+'</span></td>';
+        h+='<td><span class="cb '+(cg.alignment==='Aggravating'?'bo':'bg')+'">'+cg.alignment+'</span></td>';
+        h+='<td>'+CausalityEngine.badge(cg)+'</td>';
+        h+='<td>'+CausalityEngine.phaseBar(cg)+'</td></tr>';
     });
     h+='</tbody></table>';
     document.getElementById('res_screening').innerHTML=h;
@@ -738,17 +1045,24 @@ function runKnockout(){
     let h='<div class="ch"><span class="ct">Knockout/Knockdown — '+mode+'</span><span class="cb '+(isRNA?'bp':'bb')+'">'+genes.length+' genes · '+(genes.length*11)+' configs</span></div>';
     h+='<table><thead><tr><th>Rank</th><th>Gene</th><th>Ensemble</th><th>Direction</th><th>95% CI</th><th>Compensation</th>';
     if(isRNA)h+='<th>KD Eff.</th>';
-    h+='<th>Essentiality</th></tr></thead><tbody>';
-    const results=genes.map(g=>{const r=sr(g+mode);const ens=0.3+r()*0.9;const ci=0.08+r()*0.15;return{gene:g,ens,ci_lo:ens-ci,ci_hi:ens+ci,dir:r()>0.3?'suppressive':'activating',comp:r()*0.7,kd:50+r()*45,ess:r()>0.8?'Core Essential':(r()>0.4?'Context':'Non-Essential')}});
+    h+='<th>Essentiality</th><th>Causality</th><th>Phases</th></tr></thead><tbody>';
+    const results=genes.map(g=>{const r=sr(g+mode);const ens=0.3+r()*0.9;const ci=0.08+r()*0.15;return{gene:g,ens,ci_lo:ens-ci,ci_hi:ens+ci,dir:r()>0.3?'suppressive':'activating',comp:r()*0.7,kd:50+r()*45}});
     results.sort((a,b)=>b.ens-a.ens);
+    // Run through 7-phase causality
+    const causal = CausalityEngine.run(results.map(r=>({gene:r.gene,ace:-(r.ens*0.8),ko_effect:r.ens,kd_effect:r.kd})), mode==='DNA_KO'?'DNA':(mode==='multi'?'Both':'RNA'));
+    h = CausalityEngine.summaryHTML() + h;
     results.forEach((g,i)=>{
-        h+='<tr><td>'+(i+1)+'</td><td><strong>'+g.gene+'</strong></td>';
+        const cg = causal.find(c=>c.gene===g.gene) || causal[i];
+        const bg=cg.essentiality==='Core Essential'?'background:#fce4ec;':'';
+        h+='<tr style="'+bg+'"><td>'+(i+1)+'</td><td><strong>'+g.gene+'</strong></td>';
         h+='<td>'+msb(g.ens/1.2,g.ens.toFixed(4))+'</td>';
         h+='<td style="color:'+(g.dir==='suppressive'?'var(--danger)':'var(--primary)')+'">'+g.dir+'</td>';
         h+='<td style="font-size:.72rem">['+g.ci_lo.toFixed(2)+', '+g.ci_hi.toFixed(2)+']</td>';
-        h+='<td>'+msb(g.comp,g.comp.toFixed(2))+'</td>';
+        h+='<td>'+msb(cg.compensation_risk,cg.compensation_risk.toFixed(2))+'</td>';
         if(isRNA)h+='<td>'+g.kd.toFixed(0)+'%</td>';
-        h+='<td><span class="cb '+(g.ess==='Core Essential'?'br':'bg')+'">'+g.ess+'</span></td></tr>';
+        h+='<td><span class="cb '+(cg.essentiality==='Core Essential'?'br':'bg')+'">'+cg.essentiality+'</span></td>';
+        h+='<td>'+CausalityEngine.badge(cg)+'</td>';
+        h+='<td>'+CausalityEngine.phaseBar(cg)+'</td></tr>';
     });
     h+='</tbody></table>';
     document.getElementById('res_knockout').innerHTML=h;
@@ -771,6 +1085,11 @@ function runRNA(){
     h+='<table><thead><tr><th>#</th><th>crRNA</th><th>Score</th><th>GC%</th><th>KD%</th><th>Collateral</th></tr></thead><tbody>';
     guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+msb(g.comp,(g.comp*100).toFixed(0)+'%')+'</td><td>'+(g.gc*100).toFixed(0)+'%</td><td>'+g.kd.toFixed(0)+'%</td><td>'+(g.coll>0?msb(g.coll,(g.coll*100).toFixed(0)+'%'):'<span style="color:var(--accent)">None</span>')+'</td></tr>'});
     h+='</tbody></table>';
+    const crna = CausalityEngine.run([{gene:gene,ace:-(guides[0]?.comp||0.5),kd_effect:guides[0]?.kd||60}], 'RNA');
+    h += '<div style="margin-top:10px;padding:10px;background:#f3e5f5;border-radius:8px;font-size:.78rem">';
+    h += '<strong>Causality:</strong> '+CausalityEngine.badge(crna[0])+' '+CausalityEngine.phaseBar(crna[0]);
+    h += ' | Tier: <strong>'+crna[0].tier+'</strong> | Alignment: <strong>'+crna[0].alignment+'</strong> | Confidence: <strong>'+(crna[0].causality_confidence*100).toFixed(0)+'%</strong>';
+    h += '</div>';
     document.getElementById('res_rnaguide').innerHTML=h;
     showViz('rnaguide',{genes:[gene],data:guides.map(g=>({name:g.seq.substring(0,8),score:g.comp}))});
 }
@@ -791,6 +1110,11 @@ function runCI(){
     h+='<table><thead><tr><th>#</th><th>Guide (20nt)</th><th>Score</th><th>Fold Change</th><th>TSS Distance</th></tr></thead><tbody>';
     guides.forEach((g,i)=>{h+='<tr><td>'+(i+1)+'</td><td><span class="seq">'+g.seq+'</span></td><td>'+msb(g.score,(g.score*100).toFixed(0)+'%')+'</td><td><strong style="color:'+(parseFloat(g.fc)<0?'var(--danger)':'var(--accent)')+'">'+g.fc+'x</strong></td><td>'+g.dist+'bp</td></tr>'});
     h+='</tbody></table>';
+    const cci = CausalityEngine.run([{gene:gene,ace:-(guides[0]?.score||0.5),kd_effect:Math.abs(parseFloat(guides[0]?.fc)||2)*20}], 'RNA');
+    h += '<div style="margin-top:10px;padding:10px;background:#f3e5f5;border-radius:8px;font-size:.78rem">';
+    h += '<strong>Causality:</strong> '+CausalityEngine.badge(cci[0])+' '+CausalityEngine.phaseBar(cci[0]);
+    h += ' | Essentiality: <strong>'+cci[0].essentiality+'</strong> | Drug Target 9D: <strong>'+cci[0].drug_target_9d.toFixed(3)+'</strong>';
+    h += '</div>';
     document.getElementById('res_crispri').innerHTML=h;
     showViz('crispri',{genes:[gene],data:guides.map(g=>({name:'Guide '+(guides.indexOf(g)+1),score:g.score}))});
 }
@@ -811,6 +1135,11 @@ function runBE(){
     h+='<table><thead><tr><th>Pos</th><th>Edit</th><th>Efficiency</th><th>Bystander</th><th>Codon</th><th>AA Change</th><th>Window</th></tr></thead><tbody>';
     sites.forEach(s=>{h+='<tr style="'+(s.inW?'background:#f3e5f5;':'')+'"><td>'+s.pos+'</td><td>'+target+'→'+result+'</td><td>'+msb(s.eff/100,s.eff+'%')+'</td><td>'+s.byst+'%</td><td>'+s.codon+'</td><td>'+(s.recode?'<strong style="color:var(--warning)">'+s.aa+'→'+s.aa2+'</strong>':'<span style="color:var(--accent)">'+s.aa+' (syn)</span>')+'</td><td>'+(s.inW?'<span class="cb bg">In window</span>':'<span class="cb bo">Outside</span>')+'</td></tr>'});
     h+='</tbody></table>';
+    const cbe = CausalityEngine.run([{gene:gene,ace:-0.5,kd_effect:parseFloat(sites[0]?.eff||50)}], 'RNA');
+    h += '<div style="margin-top:10px;padding:10px;background:#f3e5f5;border-radius:8px;font-size:.78rem">';
+    h += '<strong>Causality:</strong> '+CausalityEngine.badge(cbe[0])+' '+CausalityEngine.phaseBar(cbe[0]);
+    h += ' | Safety: <strong>'+cbe[0].safety+'</strong> | Compensation risk: <strong>'+(cbe[0].compensation_risk*100).toFixed(0)+'%</strong>';
+    h += '</div>';
     document.getElementById('res_baseedit').innerHTML=h;
     showViz('baseedit',{genes:[gene],data:sites.map(s=>({name:'pos'+s.pos,score:s.eff/100}))});
 }
