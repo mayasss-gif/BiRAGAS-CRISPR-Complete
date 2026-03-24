@@ -464,6 +464,7 @@ Can create premature stop codons<br><br>
                     </div>
                     <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
                         <button class="btn btn-primary" onclick="predictCombo()">Predict Cross-Modal Synergy</button>
+                        <button class="demo-btn" onclick="demoCombo()" style="margin-left:8px">Try Demo: BRAF + KRAS</button>
                         <span id="combo-class-badge" class="card-badge badge-green" style="font-size:0.85rem;padding:6px 14px">DNA&times;RNA</span>
                     </div>
                 </div>
@@ -1178,6 +1179,137 @@ function genRpt(btn){
     rpt.innerHTML=h;rpt.style.display='block';rpt.scrollIntoView({behavior:'smooth'});
 }
 function prRpt(btn){const r=btn.closest('.rpt');const w=window.open('');w.document.write('<html><head><title>BiRAGAS Report</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"><style>body{font-family:Inter,sans-serif;padding:20px}table{width:100%;border-collapse:collapse;font-size:10px}th,td{padding:5px 8px;border:1px solid #ddd;text-align:left}th{background:#f5f5f5}.sb{border:1px solid #ddd;border-radius:6px;padding:8px;text-align:center}.sl{font-size:8px;color:#777}.cb{font-size:8px;padding:2px 5px;border-radius:4px;font-weight:600}.bg{background:#e8f5e9;color:#2e7d32}.br{background:#fce4ec;color:#c62828}.bo{background:#fff3e0;color:#e65100}.scb{display:flex;align-items:center;gap:3px}.sct{flex:1;height:3px;background:#eee;border-radius:2px}.scf{height:100%;border-radius:2px}.hi .scf{background:#00c853}.mi .scf{background:#f57c00}.lo .scf{background:#d32f2f}@media print{button{display:none!important}}</style></head><body>'+r.innerHTML+'</body></html>');w.document.close();w.print()}
+
+// ══════════════════════════════════════════════════════════════════════
+// COMBINATION SYNERGY — 12-Model Cross-Modal
+// ══════════════════════════════════════════════════════════════════════
+
+function updateComboClass(){
+    const modA=document.getElementById('combo-mod-a').value;
+    const modB=document.getElementById('combo-mod-b').value;
+    const dnaSet=new Set(['DNA_KO','Cas12a_KO']);
+    const aD=dnaSet.has(modA),bD=dnaSet.has(modB);
+    let cls,badge;
+    if(aD&&bD){cls='DNA\u00d7DNA';badge='badge-blue'}
+    else if(!aD&&!bD){cls='RNA\u00d7RNA';badge='badge-purple'}
+    else{cls='DNA\u00d7RNA';badge='badge-green'}
+    const el=document.getElementById('combo-class-badge');
+    if(el){el.textContent=cls;el.className='card-badge '+badge}
+}
+
+function predictCombo(){
+    const a=document.getElementById('combo-a').value.trim().toUpperCase();
+    const b=document.getElementById('combo-b').value.trim().toUpperCase();
+    const c=document.getElementById('combo-c')?document.getElementById('combo-c').value.trim().toUpperCase():'';
+    const modA=document.getElementById('combo-mod-a').value;
+    const modB=document.getElementById('combo-mod-b').value;
+    if(!a||!b){alert('Enter Gene A and Gene B');return}
+
+    const dnaSet=new Set(['DNA_KO','Cas12a_KO']);
+    const aD=dnaSet.has(modA),bD=dnaSet.has(modB);
+    const isCross=(aD&&!bD)||(!aD&&bD);
+    const comboClass=aD&&bD?'DNA\u00d7DNA':(!aD&&!bD?'RNA\u00d7RNA':'DNA\u00d7RNA');
+
+    const rng=sr(a+b+modA+modB+c);
+    const scoreA=0.3+rng()*0.5, scoreB=0.3+rng()*0.5;
+
+    // Adaptive weights
+    let W;
+    if(comboClass==='DNA\u00d7DNA')W={bliss:.20,hsa:.12,loewe:.18,zip:.15,epistasis:.15,compensation:.10,cascade:0,isoform:0,feedback:.05,collateral:0,epigenetic:0,ncrna:.05};
+    else if(comboClass==='RNA\u00d7RNA')W={bliss:.18,hsa:.10,loewe:.15,zip:.12,epistasis:.12,compensation:.08,cascade:.05,isoform:.05,feedback:.05,collateral:.05,epigenetic:0,ncrna:.05};
+    else W={bliss:.12,hsa:.08,loewe:.10,zip:.10,epistasis:.10,compensation:.08,cascade:.12,isoform:.08,feedback:.07,collateral:.05,epigenetic:.05,ncrna:.05};
+
+    const bliss=scoreA+scoreB-scoreA*scoreB;
+    const hsa=Math.max(scoreA,scoreB);
+    const loewe=scoreA*.5+scoreB*.5;
+    const zip=scoreA*scoreB+.05*(scoreA+scoreB);
+    const epistasis=(scoreA+scoreB)*(1+rng()*.3);
+    const compensation=scoreA+scoreB+rng()*.2;
+    const cascade=isCross?(scoreA+scoreB)*.4*(.5+rng()*.5):0;
+    const isoform=isCross?(a===b?(scoreA+scoreB)*1.2:(scoreA+scoreB)*.3*rng()):0;
+    const feedback=(scoreA+scoreB)*.15*(.3+rng()*.7);
+    const collateralSet=new Set(['Cas13a_KD','Cas13b_KD']);
+    const collateral=(collateralSet.has(modA)||collateralSet.has(modB))?Math.max(scoreA,scoreB)*.15:0;
+    const epigenetic=((modA==='CRISPRi'&&!bD)||(modB==='CRISPRi'&&!aD))?(scoreA+scoreB)*.5:0;
+    const isNcA=['MIR','LNC','LINC','HOTAIR','MALAT','NEAT'].some(p=>a.startsWith(p));
+    const isNcB=['MIR','LNC','LINC','HOTAIR','MALAT','NEAT'].some(p=>b.startsWith(p));
+    const ncrna=(isNcA!==isNcB)?(scoreA+scoreB)*.4:(isNcA&&isNcB)?(scoreA+scoreB)*.25:0;
+
+    const models={bliss,hsa,loewe,zip,epistasis,compensation,cascade,isoform,feedback,collateral,epigenetic,ncrna};
+    const ensemble=Object.keys(models).reduce((s,k)=>s+models[k]*(W[k]||0),0);
+    const synergy=ensemble-(scoreA+scoreB);
+    const synergyType=synergy>0.05?'Synergistic':(synergy<-0.05?'Antagonistic':'Additive');
+    const typeBadge=synergy>0.05?'badge-green':(synergy<-0.05?'badge-red':'badge-blue');
+    const activeModels=Object.keys(W).filter(k=>W[k]>0).length;
+
+    const crossBonus=isCross?(a===b?(scoreA+scoreB)*.3:.1):0;
+    const temporal=isCross?(scoreA*.7+scoreB*.3)*.5:0;
+
+    // Run causality on the pair
+    const causal=CausalityEngine.run([{gene:a,ace:-(scoreA),ko_effect:scoreA},{gene:b,ace:-(scoreB),kd_effect:scoreB*80}],isCross?'Both':'DNA');
+
+    const label=a+' ('+modA+') + '+b+' ('+modB+')';
+    let h='<div class="card-header"><span class="card-title" style="font-size:.95rem">'+label+'</span>';
+    h+='<div style="display:flex;gap:6px"><span class="card-badge '+(comboClass==='DNA\u00d7DNA'?'badge-blue':comboClass==='RNA\u00d7RNA'?'badge-purple':'badge-green')+'">'+comboClass+'</span>';
+    h+='<span class="card-badge '+typeBadge+'">'+synergyType+'</span></div></div>';
+
+    // Causality summary
+    h+=CausalityEngine.summaryHTML();
+
+    // Stats
+    h+='<div class="grid-4" style="margin-bottom:12px">';
+    h+='<div class="stat-box"><div class="stat-value">'+(ensemble*100).toFixed(1)+'%</div><div class="stat-label">Ensemble</div></div>';
+    h+='<div class="stat-box"><div class="stat-value" style="color:'+(synergy>0?'var(--accent)':'var(--danger)')+'">'+(synergy>0?'+':'')+(synergy*100).toFixed(1)+'%</div><div class="stat-label">Synergy</div></div>';
+    h+='<div class="stat-box"><div class="stat-value">'+activeModels+'/12</div><div class="stat-label">Models</div></div>';
+    h+='<div class="stat-box"><div class="stat-value">'+(crossBonus*100).toFixed(0)+'%</div><div class="stat-label">Cross-Modal Bonus</div></div></div>';
+
+    // Gene causality
+    h+='<div style="display:flex;gap:12px;margin-bottom:12px">';
+    causal.forEach(cg=>{
+        h+='<div style="flex:1;padding:8px;background:#f8f9fa;border-radius:8px;font-size:.78rem">';
+        h+='<strong>'+cg.gene+':</strong> '+CausalityEngine.badge(cg)+' '+CausalityEngine.phaseBar(cg);
+        h+=' Tier: '+cg.tier+' | Safety: '+cg.safety;
+        h+='</div>';
+    });
+    h+='</div>';
+
+    // 12 model table
+    h+='<table style="font-size:.78rem"><thead><tr><th>Model</th><th>Type</th><th>Score</th><th>Weight</th><th>Contribution</th></tr></thead><tbody>';
+    const mDefs=[
+        {k:'bliss',n:'Bliss Independence',t:'Classical'},{k:'hsa',n:'HSA',t:'Classical'},{k:'loewe',n:'Loewe Additivity',t:'Classical'},
+        {k:'zip',n:'ZIP',t:'Classical'},{k:'epistasis',n:'Graph Epistasis',t:'Classical'},{k:'compensation',n:'Compensation',t:'Classical'},
+        {k:'cascade',n:'Transcriptional Cascade',t:'Cross-Modal'},{k:'isoform',n:'Isoform Escape',t:'Cross-Modal'},
+        {k:'feedback',n:'Feedback Disruptor',t:'Cross-Modal'},{k:'collateral',n:'Collateral Synergy',t:'Cross-Modal'},
+        {k:'epigenetic',n:'Epigenetic-Transcriptomic',t:'Cross-Modal'},{k:'ncrna',n:'ncRNA-Coding',t:'Cross-Modal'},
+    ];
+    mDefs.forEach(m=>{
+        const w=W[m.k]||0;const s=models[m.k]||0;const active=w>0;
+        const bg=!active?'opacity:.4;':(m.t==='Cross-Modal'?'background:#faf5ff;':'');
+        h+='<tr style="'+bg+'"><td><strong>'+m.n+'</strong></td>';
+        h+='<td><span class="card-badge '+(m.t==='Classical'?'badge-blue':'badge-purple')+'">'+m.t+'</span></td>';
+        h+='<td>'+msb(Math.min(1,Math.abs(s)),(s*100).toFixed(1)+'%')+'</td>';
+        h+='<td>'+(w*100).toFixed(0)+'%</td>';
+        h+='<td>'+(active?(s*w*100).toFixed(2)+'%':'<span style="color:#ccc">—</span>')+'</td></tr>';
+    });
+    h+='</tbody></table>';
+
+    // Advanced metrics
+    h+='<div class="grid-3" style="margin-top:10px">';
+    h+='<div class="stat-box" style="padding:10px"><div style="font-size:1.1rem;font-weight:700;color:var(--warning)">'+(temporal*100).toFixed(1)+'%</div><div class="stat-label">Temporal Cascade</div></div>';
+    h+='<div class="stat-box" style="padding:10px"><div style="font-size:1.1rem;font-weight:700;color:var(--primary)">'+(isCross?'20':'40')+'%</div><div class="stat-label">Isoform Escape Risk</div></div>';
+    h+='<div class="stat-box" style="padding:10px"><div style="font-size:1.1rem;font-weight:700;color:var(--purple)">'+(collateral*100).toFixed(1)+'%</div><div class="stat-label">Collateral Interaction</div></div></div>';
+
+    document.getElementById('combo-results').innerHTML=h;
+}
+
+function demoCombo(){
+    document.getElementById('combo-a').value='BRAF';
+    document.getElementById('combo-b').value='KRAS';
+    if(document.getElementById('combo-mod-a'))document.getElementById('combo-mod-a').value='DNA_KO';
+    if(document.getElementById('combo-mod-b'))document.getElementById('combo-mod-b').value='RNA_KD';
+    updateComboClass();
+    predictCombo();
+}
 
 async function checkServer(){try{const r=await fetch(API+'/api/status');if(r.ok)srv=true}catch(e){}}
 checkServer();setInterval(checkServer,15000);
