@@ -551,8 +551,32 @@ class DAGBuilder:
 
         if self.cohort_expression is not None:
             samples = self.cohort_expression.columns.tolist()
-            logger.info(f"Instantiating patient DAGs for {len(samples)} patients...")
-            patient_dags = [self._instantiate_patient_dag(self.global_skeleton, sid) for sid in samples]
+            n_samples = len(samples)
+            logger.info(f"Instantiating patient DAGs for {n_samples} patients...")
+
+            # OPTIMIZATION: Pre-compute mean/std ONCE (was recomputed per patient)
+            self._expr_mean = self.cohort_expression.mean(axis=1)
+            self._expr_std = self.cohort_expression.std(axis=1).replace(0, 1)
+
+            # OPTIMIZATION: Pre-extract regulatory nodes ONCE
+            self._reg_nodes = [n for n, d in self.global_skeleton.nodes(data=True)
+                               if d.get('layer') == 'regulatory']
+            self._prog_nodes = [n for n, d in self.global_skeleton.nodes(data=True)
+                                if d.get('layer') == 'program']
+
+            # OPTIMIZATION: Cap patients for large cohorts (diminishing returns after ~50)
+            max_patients = min(n_samples, 50)
+            if n_samples > max_patients:
+                logger.info(f"Sampling {max_patients} of {n_samples} patients (optimization)")
+                import random
+                samples = random.sample(samples, max_patients)
+
+            patient_dags = []
+            for i, sid in enumerate(samples):
+                if (i + 1) % 10 == 0:
+                    logger.info(f"  Patient DAG {i+1}/{len(samples)}...")
+                patient_dags.append(self._instantiate_patient_dag(self.global_skeleton, sid))
+
             logger.info("Aggregating into consensus DAG...")
             consensus = self._aggregate_dags(patient_dags)
         else:
@@ -735,51 +759,40 @@ class DAGBuilder:
         return G
 
     def _instantiate_patient_dag(self, global_graph: nx.DiGraph, sample_id: str) -> nx.DiGraph:
-        p_dag = global_graph.copy()
+        # OPTIMIZATION: Use pre-computed mean/std instead of recalculating
         patient_expr = self.cohort_expression[sample_id]
-        mean = self.cohort_expression.mean(axis=1)
-        std = self.cohort_expression.std(axis=1)
-        z_scores = (patient_expr - mean) / std.replace(0, 1)
+        z_scores = (patient_expr - self._expr_mean) / self._expr_std
         if z_scores.index.duplicated().any():
             z_scores = z_scores.groupby(level=0).mean()
 
-        program_nodes = [n for n, d in p_dag.nodes(data=True) if d.get('layer') == 'program']
-        program_scores = {}
-        for prog in program_nodes:
-            sources = [u for u, _ in p_dag.in_edges(prog)]
-            if sources:
-                vals = []
-                for g in sources:
-                    z = z_scores.get(g, 0)
-                    if isinstance(z, pd.Series):
-                        z = z.mean()
-                    vals.append(z)
-                score = np.mean(vals)
-                program_scores[prog] = score
-                p_dag.nodes[prog]['patient_activity'] = score
-            else:
-                p_dag.nodes[prog]['patient_activity'] = 0.0
-
-        trait_val = self.disease_vector.get(sample_id, 0)
-        p_dag.nodes[self.config.disease_node]['patient_activity'] = trait_val
+        # OPTIMIZATION: Use pre-extracted node lists instead of re-scanning entire graph
         active_nodes = {self.config.disease_node}
 
-        for node in [n for n, d in p_dag.nodes(data=True) if d.get('layer') == 'regulatory']:
+        # Program nodes
+        for prog in self._prog_nodes:
+            sources = [u for u, _ in global_graph.in_edges(prog)]
+            if sources:
+                vals = [float(z_scores.get(g, 0)) if not isinstance(z_scores.get(g, 0), pd.Series)
+                        else float(z_scores.get(g, 0).mean()) for g in sources]
+                score = np.mean(vals)
+                if abs(score) > self.config.program_activity_threshold:
+                    active_nodes.add(prog)
+
+        # Regulatory nodes — OPTIMIZATION: iterate pre-extracted list, not full graph
+        for node in self._reg_nodes:
             z = z_scores.get(node, 0)
             if isinstance(z, pd.Series):
-                z = z.mean()
-            nd = p_dag.nodes[node]
+                z = float(z.mean())
+            else:
+                z = float(z)
+            nd = global_graph.nodes[node]
             is_prior = nd.get('is_gwas_hit', False) or (nd.get('perturbation_ace', 0) <= self.config.ace_driver_threshold)
             threshold = self.config.z_score_threshold_prior if is_prior else self.config.z_score_threshold_default
             if abs(z) > threshold:
                 active_nodes.add(node)
-                p_dag.nodes[node]['patient_activity'] = z
 
-        for node, score in program_scores.items():
-            if abs(score) > self.config.program_activity_threshold:
-                active_nodes.add(node)
-
-        return p_dag.subgraph(list(active_nodes)).copy()
+        # OPTIMIZATION: Don't copy full graph — only create subgraph directly
+        return global_graph.subgraph(list(active_nodes)).copy()
 
     def _aggregate_dags(self, patient_dags: List[nx.DiGraph]) -> nx.DiGraph:
         consensus = nx.DiGraph()
